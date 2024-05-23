@@ -6,7 +6,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3000/')
+    axios.get('https://cop-server-2-cop-ms.2.rahtiapp.fi/')
       .then(response => {
         setMessage(response.data.message);
       });
