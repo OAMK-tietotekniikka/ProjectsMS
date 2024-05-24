@@ -7,7 +7,9 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'https://cop-client-cop-ms.2.rahtiapp.fi/'
+    origin: 'https://cop-client-cop-ms.2.rahtiapp.fi/',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   }));
 
 
