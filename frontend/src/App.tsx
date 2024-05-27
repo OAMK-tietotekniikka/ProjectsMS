@@ -10,11 +10,7 @@ function App() {
       'https://cop-server-3-cop-ms.2.rahtiapp.fi/',
       {
         headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization, X-Request-With",
-          "Access-Control-Allow-Credentials": "true"
+          "Content-Type": "application/json"
         }
       })
       .then(response => {
