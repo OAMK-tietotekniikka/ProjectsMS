@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(cors({
     origin: 'https://cop-client-cop-ms.2.rahtiapp.fi/',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
   }));
 
 
