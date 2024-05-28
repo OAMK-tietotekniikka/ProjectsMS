@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     axios.get(
-      'https://cop-server-3-cop-ms.2.rahtiapp.fi/',
+      'https://cop-server-3-cop-ms.2.rahtiapp.fi',
       {
         headers: {
           "Content-Type": "application/json"
