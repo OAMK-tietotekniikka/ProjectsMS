@@ -20,6 +20,8 @@ function App() {
 
   return (
     <div>
+      <h3>This is from client</h3>
+      <h3>Message from server:</h3>
       {message}
     </div>
   );
