@@ -6,9 +6,12 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('https://cop-server-3-cop-ms.2.rahtiapp.fi/')
+    axios.get(import.meta.env.VITE_API_URL)
       .then(response => {
         setMessage(response.data.message);
+      })
+      .catch(error => {
+        console.error('Failed to fetch data:', error);
       });
   }, []);
 
