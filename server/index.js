@@ -3,15 +3,21 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 const app = express();
+const port = process.env.PORT || 8080;
+
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://pm-app-client-pm-app-deploy.2.rahtiapp.fi',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+  }));
 
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Hello World' });
+    res.json({ message: 'Hello World, I am using OpenShift' });
 });
 
-app.listen(3000, () => {
-    console.log('Server is running ');
+app.listen(port, () => {
+    console.log('Server is running on port: ' + port);
     }
 );

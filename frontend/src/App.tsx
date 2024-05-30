@@ -6,7 +6,13 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3000/')
+    axios.get(
+      'https://pm-app-server-pm-app-deploy.2.rahtiapp.fi',
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
       .then(response => {
         setMessage(response.data.message);
       });
@@ -14,6 +20,7 @@ function App() {
 
   return (
     <div>
+      <h3>This is from client</h3>
       {message}
     </div>
   );
