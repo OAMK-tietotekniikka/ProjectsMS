@@ -6,7 +6,12 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get(import.meta.env.VITE_API_URL)
+    axios.get(import.meta.env.VITE_API_URL,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then(response => {
         setMessage(response.data.message);
       })

@@ -29,7 +29,7 @@ RUN npm install -g serve
 COPY --from=BUILD_IMAGE /app/frontend/dist/ /app/frontend/dist/
 
 # Expose port 5000 for the app
-EXPOSE 8080
+EXPOSE 5000
 
 #to run npm commands as : npm run preview
 #we need package.json and package-lock.json
@@ -38,7 +38,7 @@ COPY vite.config.ts ./
 
 #install typescript
 RUN npm install typescript
-EXPOSE 8080 
+EXPOSE 5000
 
 # Run the app
 CMD ["npm", "run", "preview"]
