@@ -1,9 +1,9 @@
-import express from 'express';
+import express, {Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-const app = express();
-const port = process.env.PORT || 8080;
+const app: Express = express();
+const port: string | number = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -12,8 +12,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Hello World, I am using OpenShift' });
+app.get('/', (req: Request, res: Response) => {
+    res.json({ message: 'Hello World, I am using OpenShift!!!' });
 });
 
 app.listen(port, () => {
