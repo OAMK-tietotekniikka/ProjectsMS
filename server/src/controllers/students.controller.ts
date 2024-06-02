@@ -11,7 +11,7 @@ import { QUERY } from "../query/students.query";
 
 type ResultSet = [RowDataPacket[]| RowDataPacket[][]| OkPacket| OkPacket[]| ResultSetHeader, FieldPacket[]];
 
-export const getStudents = async (req: Request, res: Response): Promise<Response<Student[]>> => {
+export const getStudents = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
@@ -27,7 +27,7 @@ export const getStudents = async (req: Request, res: Response): Promise<Response
     }
 };
 
-export const getStudent = async (req: Request, res: Response): Promise<Response<Student>> => {
+export const getStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
@@ -48,7 +48,7 @@ export const getStudent = async (req: Request, res: Response): Promise<Response<
 };
 
 
-export const createStudent = async (req: Request, res: Response): Promise<Response<Student>> => {
+export const createStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let student: Student = {...req.body};
     try {
@@ -65,7 +65,7 @@ export const createStudent = async (req: Request, res: Response): Promise<Respon
     }
 };
 
-export const updateStudent = async (req: Request, res: Response): Promise<Response<Student>> => {
+export const updateStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let student: Student = {...req.body};
     try {
@@ -88,7 +88,7 @@ export const updateStudent = async (req: Request, res: Response): Promise<Respon
 };
 
 
-export const deleteStudent = async (req: Request, res: Response): Promise<Response<Student>> => {
+export const deleteStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
