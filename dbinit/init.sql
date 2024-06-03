@@ -15,3 +15,10 @@ PRIMARY KEY (id),
 CONSTRAINT UQ_Students_Email UNIQUE (email)
 
 )AUTO_INCREMENT = 1;
+
+-- Insert student data
+INSERT INTO students (first_name, last_name, email, phone, status)
+VALUES ('John', 'Doe', 'johndoe@email.com', '123456789', 'admitted');
+
+INSERT INTO students (first_name, last_name, email, phone, status)
+VALUES ('Jane', 'Doe', 'janedoe@email.com', '987654321', 'admitted');

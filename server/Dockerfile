@@ -17,7 +17,7 @@ COPY . .
 # Build the app
 RUN npm run build
 
-# Expose port 3000 for the app
+# Expose port 8080 for the app
 ENV SERVER_PORT 8080
 EXPOSE $SERVER_PORT
 
