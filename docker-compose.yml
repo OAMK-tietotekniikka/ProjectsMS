@@ -1,0 +1,60 @@
+services:
+
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqlcontainer
+    command: --default_authentication_plugin=caching_sha2_password
+    restart: unless-stopped
+    volumes:
+      - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - $HOME/database:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: studentsdb   # (this is just an example, not intended to be a production configuration
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pwd@123
+      MYSQL_ROOT_PASSWORD: pwd@123
+      SERVICE_TAGS: prod
+      SERVICE_NAME: mysqldb
+    networks:
+      - internalnet 
+
+  pmappserver:
+    container_name: pmappservercontainer
+    build: ./server 
+    image: pmappserver:v1
+    ports:
+      - 8081:8080
+    depends_on:
+      - mysqldb
+    environment:
+      DB_HOST: mysqldb
+      DB_PASSWORD: 'pwd@123'
+      DB_USER: admin
+      DB_NAME: studentsdb
+      DB_PORT: 3306
+      DB_CONNECTION_LIMIT: 10 
+      SERVICE_TAGS: prod
+      SERVICE_NAME: pmappserverservice  
+    networks:
+      - internalnet
+
+  pmappfrontend:
+
+    container_name: pmappfrontendcontainer
+    build: ./frontend
+    image: pmappfrontend:v1
+    ports:
+      - 5000:5000
+    depends_on:
+      - pmappserver
+    environment:
+      VITE_APP_SERVER_URL: localhost:8081
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
+
