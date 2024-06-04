@@ -11,7 +11,7 @@ export class App{
     private readonly APPLICATION_RUNNING = 'Application running on: ';
     private readonly ROUTE_NOT_FOUND = 'Route does not exist!'; 
     
-    constructor(private readonly port: (number | string)= process.env.PORT || 8080){
+    constructor(private readonly port: (number | string)= process.env.SERVER_PORT || 8080){
         this.app = express();
         this.middlewares();
         this.routes();

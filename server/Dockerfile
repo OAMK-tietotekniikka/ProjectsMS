@@ -22,4 +22,4 @@ ENV SERVER_PORT 8080
 EXPOSE $SERVER_PORT
 
 # Run the app
-CMD ["npm","run", "start:prod"]
+CMD ["npm","run", "start:dev"]
