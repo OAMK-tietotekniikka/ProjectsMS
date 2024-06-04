@@ -25,21 +25,14 @@ WORKDIR /app/frontend
 # Install serve to serve the app on a static server
 RUN npm install -g serve
 
-# Copy the build directory from the previous stage
-COPY --from=BUILD_IMAGE /app/frontend/dist/ /app/frontend/dist/
+# Copy the build directory and src directory from the build image
+COPY --from=BUILD_IMAGE /app/frontend/ /app/frontend/
 
 # Expose port 5000 for the app
 EXPOSE 5000
 
-#to run npm commands as : npm run preview
-#we need package.json and package-lock.json
-COPY package*.json ./
-COPY vite.config.ts ./
-
 #install typescript
 RUN npm install typescript
-EXPOSE 5000
 
 # Run the app
 CMD ["npm", "run", "preview"]
-
