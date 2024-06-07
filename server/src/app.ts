@@ -5,6 +5,18 @@ import { Code } from "./enum/code.enum";
 import { HttpResponse } from "./domain/response";
 import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
+import { connection } from "./config/mysql.config";
+
+const testConnection = async () => {
+    const pool = await connection();
+    if (pool) {
+        console.info('Database connection successful');
+    } else {   
+        console.error('Database connection failed');
+    }
+};
+
+testConnection();
 
 export class App{
     private readonly app: Application;
