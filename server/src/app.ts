@@ -7,8 +7,22 @@ import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
 import { connection } from "./config/mysql.config";
 
+const testDatabaseConnection = async () => {
+    try {
+        const pool = await connection();
+        const [rows]: any = await pool.execute('SELECT NOW() as solution');
+        console.log('Current database time:', rows[0]['NOW()']);
+        
+    } catch (error) {
+        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
+        throw error;
+    }
+}
+testDatabaseConnection();
+
 
 export class App{
+    
     private readonly app: Application;
     private readonly APPLICATION_RUNNING = 'Application running on: ';
     private readonly ROUTE_NOT_FOUND = 'Route does not exist!'; 
@@ -32,23 +46,7 @@ export class App{
 
     private routes(): void{
         this.app.use('/students', studentsRouter); // This is a placeholder for the routes
-        //this.app.get('/', (req:Request, res:Response) => res.status(Code.OK).send(new HttpResponse(Code.OK,Status.OK, 'Hello World, I am using OpenShift!!!')));
-        this.app.get('/', async (req:Request, res:Response) => {
-            try {
-                const pool = await connection();
-                if (!pool) {
-                    console.error('Pool not created');
-                    res.status(Code.INTERNAL_SERVER_ERROR).send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'Pool not created'));
-                    return;
-                }
-                const [rows]: any = await pool.execute('SELECT NOW()');
-                console.log(`Current time from the database: ${rows[0]['NOW()']}`);
-                await pool.end();
-                res.status(Code.OK).send(new HttpResponse(Code.OK,Status.OK, `Hello World, I am using OpenShift!!! Current time from the database: ${rows[0]['NOW()']}`));
-            } catch (error) {
-            res.status(Code.INTERNAL_SERVER_ERROR).send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'Connection failed'));
-            }
-        });
+        this.app.get('/', (req:Request, res:Response) => res.status(Code.OK).send(new HttpResponse(Code.OK,Status.OK, 'Hello World, I am using OpenShift!!!')));
         this.app.all('*', (req:Request, res:Response) => res.status(Code.NOT_FOUND).send(new HttpResponse(Code.NOT_FOUND,Status.NOT_FOUND, this.ROUTE_NOT_FOUND)));
     }
     

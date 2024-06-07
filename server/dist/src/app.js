@@ -21,16 +21,18 @@ const response_1 = require("./domain/response");
 const status_enum_1 = require("./enum/status.enum");
 const students_routes_1 = __importDefault(require("./routes/students.routes"));
 const mysql_config_1 = require("./config/mysql.config");
-const testConnection = () => __awaiter(void 0, void 0, void 0, function* () {
-    const pool = yield (0, mysql_config_1.connection)();
-    if (pool) {
-        console.info('Database connection successful');
+const testDatabaseConnection = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const [rows] = yield pool.execute('SELECT NOW() as solution');
+        console.log('Current database time:', rows[0]['NOW()']);
     }
-    else {
-        console.error('Database connection failed');
+    catch (error) {
+        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
+        throw error;
     }
 });
-testConnection();
+testDatabaseConnection();
 class App {
     constructor(port = process.env.SERVER_PORT || 8080) {
         this.port = port;

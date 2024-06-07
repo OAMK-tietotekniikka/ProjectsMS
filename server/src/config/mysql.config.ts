@@ -14,11 +14,10 @@ export const connection = async () => {
         port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
         connectionLimit: process.env.DB_CONNECTION_LIMIT ? parseInt(process.env.DB_CONNECTION_LIMIT) : 10
     });
-    console.log(`Connection established: [${new Date().toLocaleDateString()}]`);
-    return pool;
+        return pool;
+
     } catch (error) {
         console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
         throw error;
     }
-
 }

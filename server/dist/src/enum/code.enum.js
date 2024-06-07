@@ -17,4 +17,4 @@ var Code;
     Code[Code["NOT_IMPLEMENTED"] = 501] = "NOT_IMPLEMENTED";
     Code[Code["BAD_GATEWAY"] = 502] = "BAD_GATEWAY";
     Code[Code["SERVICE_UNAVAILABLE"] = 503] = "SERVICE_UNAVAILABLE";
-})(Code || (exports.Code = Code = {}));
+})(Code = exports.Code || (exports.Code = {}));
