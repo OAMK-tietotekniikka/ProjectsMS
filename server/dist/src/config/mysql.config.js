@@ -26,7 +26,6 @@ const connection = () => __awaiter(void 0, void 0, void 0, function* () {
             port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
             connectionLimit: process.env.DB_CONNECTION_LIMIT ? parseInt(process.env.DB_CONNECTION_LIMIT) : 10
         });
-        console.log('Connected to the database');
         return pool;
     }
     catch (error) {

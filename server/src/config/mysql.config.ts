@@ -1,12 +1,12 @@
 import { createPool } from "mysql2/promise";
 import dotenv from "dotenv";
-import { Pool } from "mysql2/typings/mysql/lib/Pool";
+
 
 dotenv.config();
 
 export const connection = async () => {
     try {
-           const pool = await createPool({
+        const pool = await createPool({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
@@ -14,8 +14,8 @@ export const connection = async () => {
         port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
         connectionLimit: process.env.DB_CONNECTION_LIMIT ? parseInt(process.env.DB_CONNECTION_LIMIT) : 10
     });
-    console.log('Connected to the database');
-    return pool; 
+    console.log(`Connection established: [${new Date().toLocaleDateString()}]`);
+    return pool;
     } catch (error) {
         console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
         throw error;
