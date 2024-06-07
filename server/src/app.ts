@@ -36,12 +36,17 @@ export class App{
         this.app.get('/', async (req:Request, res:Response) => {
             try {
                 const pool = await connection();
+                if (!pool) {
+                    console.error('Pool not created');
+                    res.status(Code.INTERNAL_SERVER_ERROR).send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'Pool not created'));
+                    return;
+                }
                 const [rows]: any = await pool.execute('SELECT NOW()');
                 console.log(`Current time from the database: ${rows[0]['NOW()']}`);
                 await pool.end();
                 res.status(Code.OK).send(new HttpResponse(Code.OK,Status.OK, `Hello World, I am using OpenShift!!! Current time from the database: ${rows[0]['NOW()']}`));
-                } catch (error) {
-                res.status(Code.INTERNAL_SERVER_ERROR).send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'Connection failed'));
+            } catch (error) {
+            res.status(Code.INTERNAL_SERVER_ERROR).send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'Connection failed'));
             }
         });
         this.app.all('*', (req:Request, res:Response) => res.status(Code.NOT_FOUND).send(new HttpResponse(Code.NOT_FOUND,Status.NOT_FOUND, this.ROUTE_NOT_FOUND)));
