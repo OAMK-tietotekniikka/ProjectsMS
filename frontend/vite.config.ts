@@ -10,8 +10,8 @@ export default defineConfig({
 
   // define which port the preview server should run on
 
-  preview: {
-    host: true,
-    port: 5000
-  }
+  //preview: {
+    //host: true,
+    //port: 5000
+  //}
 })
