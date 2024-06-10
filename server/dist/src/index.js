@@ -1,10 +1,31 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("./app");
-const start = () => {
+const mysql_config_1 = require("./config/mysql.config");
+const testDatabaseConnection = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const [rows] = yield pool.execute('SELECT NOW() as solution');
+        console.log('Current database time:', rows[0]['NOW()']);
+    }
+    catch (error) {
+        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
+    }
+});
+const start = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield testDatabaseConnection();
     const app = new app_1.App();
     app.listen();
-};
+});
 start();
 // import express, {Express, Request, Response } from 'express';
 // import bodyParser from 'body-parser';

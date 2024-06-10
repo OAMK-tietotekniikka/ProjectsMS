@@ -7,22 +7,8 @@ import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
 import { connection } from "./config/mysql.config";
 
-const testDatabaseConnection = async () => {
-    try {
-        const pool = await connection();
-        const [rows]: any = await pool.execute('SELECT NOW() as solution');
-        console.log('Current database time:', rows[0]['NOW()']);
-        
-    } catch (error) {
-        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
-        throw error;
-    }
-}
-testDatabaseConnection();
-
 
 export class App{
-    
     private readonly app: Application;
     private readonly APPLICATION_RUNNING = 'Application running on: ';
     private readonly ROUTE_NOT_FOUND = 'Route does not exist!'; 
