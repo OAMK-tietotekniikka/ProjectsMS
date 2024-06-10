@@ -1,22 +1,47 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const cors_1 = __importDefault(require("cors"));
-const app = (0, express_1.default)();
-const port = process.env.PORT || 8080;
-app.use(body_parser_1.default.json());
-app.use((0, cors_1.default)({
-    origin: 'https://pm-app-client-pm-app-deploy.2.rahtiapp.fi',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
-}));
-app.get('/', (req, res) => {
-    res.json({ message: 'Hello World, I am using OpenShift' });
+const app_1 = require("./app");
+const mysql_config_1 = require("./config/mysql.config");
+const testDatabaseConnection = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const [rows] = yield pool.execute('SELECT NOW() as solution');
+        console.log('Current database time:', rows[0]['NOW()']);
+    }
+    catch (error) {
+        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
+    }
 });
-app.listen(port, () => {
-    console.log('Server is running on port: ' + port);
+const start = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield testDatabaseConnection();
+    const app = new app_1.App();
+    app.listen();
 });
+start();
+// import express, {Express, Request, Response } from 'express';
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
+// const app: Express = express();
+// const port: string | number = process.env.PORT || 8080;
+// app.use(bodyParser.json());
+// app.use(cors({
+//     origin: ['https://cop-client-cop-ms.2.rahtiapp.fi', 'http://localhost:5173', 'https://pm-app-client-pm-app-deploy.2.rahtiapp.fi','http://localhost:8080', 'http://localhost:5000'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+// app.get('/', (req: Request, res: Response) => {
+//     res.json({ message: 'Hello World, I am using OpenShift!!!' });
+// });
+// app.listen(port, () => {
+//     console.log('Server is running on port: ' + port);
+//     }
+// );

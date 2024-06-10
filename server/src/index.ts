@@ -12,7 +12,6 @@ const testDatabaseConnection = async () => {
     }
 }
 
-
 const start = async() : Promise<void> => {
     await testDatabaseConnection();
     const app = new App();

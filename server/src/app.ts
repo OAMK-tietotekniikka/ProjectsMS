@@ -5,7 +5,6 @@ import { Code } from "./enum/code.enum";
 import { HttpResponse } from "./domain/response";
 import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
-import { connection } from "./config/mysql.config";
 
 
 export class App{
