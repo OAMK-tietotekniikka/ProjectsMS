@@ -1,0 +1,49 @@
+/* navbar */
+.nav-language {
+  display: flex;
+  flex-direction: row;
+  width: 10%;
+  justify-content: space-around;
+  align-items: center;
+  margin-right: 10%;
+}
+.nav-home {
+  margin-right: 10%;
+}
+
+/*AddNewProject and form*/
+.main-heading {
+  text-align: center;
+  padding-top: 5%
+}
+.instruction {
+  text-align: center;
+  justify-content: center;
+  padding: 2%
+}
+.form-item {
+  border-radius: 10px;
+}
+.form-item input {
+  width: 100%;
+  padding: 8px;
+  margin: 0 0 4% 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+.submit-button {
+  background-color: #1A80E5;
+  color: white;
+  padding: 10px 15px;
+  margin: 4% 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 10px;
+}
+.submit-button:disabled {
+  background-color: #cccccc;
+  color: black;
+  cursor: not-allowed;
+}

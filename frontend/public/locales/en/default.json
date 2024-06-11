@@ -1,0 +1,17 @@
+{
+  "appName": "Projects management",
+  "home": "Home",
+  "login": "Login",
+  "createProj": "Create a new project",
+  "projInstruction": "Before you start, please make sure to review the project guidelines",
+  "projName": "Project name *",
+  "projDesc": "Project description *",
+  "projDescPlaceholder": "Enter a brief description of the project",
+  "company": "Company name *",
+  "startDate": "Start date *",
+  "dueDate": "Due date",
+  "createPrjButton": "Save project",
+  "obligatory": "* Obligatory field",
+  "projCreated": "Project created successfully",
+  "projNotCreated": "Error, project was not created"
+}
