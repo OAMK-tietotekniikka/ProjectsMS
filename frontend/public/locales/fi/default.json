@@ -1,0 +1,15 @@
+{
+  "appName": "Projektien hallinta",
+  "home": "Koti",
+  "login": "Kirjaudu",
+  "createProj": "Luo uusi projekti",
+  "projInstruction": "Lue huolella projekteihin liittyvä ohjeistus ennen kuin aloitat",
+  "projName": "Projektin nimi *",
+  "projDesc": "Projektin kuvaus *",
+  "projDescPlaceholder": "Kirjoita tähän lyhyt kuvaus projektistasi",
+  "company": "Yrityksen nimi *",
+  "startDate": "Projektin aloituspäivä *",
+  "dueDate": "Projekti loppuu",
+  "createPrjButton": "Tallenna projekti",
+  "obligatory": "* Pakollinen kenttä" 
+}

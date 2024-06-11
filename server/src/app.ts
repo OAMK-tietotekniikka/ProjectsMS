@@ -6,6 +6,7 @@ import { HttpResponse } from "./domain/response";
 import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
 
+
 export class App{
     private readonly app: Application;
     private readonly APPLICATION_RUNNING = 'Application running on: ';
