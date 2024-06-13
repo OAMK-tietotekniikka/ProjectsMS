@@ -9,6 +9,7 @@ import { QUERY } from "../query/students.query";
 
 
 
+
 type ResultSet = [RowDataPacket[]| RowDataPacket[][]| OkPacket| OkPacket[]| ResultSetHeader, FieldPacket[]];
 
 export const getStudents = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
