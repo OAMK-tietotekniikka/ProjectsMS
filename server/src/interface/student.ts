@@ -1,10 +1,10 @@
 export interface Student {
-    id: number;
+    studentId: number;
     first_name: string;
     last_name: string;
     email: string;
-    phone: string;
-    status: string;
+    class_code: string;
+    password: string;
     createdAt: Date;
 }
 

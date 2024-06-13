@@ -1,5 +1,4 @@
 import { Router } from "express";   
-import { get } from "http";
 import { createStudent, getStudents,getStudent,updateStudent,deleteStudent } from "../controllers/students.controller";
 
 const studentsRouter = Router();
