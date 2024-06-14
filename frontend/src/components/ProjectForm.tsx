@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
-import { ProjectFormData } from '../interface/formData';    
+import { ProjectFormData } from '../interface/formData'; 
+import { selectTeacher} from './SelectTeacher';   
 
 
 interface ProjectFormProps {
@@ -37,7 +38,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     };
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        // call for select teacher function to get the teacher id
+        const teacherId = selectTeacher(formData.companyName, formData.startDate);
+
+        // add teacherId to the formData
+
+
+
         onSubmit(formData);
+        
     };
 
     return (
