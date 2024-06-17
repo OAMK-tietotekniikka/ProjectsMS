@@ -62,7 +62,6 @@ const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     let project = Object.assign({}, req.body);
     project.start_date = new Date(formatDate(new Date(project.start_date)));
     project.end_date = new Date(formatDate(new Date(project.end_date)));
-    console.log(project);
     try {
         const pool = yield (0, mysql_config_1.connection)();
         const result = yield pool.query(projects_query_1.QUERY.CREATE_PROJECT, Object.values(project));

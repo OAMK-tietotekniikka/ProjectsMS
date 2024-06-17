@@ -59,7 +59,7 @@ const createTables = async () => {
             password VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (student_id)
-            CONSTRAINT UC_students_email UNIQUE (email)
+            UNIQUE (email)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS resources (

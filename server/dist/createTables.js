@@ -27,7 +27,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (companyId)
+            PRIMARY KEY (company_id)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
             teacher_id INT NOT NULL AUTO_INCREMENT,
@@ -35,7 +35,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             last_name VARCHAR(255) DEFAULT NULL,
             email VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (teacherId)
+            PRIMARY KEY (teacher_id)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT NOT NULL AUTO_INCREMENT,
@@ -47,10 +47,10 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             project_url VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (projectId),
-            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
-            FOREIGN KEY (companyId) REFERENCES companies(companyId)
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (project_id),
+            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
+            FOREIGN KEY (company_id) REFERENCES companies(company_id)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS students (
             student_id INT NOT NULL AUTO_INCREMENT,
@@ -60,8 +60,8 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             class_code VARCHAR(255) DEFAULT NULL,
             password VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (studentId)
-            CONSTRAINT UC_students_email UNIQUE (email)
+            PRIMARY KEY (student_id)
+            CONSTRAINT UQ_email UNIQUE (email)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS resources (
             resource_id INT NOT NULL AUTO_INCREMENT,
@@ -70,8 +70,8 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             used_esources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (resourceId),
-            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId)
+            PRIMARY KEY (resource_id),
+            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
         )`);
         console.log('Tables created successfully');
     }
