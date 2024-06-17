@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
 
 // port number is 8080 with OpenShift deployment
-const baseUrl = 'http://localhost:8080';
+const baseUrl = import.meta.env.VITE_API_URL
 
 export const addProject = async (formData: ProjectFormData) => {
     try {
