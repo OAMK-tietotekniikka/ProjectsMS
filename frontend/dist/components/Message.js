@@ -17,6 +17,6 @@ const Message = () => {
             console.error('Failed to fetch data:', error);
         });
     }, []);
-    return (_jsxs("div", { children: [_jsx("div", { children: _jsx(Link, { to: "/form", children: "Add Project" }) }), message] }));
+    return (_jsxs("div", { children: [_jsx("div", { children: _jsx(Link, Object.assign({ to: "/form" }, { children: "Add Project" })) }), message] }));
 };
 export default Message;
