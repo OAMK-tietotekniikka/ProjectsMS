@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
 
-const baseUrl = 'http://localhost:8081';
+// port number is 8080 with OpenShift deployment
+const baseUrl = 'http://localhost:8080';
 
 export const addProject = async (formData: ProjectFormData) => {
     try {

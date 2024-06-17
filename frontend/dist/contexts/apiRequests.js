@@ -8,7 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from 'axios';
-const baseUrl = 'http://localhost:8081';
+// port number is 8080 with OpenShift deployment
+const baseUrl = 'http://localhost:8080';
 export const addProject = (formData) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
