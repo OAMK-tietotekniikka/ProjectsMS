@@ -22,7 +22,7 @@ const createTables = async () => {
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (companyId)
+            PRIMARY KEY (company_id)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
@@ -31,7 +31,7 @@ const createTables = async () => {
             last_name VARCHAR(255) DEFAULT NULL,
             email VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (teacherId)
+            PRIMARY KEY (teacher_id)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS projects (
@@ -45,9 +45,9 @@ const createTables = async () => {
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (projectId),
-            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
-            FOREIGN KEY (companyId) REFERENCES companies(companyId)
+            PRIMARY KEY (project_id),
+            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
+            FOREIGN KEY (company_id) REFERENCES companies(company_id)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS students (
@@ -58,7 +58,7 @@ const createTables = async () => {
             class_code VARCHAR(255) DEFAULT NULL,
             password VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (studentId)
+            PRIMARY KEY (student_id)
             CONSTRAINT UC_students_email UNIQUE (email)
         )`);
 
@@ -69,8 +69,8 @@ const createTables = async () => {
             used_esources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (resourceId),
-            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId)
+            PRIMARY KEY (resource_id),
+            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
         )`);
         console.log('Tables created successfully');
     } catch (error) {
