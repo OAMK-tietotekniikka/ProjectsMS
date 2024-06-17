@@ -28,7 +28,7 @@ export const getProject = async (req: Request, res: Response): Promise<Response<
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT , [req.params.projectId]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT , [req.params.project_id]);
         if((result[0] as Array<ResultSet>).length > 0){
         return res.status(Code.OK)
         .send(new HttpResponse(Code.OK, Status.OK, 'Project fetched successfully', result[0]));
@@ -51,7 +51,7 @@ export const createProject = async (req: Request, res: Response): Promise<Respon
     try {
         const pool = await connection();
         const result: ResultSet = await pool.query(QUERY.CREATE_PROJECT, Object.values(project));
-        project = { projectId: (result[0] as ResultSetHeader).insertId, ...req.body };
+        project = { project_id: (result[0] as ResultSetHeader).insertId, ...req.body };
         return res.status(Code.CREATED)
         .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Project created successfully', project));
     } catch (error: unknown) {
@@ -66,8 +66,8 @@ export const updateProject = async (req: Request, res: Response): Promise<Respon
     let project: Project = {...req.body};
     try {
         const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.UPDATE_PROJECT, [...Object.values(project), req.params.projectId]);
-        project = { projectId: req.params.projectId, ...req.body };
+        const result: ResultSet = await pool.query(QUERY.UPDATE_PROJECT, [...Object.values(project), req.params.project_id]);
+        project = { project_id: req.params.project_id, ...req.body };
         return res.status(Code.OK)
         .send(new HttpResponse(Code.OK, Status.OK, 'Project updated successfully', project));
     } catch (error: unknown) {
@@ -81,9 +81,9 @@ export const deleteProject = async (req: Request, res: Response): Promise<Respon
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.projectId]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.project_id]);
         if ((result[0] as Array<ResultSet>).length >0) {
-            const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT, [req.params.projectId]);
+            const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT, [req.params.project_id]);
             return res.status(Code.OK)
             .send(new HttpResponse(Code.OK, Status.OK, 'Project deleted successfully'));
         }else{

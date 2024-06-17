@@ -34,7 +34,7 @@ const getStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.studentId]);
+        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.student_id]);
         if (result[0].length > 0) {
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student fetched successfully', result[0]));
@@ -73,11 +73,11 @@ const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     let student = Object.assign({}, req.body);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENTS, [req.params.studentId]);
+        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENTS, [req.params.student_id]);
         if (result[0].length > 0) {
-            const result = yield pool.query(students_query_1.QUERY.UPDATE_STUDENT, [...Object.values(student), req.params.studentId]);
+            const result = yield pool.query(students_query_1.QUERY.UPDATE_STUDENT, [...Object.values(student), req.params.student_id]);
             return res.status(code_enum_1.Code.OK)
-                .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student updated', Object.assign(Object.assign({}, student), { id: req.params.studentId })));
+                .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student updated', Object.assign(Object.assign({}, student), { id: req.params.student_id })));
         }
         else {
             return res.status(code_enum_1.Code.NOT_FOUND)
@@ -95,9 +95,9 @@ const deleteStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.studentId]);
+        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.student_id]);
         if (result[0].length > 0) {
-            const result = yield pool.query(students_query_1.QUERY.DELETE_STUDENT, [req.params.studentId]);
+            const result = yield pool.query(students_query_1.QUERY.DELETE_STUDENT, [req.params.student_id]);
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student deleted'));
         }

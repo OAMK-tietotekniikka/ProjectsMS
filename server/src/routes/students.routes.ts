@@ -7,7 +7,7 @@ studentsRouter.route('/')
     .get(getStudents)
     .post(createStudent);
 
-studentsRouter.route('/:studentId')
+studentsRouter.route('/:student_id')
     .get(getStudent)
     .put(updateStudent)
     .delete(deleteStudent);
