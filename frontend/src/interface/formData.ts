@@ -1,7 +1,7 @@
 export interface ProjectFormData {
-    projectName: string;
+    project_name: string;
     companyName: string;
     startDate: string;
     dueDate: string;
-    projectDescription: string;
+    project_description: string;
 }

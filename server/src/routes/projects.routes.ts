@@ -9,7 +9,7 @@ projectsRouters.route('/')
   .get(getProjects)
   .post(createProject);
 
-projectsRouters.route('/:projectId')
+projectsRouters.route('/:project_id')
     .get(getProject)
     .put(updateProject)
     .delete(deleteProject);

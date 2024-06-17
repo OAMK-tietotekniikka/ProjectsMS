@@ -13,18 +13,18 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const { t } = useTranslation();
 
     const [formData, setFormData] = useState<ProjectFormData>({
-        projectName: '',
+        project_name: '',
         companyName: '',
         startDate: '',
         dueDate: '',
-        projectDescription: ''
+        project_description: ''
     });
 
     const [validated, setValidated] = useState(false);
 
     useEffect(() => {
-        const { projectName, companyName, startDate, projectDescription } = formData;
-        const isValid = projectName !== '' && companyName !== '' && startDate !== '' && projectDescription !== '';
+        const { project_name, companyName, startDate, project_description } = formData;
+        const isValid = project_name !== '' && companyName !== '' && startDate !== '' && project_description !== '';
         setValidated(isValid);
       }, [formData]);
 
@@ -43,12 +43,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="projectName" className="form-item">
+                <Form.Group controlId="project_name" className="form-item">
                     <Form.Label>{t('projName')}</Form.Label>
                     <Form.Control
                         type="text"
-                        name="projectName"
-                        value={formData.projectName}
+                        name="project_name"
+                        value={formData.project_name}
                         onChange={handleChange}
                         required
                     />
@@ -92,13 +92,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     </Col>
                 </Row>
 
-                <Form.Group controlId="projectDescription" className="form-item" style={{paddingTop: '2%'}}>
+                <Form.Group controlId="project_description" className="form-item" style={{paddingTop: '2%'}}>
                     <Form.Label>{t('projDesc')}</Form.Label>
                     <Form.Control
                         as="textarea"
                         rows={3}
-                        name="projectDescription"
-                        value={formData.projectDescription}
+                        name="project_description"
+                        value={formData.project_description}
                         onChange={handleChange}
                         placeholder={t('projDescPlaceholder')}
                         required
