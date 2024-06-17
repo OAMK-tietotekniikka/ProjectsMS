@@ -36,10 +36,12 @@ const createTables = async () => {
             projectUrl VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (projectId),
-            CONSTRAINT (teacherId) FOREIGN KEY (teacherId) REFERENCES teachers (teacherId),
-            CONSTRAINT (companyId) FOREIGN KEY (companyId) REFERENCES companies (companyId)
+            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
+            FOREIGN KEY (companyId) REFERENCES companies(companyId)
+        
+            
         )`);
         console.log('Tables created successfully');
     } catch (error) {
