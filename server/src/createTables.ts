@@ -44,7 +44,7 @@ const createTables = async () => {
             project_url VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (project_id),
             FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
             FOREIGN KEY (company_id) REFERENCES companies(company_id)
@@ -66,7 +66,7 @@ const createTables = async () => {
             resource_id INT NOT NULL AUTO_INCREMENT,
             teacher_id INT DEFAULT NULL,
             total_resources INT DEFAULT NULL,
-            used_esources INT DEFAULT NULL,
+            used_resources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (resource_id),
