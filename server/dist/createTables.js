@@ -20,9 +20,10 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         //delete tables if they exist
         yield pool.execute('DROP TABLE IF EXISTS students');
         yield pool.execute('DROP TABLE IF EXISTS projects');
-        yield pool.execute('DROP TABLE IF EXISTS teachers');
         yield pool.execute('DROP TABLE IF EXISTS companies');
         yield pool.execute('DROP TABLE IF EXISTS resources');
+        yield pool.execute('DROP TABLE IF EXISTS teachers');
+        //create tables
         yield pool.execute(`CREATE TABLE IF NOT EXISTS companies (
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,

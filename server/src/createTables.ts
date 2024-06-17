@@ -13,11 +13,11 @@ const createTables = async () => {
         //delete tables if they exist
         await pool.execute('DROP TABLE IF EXISTS students');
         await pool.execute('DROP TABLE IF EXISTS projects');
-        await pool.execute('DROP TABLE IF EXISTS teachers');
         await pool.execute('DROP TABLE IF EXISTS companies');
         await pool.execute('DROP TABLE IF EXISTS resources');
-
-
+        await pool.execute('DROP TABLE IF EXISTS teachers');
+        
+        //create tables
         await pool.execute(`CREATE TABLE IF NOT EXISTS companies (
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,
