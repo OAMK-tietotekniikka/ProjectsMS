@@ -12,9 +12,10 @@ const response_1 = require("./domain/response");
 const status_enum_1 = require("./enum/status.enum");
 const students_routes_1 = __importDefault(require("./routes/students.routes"));
 const projects_routes_1 = __importDefault(require("./routes/projects.routes"));
+const createTables_1 = __importDefault(require("./createTables"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 //Comment out when working with development/feature branch
-//createTables();
+(0, createTables_1.default)();
 class App {
     constructor(port = process.env.SERVER_PORT || 8080) {
         this.port = port;
