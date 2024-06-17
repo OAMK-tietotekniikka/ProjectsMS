@@ -1,19 +1,7 @@
 import { App } from './app';
-import { connection } from './config/mysql.config';
 
-const testDatabaseConnection = async () => {
-    try {
-        const pool = await connection();
-        const [rows]: any = await pool.execute('SELECT NOW() as solution');
-        console.log('Current database time:', rows[0]['NOW()']);
-        
-    } catch (error) {
-        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
-    }
-}
 
 const start = async() : Promise<void> => {
-    await testDatabaseConnection();
     const app = new App();
     app.listen();
 }

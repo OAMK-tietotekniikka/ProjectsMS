@@ -6,7 +6,11 @@ import { HttpResponse } from "./domain/response";
 import { Status } from "./enum/status.enum";
 import studentsRouter from "./routes/students.routes";
 import projectsRouter from "./routes/projects.routes";
+import createTables from "./createTables";
 
+//This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
+//Comment out when working with development/feature branch
+createTables();
 
 export class App{
     private readonly app: Application;

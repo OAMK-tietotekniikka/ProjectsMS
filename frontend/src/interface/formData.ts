@@ -1,7 +1,10 @@
 export interface ProjectFormData {
-    project_name: string;
-    companyName: string;
-    startDate: string;
-    dueDate: string;
-    project_description: string;
+    projectName: string;
+    projectDesc: string;
+    teacherId: number,
+    companyId: number,
+    projectStatus: string;
+    projectUrl: string;
+    start_date: Date;
+    end_date: Date;
 }

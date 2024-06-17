@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
 
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const baseUrl = 'http://localhost:8081';
 
 export const addProject = async (formData: ProjectFormData) => {
     try {
         // verify the actual endpoint
         const response = await axios.post(`${baseUrl}/projects`, formData);
-        // possibly return response.data instead of response, depending on the API response
         return response;
     } catch (error) {
         if (axios.isAxiosError(error)) {

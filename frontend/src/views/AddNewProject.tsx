@@ -11,9 +11,10 @@ import '../App.css'
 const AddNewProject: React.FC = () => {
     const { t } = useTranslation();
 
-    const handleFormSubmit = async (formData: ProjectFormData) => {
+    const handleFormSubmit = async (formData: ProjectFormData, companyName: String) => {
+        console.log(`from AddNewProject: ${JSON.stringify(formData)}`);
         const response = await addProject(formData);
-        // verify the actual response status code and message when the API is ready
+
         if (response.status === 201) {
             alert(t('projCreated'));
         } else {
