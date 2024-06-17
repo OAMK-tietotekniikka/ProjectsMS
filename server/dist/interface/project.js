@@ -1,3 +1,3 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-//projectName, projectDesc, teacherId, companyId, projectStatus, projectUrl, start_date, end_date
+//project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date

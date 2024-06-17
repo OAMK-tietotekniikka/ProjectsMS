@@ -17,34 +17,61 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         if (!pool) {
             throw new Error('Failed to get database connection pool');
         }
+        //delete tables if they exist
+        yield pool.execute('DROP TABLE IF EXISTS students');
+        yield pool.execute('DROP TABLE IF EXISTS projects');
+        yield pool.execute('DROP TABLE IF EXISTS teachers');
+        yield pool.execute('DROP TABLE IF EXISTS companies');
+        yield pool.execute('DROP TABLE IF EXISTS resources');
         yield pool.execute(`CREATE TABLE IF NOT EXISTS companies (
-            companyId INT NOT NULL AUTO_INCREMENT,
-            companyName VARCHAR(255) DEFAULT NULL,
+            company_id INT NOT NULL AUTO_INCREMENT,
+            company_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (companyId)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
-            teacherId INT NOT NULL AUTO_INCREMENT,
-            firstname VARCHAR(255) DEFAULT NULL,
-            lastname VARCHAR(255) DEFAULT NULL,
-            teacherEmail VARCHAR(255) DEFAULT NULL,
+            teacher_id INT NOT NULL AUTO_INCREMENT,
+            first_name VARCHAR(255) DEFAULT NULL,
+            last_name VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (teacherId)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS projects (
-            projectId INT NOT NULL AUTO_INCREMENT,
-            projectName VARCHAR(255) DEFAULT NULL,
-            projectDesc TEXT DEFAULT NULL,
-            teacherId INT DEFAULT NULL,
-            companyId INT DEFAULT NULL,
-            projectStatus VARCHAR(255) DEFAULT NULL,
-            projectUrl VARCHAR(255) DEFAULT NULL,         
+            project_id INT NOT NULL AUTO_INCREMENT,
+            project_name VARCHAR(255) DEFAULT NULL,
+            project_desc TEXT DEFAULT NULL,
+            teacher_id INT DEFAULT NULL,
+            company_id INT DEFAULT NULL,
+            project_status VARCHAR(255) DEFAULT NULL,
+            project_url VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (projectId),
-            CONSTRAINT (teacherId) FOREIGN KEY (teacherId) REFERENCES teachers (teacherId),
-            CONSTRAINT (companyId) FOREIGN KEY (companyId) REFERENCES companies (companyId)
+            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
+            FOREIGN KEY (companyId) REFERENCES companies(companyId)
+        )`);
+        yield pool.execute(`CREATE TABLE IF NOT EXISTS students (
+            student_id INT NOT NULL AUTO_INCREMENT,
+            first_name VARCHAR(255) DEFAULT NULL,
+            last_name VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) DEFAULT NULL,
+            class_code VARCHAR(255) DEFAULT NULL,
+            password VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (studentId)
+            CONSTRAINT UC_students_email UNIQUE (email)
+        )`);
+        yield pool.execute(`CREATE TABLE IF NOT EXISTS resources (
+            resource_id INT NOT NULL AUTO_INCREMENT,
+            teacher_id INT DEFAULT NULL,
+            total_resources INT DEFAULT NULL,
+            used_esources INT DEFAULT NULL,
+            study_year VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (resourceId),
+            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId)
         )`);
         console.log('Tables created successfully');
     }

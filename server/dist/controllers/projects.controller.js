@@ -15,6 +15,12 @@ const projects_query_1 = require("../query/projects.query");
 const code_enum_1 = require("../enum/code.enum");
 const status_enum_1 = require("../enum/status.enum");
 const response_1 = require("../domain/response");
+const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     try {
@@ -54,10 +60,13 @@ exports.getProject = getProject;
 const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     let project = Object.assign({}, req.body);
+    project.start_date = new Date(formatDate(new Date(project.start_date)));
+    project.end_date = new Date(formatDate(new Date(project.end_date)));
+    console.log(project);
     try {
         const pool = yield (0, mysql_config_1.connection)();
         const result = yield pool.query(projects_query_1.QUERY.CREATE_PROJECT, Object.values(project));
-        project = Object.assign({ projectId: result[0].insertId }, req.body);
+        project = Object.assign({ project_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Project created successfully', project));
     }
@@ -73,8 +82,8 @@ const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     let project = Object.assign({}, req.body);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(projects_query_1.QUERY.UPDATE_PROJECT, [...Object.values(project), req.params.projectId]);
-        project = Object.assign({ projectId: req.params.projectId }, req.body);
+        const result = yield pool.query(projects_query_1.QUERY.UPDATE_PROJECT, [...Object.values(project), req.params.project_id]);
+        project = Object.assign({ project_id: req.params.project_id }, req.body);
         return res.status(code_enum_1.Code.OK)
             .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Project updated successfully', project));
     }
@@ -89,9 +98,9 @@ const deleteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(projects_query_1.QUERY.SELECT_PROJECT, [req.params.projectId]);
+        const result = yield pool.query(projects_query_1.QUERY.SELECT_PROJECT, [req.params.project_id]);
         if (result[0].length > 0) {
-            const result = yield pool.query(projects_query_1.QUERY.DELETE_PROJECT, [req.params.projectId]);
+            const result = yield pool.query(projects_query_1.QUERY.DELETE_PROJECT, [req.params.project_id]);
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Project deleted successfully'));
         }
