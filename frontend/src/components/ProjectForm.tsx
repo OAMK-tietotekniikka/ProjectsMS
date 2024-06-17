@@ -3,7 +3,6 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../interface/formData';  
-import { selectTeacher } from './SelectTeacher';
 
 
 interface ProjectFormProps {
@@ -15,12 +14,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
 
     const [ companyName, setCompanyName ] = useState<string>(''); 
     const [ formData, setFormData ] = useState<ProjectFormData>({
-        projectName: '',
-        projectDesc: '',
-        teacherId: 0,
-        companyId: 0,
-        projectStatus: 'pending',
-        projectUrl: 'no url',
+        project_name: '',
+        project_desc: '',
+        teacher_id: 0,
+        company_id: 0,
+        project_status: 'pending',
+        project_url: 'no url',
         start_date: null,
         end_date: null,
     });
@@ -28,8 +27,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const [validated, setValidated] = useState(false);
 
     useEffect(() => {
-        const { projectName, start_date, projectDesc } = formData;
-        const isValid = projectName !== '' && companyName !== '' && start_date !== null && projectDesc !== '';
+        const { project_name, start_date, project_desc } = formData;
+        const isValid = project_name !== '' && companyName !== '' && start_date !== null && project_desc !== '';
         setValidated(isValid);
       }, [formData]);
 
@@ -112,13 +111,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     </Col>
                 </Row>
 
-                <Form.Group controlId="projectDesc" className="form-item" style={{paddingTop: '2%'}}>
+                <Form.Group controlId="project_desc" className="form-item" style={{paddingTop: '2%'}}>
                     <Form.Label>{t('projDesc')}</Form.Label>
                     <Form.Control
                         as="textarea"
                         rows={3}
-                        name="projectDesc"
-                        value={formData.projectDesc}
+                        name="project_desc"
+                        value={formData.project_desc}
                         onChange={handleChange}
                         placeholder={t('projDescPlaceholder')}
                         required

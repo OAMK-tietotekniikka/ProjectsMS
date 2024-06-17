@@ -10,38 +10,67 @@ const createTables = async () => {
             throw new Error('Failed to get database connection pool');
         }
 
+        //delete tables if they exist
+        await pool.execute('DROP TABLE IF EXISTS students');
+        await pool.execute('DROP TABLE IF EXISTS projects');
+        await pool.execute('DROP TABLE IF EXISTS teachers');
+        await pool.execute('DROP TABLE IF EXISTS companies');
+        await pool.execute('DROP TABLE IF EXISTS resources');
+
+
         await pool.execute(`CREATE TABLE IF NOT EXISTS companies (
-            companyId INT NOT NULL AUTO_INCREMENT,
-            companyName VARCHAR(255) DEFAULT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            company_id INT NOT NULL AUTO_INCREMENT,
+            company_name VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (companyId)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
-            teacherId INT NOT NULL AUTO_INCREMENT,
-            firstname VARCHAR(255) DEFAULT NULL,
-            lastname VARCHAR(255) DEFAULT NULL,
-            teacherEmail VARCHAR(255) DEFAULT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            teacher_id INT NOT NULL AUTO_INCREMENT,
+            first_name VARCHAR(255) DEFAULT NULL,
+            last_name VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (teacherId)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS projects (
-            projectId INT NOT NULL AUTO_INCREMENT,
-            projectName VARCHAR(255) DEFAULT NULL,
-            projectDesc TEXT DEFAULT NULL,
-            teacherId INT DEFAULT NULL,
-            companyId INT DEFAULT NULL,
-            projectStatus VARCHAR(255) DEFAULT NULL,
-            projectUrl VARCHAR(255) DEFAULT NULL,         
+            project_id INT NOT NULL AUTO_INCREMENT,
+            project_name VARCHAR(255) DEFAULT NULL,
+            project_desc TEXT DEFAULT NULL,
+            teacher_id INT DEFAULT NULL,
+            company_id INT DEFAULT NULL,
+            project_status VARCHAR(255) DEFAULT NULL,
+            project_url VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (projectId),
             FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
             FOREIGN KEY (companyId) REFERENCES companies(companyId)
-        
-            
+        )`);
+
+        await pool.execute(`CREATE TABLE IF NOT EXISTS students (
+            student_id INT NOT NULL AUTO_INCREMENT,
+            first_name VARCHAR(255) DEFAULT NULL,
+            last_name VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) DEFAULT NULL,
+            class_code VARCHAR(255) DEFAULT NULL,
+            password VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (studentId)
+            CONSTRAINT UC_students_email UNIQUE (email)
+        )`);
+
+        await pool.execute(`CREATE TABLE IF NOT EXISTS resources (
+            resource_id INT NOT NULL AUTO_INCREMENT,
+            teacher_id INT DEFAULT NULL,
+            total_resources INT DEFAULT NULL,
+            used_esources INT DEFAULT NULL,
+            study_year VARCHAR(255) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (resourceId),
+            FOREIGN KEY (teacherId) REFERENCES teachers(teacherId)
         )`);
         console.log('Tables created successfully');
     } catch (error) {

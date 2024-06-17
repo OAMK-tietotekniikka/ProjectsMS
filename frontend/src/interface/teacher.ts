@@ -1,7 +1,7 @@
 export interface Teacher {
-    teacherId: number;
-    firstname: string;
-    lastname: string;
-    teacherEmail: string;
-    createdAt: Date;
+    teacher_id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    created_at: Date;
 }

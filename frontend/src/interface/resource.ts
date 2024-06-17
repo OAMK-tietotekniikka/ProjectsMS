@@ -1,8 +1,8 @@
 export interface Resource {
-    resourceId: number;
-    teacherId: number;
-    totalResources: number;
-    usedResources: number;
-    studyYear: string
-    createdAt: Date;
+    resource_id: number;
+    teacher_id: number;
+    total_resources: number;
+    used_resources: number;
+    study_year: string
+    created_at: Date;
 }
