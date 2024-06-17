@@ -44,7 +44,7 @@ const createTables = async () => {
             project_url VARCHAR(255) DEFAULT NULL,         
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (projectId),
             FOREIGN KEY (teacherId) REFERENCES teachers(teacherId),
             FOREIGN KEY (companyId) REFERENCES companies(companyId)
