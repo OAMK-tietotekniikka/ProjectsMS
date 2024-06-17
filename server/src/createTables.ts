@@ -58,7 +58,7 @@ const createTables = async () => {
             class_code VARCHAR(255) DEFAULT NULL,
             password VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (student_id)
+            PRIMARY KEY (student_id),
             UNIQUE (email)
         )`);
 
