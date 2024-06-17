@@ -45,9 +45,7 @@ const createTables = async () => {
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (project_id),
-            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
-            FOREIGN KEY (company_id) REFERENCES companies(company_id)
+            PRIMARY KEY (project_id)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS students (
@@ -69,8 +67,7 @@ const createTables = async () => {
             used_resources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (resource_id),
-            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
+            PRIMARY KEY (resource_id)
         )`);
         console.log('Tables created successfully');
     } catch (error) {
