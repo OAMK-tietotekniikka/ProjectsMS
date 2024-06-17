@@ -60,8 +60,8 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             class_code VARCHAR(255) DEFAULT NULL,
             password VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (student_id)
-            CONSTRAINT UQ_email UNIQUE (email)
+            PRIMARY KEY (student_id),
+            UNIQUE (email)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS resources (
             resource_id INT NOT NULL AUTO_INCREMENT,

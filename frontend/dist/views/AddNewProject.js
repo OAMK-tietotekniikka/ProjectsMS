@@ -26,6 +26,6 @@ const AddNewProject = () => {
             alert(t('projNotCreated'));
         }
     });
-    return (_jsx(Container, { children: _jsx(Row, Object.assign({ className: "justify-content-center" }, { children: _jsxs(Col, Object.assign({ xs: 10, md: 8, lg: 6 }, { children: [_jsx("h4", Object.assign({ className: 'main-heading' }, { children: t('createProj') })), _jsx("div", Object.assign({ className: 'instruction ' }, { children: _jsx("p", { children: t('projInstruction') }) })), _jsx(ProjectForm, { onSubmit: handleFormSubmit })] })) })) }));
+    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsxs(Col, { xs: 10, md: 8, lg: 6, children: [_jsx("h4", { className: 'main-heading', children: t('createProj') }), _jsx("div", { className: 'instruction ', children: _jsx("p", { children: t('projInstruction') }) }), _jsx(ProjectForm, { onSubmit: handleFormSubmit })] }) }) }));
 };
 export default AddNewProject;
