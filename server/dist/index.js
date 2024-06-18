@@ -10,19 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("./app");
-const mysql_config_1 = require("./config/mysql.config");
-const testDatabaseConnection = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const [rows] = yield pool.execute('SELECT NOW() as solution');
-        console.log('Current database time:', rows[0]['NOW()']);
-    }
-    catch (error) {
-        console.error(`Connection failed: [${new Date().toLocaleDateString()}] ${error}`);
-    }
-});
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield testDatabaseConnection();
     const app = new app_1.App();
     app.listen();
 });

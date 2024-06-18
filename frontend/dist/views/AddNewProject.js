@@ -16,9 +16,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
     const { t } = useTranslation();
-    const handleFormSubmit = (formData) => __awaiter(void 0, void 0, void 0, function* () {
+    const handleFormSubmit = (formData, companyName) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(`from AddNewProject: ${JSON.stringify(formData)}`);
         const response = yield addProject(formData);
-        // verify the actual response status code and message when the API is ready
         if (response.status === 201) {
             alert(t('projCreated'));
         }

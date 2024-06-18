@@ -8,13 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from 'axios';
-const baseUrl = import.meta.env.VITE_BASE_URL;
+// port number is 8080 with OpenShift deployment
+const baseUrl = import.meta.env.VITE_API_URL;
 export const addProject = (formData) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
         // verify the actual endpoint
         const response = yield axios.post(`${baseUrl}/projects`, formData);
-        // possibly return response.data instead of response, depending on the API response
         return response;
     }
     catch (error) {
