@@ -2,7 +2,7 @@
   "appName": "Projects management",
   "home": "Home",
   "login": "Login",
-  "createProj": "Create a new project",
+  "createProj": "Create new project",
   "projInstruction": "Before you start, please make sure to review the project guidelines",
   "projName": "Project name *",
   "projDesc": "Project description *",
