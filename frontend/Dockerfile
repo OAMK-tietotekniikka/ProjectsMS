@@ -36,3 +36,4 @@ RUN npm install typescript
 
 # Run the app
 CMD ["npm", "run", "start"]
+#CMD ["npm", "run", "preview"]
