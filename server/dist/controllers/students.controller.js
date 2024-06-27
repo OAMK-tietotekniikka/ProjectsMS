@@ -57,7 +57,7 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const pool = yield (0, mysql_config_1.connection)();
         const result = yield pool.query(students_query_1.QUERY.CREATE_STUDENT, Object.values(student));
-        student = Object.assign({ id: result[0].insertId }, req.body);
+        student = Object.assign({ student_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Students created successfully', student));
     }

@@ -16,10 +16,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
     const { t } = useTranslation();
-    const handleFormSubmit = (formData, companyName) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(`from AddNewProject: ${JSON.stringify(formData)}`);
+    const handleFormSubmit = (formData, company_id, teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+        // add company_id to formData
+        formData.company_id = company_id;
+        formData.teacher_id = teacher_id;
         const response = yield addProject(formData);
-        if (response.status === 201) {
+        if (response.statusCode === 201) {
             alert(t('projCreated'));
         }
         else {

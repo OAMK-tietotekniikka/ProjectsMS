@@ -12,6 +12,9 @@ const response_1 = require("./domain/response");
 const status_enum_1 = require("./enum/status.enum");
 const students_routes_1 = __importDefault(require("./routes/students.routes"));
 const projects_routes_1 = __importDefault(require("./routes/projects.routes"));
+const companies_routes_1 = __importDefault(require("./routes/companies.routes"));
+const teachers_routes_1 = __importDefault(require("./routes/teachers.routes"));
+const resources_routes_1 = __importDefault(require("./routes/resources.routes"));
 const createTables_1 = __importDefault(require("./createTables"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 //Comment out when working with development/feature branch
@@ -37,6 +40,9 @@ class App {
     routes() {
         this.app.use('/students', students_routes_1.default); // This is a students route.
         this.app.use('/projects', projects_routes_1.default); // This is a projects route.
+        this.app.use('/companies', companies_routes_1.default);
+        this.app.use('/teachers', teachers_routes_1.default);
+        this.app.use('/resources', resources_routes_1.default);
         this.app.get('/', (req, res) => res.status(code_enum_1.Code.OK).send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Hello World, I am using OpenShift!!!')));
         this.app.all('*', (req, res) => res.status(code_enum_1.Code.NOT_FOUND).send(new response_1.HttpResponse(code_enum_1.Code.NOT_FOUND, status_enum_1.Status.NOT_FOUND, this.ROUTE_NOT_FOUND)));
     }
