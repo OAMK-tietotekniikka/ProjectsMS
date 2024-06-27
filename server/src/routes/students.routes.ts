@@ -13,6 +13,4 @@ studentsRouter.route('/:student_id')
     .delete(deleteStudent);
 
 
-
-
 export default studentsRouter;

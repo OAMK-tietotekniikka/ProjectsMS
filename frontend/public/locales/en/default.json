@@ -12,6 +12,7 @@
   "dueDate": "Due date",
   "createPrjButton": "Save project",
   "obligatory": "* Obligatory field",
-  "projCreated": "Project created successfully",
-  "projNotCreated": "Error, project was not created"
+  "projCreated": "New project created successfully!",
+  "projNotCreated": "Error, project was not created. Please, try again.",
+  "noResources": "Cannot create new project. There are no teacher resources available for the study year"
 }

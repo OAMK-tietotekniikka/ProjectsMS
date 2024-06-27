@@ -2,19 +2,19 @@ import { Router } from "express";
 import { getProject, createProject, getProjects, updateProject,deleteProject } from "../controllers/projects.controller";
 
 
-const projectsRouters = Router();
+const projectsRouter = Router();
 
 
-projectsRouters.route('/')
+projectsRouter.route('/')
   .get(getProjects)
   .post(createProject);
 
-projectsRouters.route('/:project_id')
+projectsRouter.route('/:project_id')
     .get(getProject)
     .put(updateProject)
     .delete(deleteProject);
 
 
-export default projectsRouters;
+export default projectsRouter;
 
 

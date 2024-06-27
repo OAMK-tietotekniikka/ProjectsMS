@@ -16,6 +16,7 @@ const createTables = async () => {
         await pool.execute('DROP TABLE IF EXISTS companies');
         await pool.execute('DROP TABLE IF EXISTS resources');
         await pool.execute('DROP TABLE IF EXISTS teachers');
+        await pool.execute('DROP TABLE IF EXISTS company_teacher');
         
         //create tables
         await pool.execute(`CREATE TABLE IF NOT EXISTS companies (
@@ -34,6 +35,13 @@ const createTables = async () => {
             PRIMARY KEY (teacher_id)
         )`);
 
+        await pool.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
+            company_id INT,
+            teacher_id INT,
+            Foreign Key (company_id) REFERENCES companies(company_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
+        )`);
+
         await pool.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT NOT NULL AUTO_INCREMENT,
             project_name VARCHAR(255) DEFAULT NULL,
@@ -45,7 +53,9 @@ const createTables = async () => {
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (project_id)
+            PRIMARY KEY (project_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id),
+            Foreign Key (company_id) REFERENCES companies(company_id)
         )`);
 
         await pool.execute(`CREATE TABLE IF NOT EXISTS students (
@@ -67,7 +77,8 @@ const createTables = async () => {
             used_resources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (resource_id)
+            PRIMARY KEY (resource_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
         )`);
         console.log('Tables created successfully');
     } catch (error) {

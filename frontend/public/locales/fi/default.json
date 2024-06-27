@@ -11,5 +11,8 @@
   "startDate": "Projektin aloituspäivä *",
   "dueDate": "Projekti loppuu",
   "createPrjButton": "Tallenna projekti",
-  "obligatory": "* Pakollinen kenttä" 
+  "obligatory": "* Pakollinen kenttä",
+  "projCreated": "Uusi projekti lisätty onnistuneesti!",
+  "projNotCreated": "Virhe, projektin lisäys epäonnistui. Ole hyvä ja yritä uudelleen.",
+  "noResources": "Uutta projektia ei voi luoda. Ohjaavien opettajien resursseja ei ole vielä lisätty lukuvuodelle"
 }

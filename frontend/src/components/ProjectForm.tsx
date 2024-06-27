@@ -2,17 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
-import { ProjectFormData } from '../interface/formData';  
+import { ProjectFormData } from '../interface/formData'; 
+import { useCompaniesContext } from '../contexts/companiesContext';
+import { useTeachersContext } from '../contexts/teachersContext';
+import { getCompanyId } from './GetCompanyId';
+import { selectTeacher } from './SelectTeacher';
 
 
 interface ProjectFormProps {
-    onSubmit: (formData: ProjectFormData, companyName: String) => void;
+    onSubmit: (formData: ProjectFormData, company_id: number, teacher_id: number) => void;
 }
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const { t } = useTranslation();
+    const { companies, addCompany } = useCompaniesContext();
+    const { resources } = useTeachersContext();
 
-    const [ companyName, setCompanyName ] = useState<string>(''); 
+    const [ companyName, setCompanyName ] = useState<string>('');
+    const [ validated, setValidated ] = useState(false);
     const [ formData, setFormData ] = useState<ProjectFormData>({
         project_name: '',
         project_desc: '',
@@ -24,14 +31,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
         end_date: null,
     });
 
-    const [validated, setValidated] = useState(false);
-
-    useEffect(() => {
-        const { project_name, start_date, project_desc } = formData;
-        const isValid = project_name !== '' && companyName !== '' && start_date !== null && project_desc !== '';
-        setValidated(isValid);
-      }, [formData]);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,6 +38,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
             [name]: value,
         });
     };
+
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
@@ -47,16 +47,19 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    useEffect(() => {
+        const { project_name, start_date, project_desc } = formData;
+        const isValid = project_name !== '' && companyName !== '' && start_date !== null && project_desc !== '';
+        setValidated(isValid);
+      }, [formData]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // call for select teacher function to get the teacher id
-        //const teacherId = selectTeacher(companyName, formData.start_date);
+        const company_id = await getCompanyId(companyName, companies, addCompany);
+        const teacher_id = await selectTeacher(companyName, formData.start_date, resources);
         
-        
-
-        // add teacherId to the formData
-        onSubmit(formData, companyName);
+        onSubmit(formData, company_id, teacher_id);
     };
     
     return (
