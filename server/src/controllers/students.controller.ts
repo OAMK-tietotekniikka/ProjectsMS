@@ -8,8 +8,6 @@ import { ResultSetHeader, RowDataPacket,FieldPacket, OkPacket } from "mysql2";
 import { QUERY } from "../query/students.query";
 
 
-
-
 type ResultSet = [RowDataPacket[]| RowDataPacket[][]| OkPacket| OkPacket[]| ResultSetHeader, FieldPacket[]];
 
 export const getStudents = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
@@ -55,7 +53,7 @@ export const createStudent = async (req: Request, res: Response): Promise<Respon
     try {
         const pool = await connection();
         const result: ResultSet = await pool.query(QUERY.CREATE_STUDENT , Object.values(student));
-        student = { id: (result[0] as ResultSetHeader).insertId, ...req.body};
+        student = { student_id: (result[0] as ResultSetHeader).insertId, ...req.body};
         return res.status(Code.CREATED)
         .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Students created successfully', student));
 }catch (error: unknown) {
@@ -87,7 +85,6 @@ export const updateStudent = async (req: Request, res: Response): Promise<Respon
         
     }
 };
-
 
 export const deleteStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);

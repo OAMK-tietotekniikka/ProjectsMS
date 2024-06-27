@@ -23,6 +23,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         yield pool.execute('DROP TABLE IF EXISTS companies');
         yield pool.execute('DROP TABLE IF EXISTS resources');
         yield pool.execute('DROP TABLE IF EXISTS teachers');
+        yield pool.execute('DROP TABLE IF EXISTS company_teacher');
         //create tables
         yield pool.execute(`CREATE TABLE IF NOT EXISTS companies (
             company_id INT NOT NULL AUTO_INCREMENT,
@@ -38,6 +39,12 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (teacher_id)
         )`);
+        yield pool.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
+            company_id INT,
+            teacher_id INT,
+            Foreign Key (company_id) REFERENCES companies(company_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
+        )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT NOT NULL AUTO_INCREMENT,
             project_name VARCHAR(255) DEFAULT NULL,
@@ -49,7 +56,9 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             start_date DATE DEFAULT NULL,
             end_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (project_id)
+            PRIMARY KEY (project_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id),
+            Foreign Key (company_id) REFERENCES companies(company_id)
         )`);
         yield pool.execute(`CREATE TABLE IF NOT EXISTS students (
             student_id INT NOT NULL AUTO_INCREMENT,
@@ -69,7 +78,8 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             used_resources INT DEFAULT NULL,
             study_year VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (resource_id)
+            PRIMARY KEY (resource_id),
+            Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
         )`);
         console.log('Tables created successfully');
     }

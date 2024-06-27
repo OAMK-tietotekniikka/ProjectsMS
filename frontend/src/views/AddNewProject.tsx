@@ -11,11 +11,14 @@ import '../App.css'
 const AddNewProject: React.FC = () => {
     const { t } = useTranslation();
 
-    const handleFormSubmit = async (formData: ProjectFormData, companyName: String) => {
-        console.log(`from AddNewProject: ${JSON.stringify(formData)}`);
+    const handleFormSubmit = async (formData: ProjectFormData, company_id: number, teacher_id: number) => {
+        // add company_id to formData
+        formData.company_id = company_id;
+        formData.teacher_id = teacher_id;
+
         const response = await addProject(formData);
 
-        if (response.status === 201) {
+        if (response.statusCode === 201) {
             alert(t('projCreated'));
         } else {
             alert(t('projNotCreated'));

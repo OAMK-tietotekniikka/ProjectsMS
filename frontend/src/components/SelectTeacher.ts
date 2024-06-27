@@ -1,9 +1,42 @@
-import { useState } from "react" 
-import { useTeachersContext } from "../contexts/teachersContext"
+import { getTeachersByCompany } from "../contexts/apiRequests";
+import { Resource } from "../interface/resource";
+import i18n from 'i18next';
 
+export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<number> => {
+    // use startDate to get the study year
+    const year = startDate.getFullYear();
+    const studyYear = startDate.getMonth() < 7 ? `${year-1}-${year}` : `${year}-${year+1}`
+   
+    // get the resources for the study year
+    const resourcesForYear = resources.filter((resource: Resource) => resource.study_year === studyYear && resource.used_resources < resource.total_resources)
+    //sort resources ascending by used_resources
+    resourcesForYear.sort((a: any, b: any) => a.used_resources - b.used_resources)
 
-export const selectTeacher = (company: String, startDate: Date) => {
-    const { teachers, resources } = useTeachersContext() as any;
-    const [ selectedTeacher, setSelectedTeacher ] = useState<any>(null)
+    if (resourcesForYear.length === 0) {
+        console.log('No resources available for the year:', studyYear)
+        alert(i18n.t('noResources', {studyYear}))
+        return -1;
+    }
+    
+    const response = await getTeachersByCompany(companyName)
 
-}
+    if (response.statusCode === 200) {
+        const teachersWithFavoComp = response.data
+        
+        // get the teacher with the least used_resources using the resourcesForYear
+        const favCompanyResources = resourcesForYear.filter((resource: Resource) => 
+        teachersWithFavoComp.some((teacher: any) => teacher.teacher_id === resource.teacher_id));
+
+        if (favCompanyResources.length > 0) {
+            return favCompanyResources[0].teacher_id;
+        } else {
+            return resourcesForYear[0].teacher_id;
+        } 
+    } else {
+        // if no teachers with favorite company, get the teacher with the least used_resources
+        return resourcesForYear[0].teacher_id;
+    }
+
+    // Add here to modify teacher's used_resources in the resources table
+
+};

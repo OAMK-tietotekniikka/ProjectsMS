@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { getTeachers, getResources } from "./apiRequests";
 const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
@@ -17,8 +17,8 @@ const TeachersContextProvider = (props) => {
     useEffect(() => {
         const fetchTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield axios.get("http://localhost:8081/teachers");
-                setTeachers(response.data);
+                const teachersList = yield getTeachers();
+                setTeachers(teachersList.data);
             }
             catch (error) {
                 console.error("Failed to fetch data:", error);
@@ -29,8 +29,8 @@ const TeachersContextProvider = (props) => {
     useEffect(() => {
         const fetchResources = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield axios.get("http://localhost:8081/resources");
-                setResources(response.data);
+                const reourceList = yield getResources();
+                setResources(reourceList.data);
             }
             catch (error) {
                 console.error("Failed to fetch data:", error);
