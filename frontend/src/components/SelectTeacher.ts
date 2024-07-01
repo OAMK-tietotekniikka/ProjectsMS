@@ -2,7 +2,7 @@ import { getTeachersByCompany } from "../contexts/apiRequests";
 import { Resource } from "../interface/resource";
 import i18n from 'i18next';
 
-export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<number> => {
+export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<Resource> => {
     // use startDate to get the study year
     const year = startDate.getFullYear();
     const studyYear = startDate.getMonth() < 7 ? `${year-1}-${year}` : `${year}-${year+1}`
@@ -15,7 +15,7 @@ export const selectTeacher = async (companyName: string, startDate: Date, resour
     if (resourcesForYear.length === 0) {
         console.log('No resources available for the year:', studyYear)
         alert(i18n.t('noResources', {studyYear}))
-        return -1;
+        return null;
     }
     
     const response = await getTeachersByCompany(companyName)
@@ -28,15 +28,12 @@ export const selectTeacher = async (companyName: string, startDate: Date, resour
         teachersWithFavoComp.some((teacher: any) => teacher.teacher_id === resource.teacher_id));
 
         if (favCompanyResources.length > 0) {
-            return favCompanyResources[0].teacher_id;
+            return favCompanyResources[0];
         } else {
-            return resourcesForYear[0].teacher_id;
+            return resourcesForYear[0];
         } 
     } else {
         // if no teachers with favorite company, get the teacher with the least used_resources
-        return resourcesForYear[0].teacher_id;
+        return resourcesForYear[0];
     }
-
-    // Add here to modify teacher's used_resources in the resources table
-
 };

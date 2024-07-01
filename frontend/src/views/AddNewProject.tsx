@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/ProjectForm';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../interface/formData';
@@ -10,17 +11,24 @@ import '../App.css'
 
 const AddNewProject: React.FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const handleFormSubmit = async (formData: ProjectFormData, company_id: number, teacher_id: number) => {
         // add company_id to formData
         formData.company_id = company_id;
         formData.teacher_id = teacher_id;
 
-        const response = await addProject(formData);
+        try {
+            const response = await addProject(formData);
 
-        if (response.statusCode === 201) {
-            alert(t('projCreated'));
-        } else {
+            if (response.statusCode === 201) {
+                alert(t('projCreated'));
+                navigate('/');
+            } else {
+                alert(t('projNotCreated'));
+            }
+        } catch (error) {
+            console.error("Failed to add project:", error);
             alert(t('projNotCreated'));
         }
     };

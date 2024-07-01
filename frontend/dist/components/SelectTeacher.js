@@ -20,7 +20,7 @@ export const selectTeacher = (companyName, startDate, resources) => __awaiter(vo
     if (resourcesForYear.length === 0) {
         console.log('No resources available for the year:', studyYear);
         alert(i18n.t('noResources', { studyYear }));
-        return -1;
+        return null;
     }
     const response = yield getTeachersByCompany(companyName);
     if (response.statusCode === 200) {
@@ -28,15 +28,14 @@ export const selectTeacher = (companyName, startDate, resources) => __awaiter(vo
         // get the teacher with the least used_resources using the resourcesForYear
         const favCompanyResources = resourcesForYear.filter((resource) => teachersWithFavoComp.some((teacher) => teacher.teacher_id === resource.teacher_id));
         if (favCompanyResources.length > 0) {
-            return favCompanyResources[0].teacher_id;
+            return favCompanyResources[0];
         }
         else {
-            return resourcesForYear[0].teacher_id;
+            return resourcesForYear[0];
         }
     }
     else {
         // if no teachers with favorite company, get the teacher with the least used_resources
-        return resourcesForYear[0].teacher_id;
+        return resourcesForYear[0];
     }
-    // Add here to modify teacher's used_resources in the resources table
 });

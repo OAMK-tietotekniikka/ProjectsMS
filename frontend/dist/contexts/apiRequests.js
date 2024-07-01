@@ -78,11 +78,10 @@ export const getResources = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-// Companies API requests
-export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
+export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.get(`${baseUrl}/companies`);
+        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
         return response.data;
     }
     catch (error) {
@@ -95,16 +94,33 @@ export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+// Companies API requests
+export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
     var _l, _m;
+    try {
+        const response = yield axios.get(`${baseUrl}/companies`);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_l = error.response) === null || _l === void 0 ? void 0 : _l.data);
+            return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+    var _o, _p;
     try {
         const response = yield axios.post(`${baseUrl}/companies`, { company_name });
         return response.data.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_l = error.response) === null || _l === void 0 ? void 0 : _l.data);
-            return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
+            console.error('Failed to write data:', (_o = error.response) === null || _o === void 0 ? void 0 : _o.data);
+            return (_p = error.response) === null || _p === void 0 ? void 0 : _p.data;
         }
         else {
             console.error('An unexpected error:', error);

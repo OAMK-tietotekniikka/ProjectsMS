@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
-import { ProjectFormData } from '../interface/formData'; 
+import { ProjectFormData } from '../interface/formData';
 import { useCompaniesContext } from '../contexts/companiesContext';
 import { useTeachersContext } from '../contexts/teachersContext';
 import { getCompanyId } from './GetCompanyId';
@@ -16,11 +16,11 @@ interface ProjectFormProps {
 const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const { t } = useTranslation();
     const { companies, addCompany } = useCompaniesContext();
-    const { resources } = useTeachersContext();
+    const { resources, updateTeacherResource } = useTeachersContext();
 
-    const [ companyName, setCompanyName ] = useState<string>('');
-    const [ validated, setValidated ] = useState(false);
-    const [ formData, setFormData ] = useState<ProjectFormData>({
+    const [companyName, setCompanyName] = useState<string>('');
+    const [validated, setValidated] = useState(false);
+    const [formData, setFormData] = useState<ProjectFormData>({
         project_name: '',
         project_desc: '',
         teacher_id: 0,
@@ -51,17 +51,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
         const { project_name, start_date, project_desc } = formData;
         const isValid = project_name !== '' && companyName !== '' && start_date !== null && project_desc !== '';
         setValidated(isValid);
-      }, [formData]);
+    }, [formData]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const company_id = await getCompanyId(companyName, companies, addCompany);
-        const teacher_id = await selectTeacher(companyName, formData.start_date, resources);
-        
-        onSubmit(formData, company_id, teacher_id);
+        try {
+            const company_id = await getCompanyId(companyName, companies, addCompany);
+            const resource = await selectTeacher(companyName, formData.start_date, resources);
+            const teacher_id = resource.teacher_id;
+
+            updateTeacherResource(resource.resource_id, { ...resource, used_resources: resource.used_resources + 1 });
+            onSubmit(formData, company_id, teacher_id);
+
+        } catch (error) {
+            console.error("Failed to submit form:", error);
+        }
     };
-    
+
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
@@ -114,7 +121,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     </Col>
                 </Row>
 
-                <Form.Group controlId="project_desc" className="form-item" style={{paddingTop: '2%'}}>
+                <Form.Group controlId="project_desc" className="form-item" style={{ paddingTop: '2%' }}>
                     <Form.Label>{t('projDesc')}</Form.Label>
                     <Form.Control
                         as="textarea"
@@ -127,7 +134,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     />
                 </Form.Group>
 
-                <div style={{paddingTop: '2%'}}>
+                <div style={{ paddingTop: '2%' }}>
                     <p>{t('obligatory')}</p>
                 </div>
 

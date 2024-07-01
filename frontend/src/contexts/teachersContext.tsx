@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources } from "./apiRequests";
+import { getTeachers, getResources, updateResource } from "./apiRequests";
 import { Teacher } from "../interface/teacher";
 import { Resource } from "../interface/resource";
 
@@ -9,6 +9,7 @@ interface TeachersContextType {
     setTeachers: React.Dispatch<React.SetStateAction<Teacher[]>>;
     resources: Resource[];
     setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
+    updateTeacherResource: (id: number, resource: Resource) => Promise<Resource>;
 }
 
 const TeachersContext = React.createContext<TeachersContextType>({} as TeachersContextType);
@@ -43,11 +44,23 @@ const TeachersContextProvider = (props: any) => {
         
     }, []);
 
+    const updateTeacherResource = async (id: number, resource: Resource) => {
+        try {
+            const response = await updateResource(id, resource);
+            console.log(`From updateTeacherResource, response:`, response);
+            setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
+            return response.data;
+        } catch (error) {
+            console.error("Failed to update resource:", error);
+        }
+    };
+
     let value = { 
         teachers,
         setTeachers,
         resources,
-        setResources
+        setResources,
+        updateTeacherResource
     };
 
     return  (

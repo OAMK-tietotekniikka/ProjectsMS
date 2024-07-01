@@ -73,7 +73,7 @@ const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     let student = Object.assign({}, req.body);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENTS, [req.params.student_id]);
+        const result = yield pool.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.student_id]);
         if (result[0].length > 0) {
             const result = yield pool.query(students_query_1.QUERY.UPDATE_STUDENT, [...Object.values(student), req.params.student_id]);
             return res.status(code_enum_1.Code.OK)

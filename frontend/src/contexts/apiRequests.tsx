@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
+import { Resource } from '../interface/resource';
 
 
 const baseUrl = import.meta.env.VITE_API_URL
@@ -14,7 +15,7 @@ export const addProject = async (formData: ProjectFormData) => {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
 };
@@ -30,7 +31,7 @@ export const getTeachers = async () => {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
 };
@@ -44,7 +45,7 @@ export const getTeachersByCompany = async (company_name: string) => {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
 };
@@ -59,10 +60,25 @@ export const getResources = async () => {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
-}
+};
+
+export const updateResource = async (resource_id: number, resource: Resource) => {
+    try {
+        const response = await axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+
+};
 
 // Companies API requests
 export const getCompanies = async () => {
@@ -74,21 +90,21 @@ export const getCompanies = async () => {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
 }
 
 export const addNewCompany = async (company_name: string) => {
     try {
-        const response = await axios.post(`${baseUrl}/companies`, {company_name});
+        const response = await axios.post(`${baseUrl}/companies`, { company_name });
         return response.data.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
-             console.error('An unexpected error:', error);
+            console.error('An unexpected error:', error);
         }
     }
 };
