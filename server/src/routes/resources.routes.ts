@@ -1,5 +1,5 @@
 import { Router } from "express";   
-import { createResource, getResources } from "../controllers/resources.controller";
+import { createResource, getResources, updateResource } from "../controllers/resources.controller";
 
 
 const resourcesRouter = Router();
@@ -9,7 +9,8 @@ resourcesRouter.route('/')
     .get(getResources)
     .post(createResource);
 
-resourcesRouter.route('/:project_id')
+resourcesRouter.route('/:resource_id')
+    .put(updateResource);
 
 
 export default resourcesRouter;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources } from "./apiRequests";
+import { getTeachers, getResources, updateResource } from "./apiRequests";
 const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
@@ -38,13 +38,25 @@ const TeachersContextProvider = (props) => {
         });
         fetchResources();
     }, []);
+    const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield updateResource(id, resource);
+            console.log(`From updateTeacherResource, response:`, response);
+            setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to update resource:", error);
+        }
+    });
     let value = {
         teachers,
         setTeachers,
         resources,
-        setResources
+        setResources,
+        updateTeacherResource
     };
-    return (_jsx(TeachersContext.Provider, { value: value, children: props.children }));
+    return (_jsx(TeachersContext.Provider, Object.assign({ value: value }, { children: props.children })));
 };
 export const useTeachersContext = () => {
     const context = React.useContext(TeachersContext);
