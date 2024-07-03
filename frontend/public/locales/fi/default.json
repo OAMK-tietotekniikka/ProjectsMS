@@ -14,5 +14,7 @@
   "obligatory": "* Pakollinen kenttä",
   "projCreated": "Uusi projekti lisätty onnistuneesti!",
   "projNotCreated": "Virhe, projektin lisäys epäonnistui. Ole hyvä ja yritä uudelleen.",
-  "noResources": "Uutta projektia ei voi luoda. Ohjaavien opettajien resursseja ei ole vielä lisätty lukuvuodelle"
+  "noResources": "Uutta projektia ei voi luoda. Ohjaavien opettajien resursseja ei ole vielä lisätty lukuvuodelle",
+  "emailSent": "Sähköposti ja projektin perustiedot lähetettiin ohjaavalle opettajalle.",
+  "emailNotSent": "Virhe automaattisen sähköpostin lähettämisessä. Sähköpostia ohjaavalle opettajalle ei ole lähetetty."
 }

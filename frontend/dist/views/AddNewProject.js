@@ -12,19 +12,41 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/ProjectForm';
 import { useTranslation } from 'react-i18next';
-import { addProject } from '../contexts/apiRequests';
+import { addProject, sendEmailNotification } from '../contexts/apiRequests';
+import { useTeachersContext } from '../contexts/teachersContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const handleFormSubmit = (formData, company_id, teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
-        // add company_id to formData
-        formData.company_id = company_id;
-        formData.teacher_id = teacher_id;
+    const { teachers } = useTeachersContext();
+    const handleFormSubmit = (formData, companyId, teacherId, companyName) => __awaiter(void 0, void 0, void 0, function* () {
+        // add company_id and teacher_id to formData
+        formData.company_id = companyId;
+        formData.teacher_id = teacherId;
+        const formattedStartDate = new Date(formData.start_date).toISOString().split('T')[0];
+        const student = 'Student Name'; // actual student name can be obtained from the login data??
+        const subject = 'A new Company Oriented Project supervision.';
+        const text = `You have been assigned as a supervisor to a new Company Oriented Project with the following details:\n
+            Student Name: ${student}
+            Project Name: ${formData.project_name}
+            Company: ${companyName}
+            Start Date: ${formattedStartDate}\n
+            Please login to the projects management system to view the project details.`;
         try {
             const response = yield addProject(formData);
             if (response.statusCode === 201) {
+                const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);
+                if (selectedTeacher) {
+                    const emailResponse = yield sendEmailNotification(selectedTeacher.email, // when testing, replace with some actual hardcoded email address
+                    subject, text);
+                    if (emailResponse.status === 200) {
+                        alert(t('emailSent'));
+                    }
+                    else {
+                        alert(t('emailNotSent'));
+                    }
+                }
                 alert(t('projCreated'));
                 navigate('/');
             }
@@ -37,6 +59,6 @@ const AddNewProject = () => {
             alert(t('projNotCreated'));
         }
     });
-    return (_jsx(Container, { children: _jsx(Row, Object.assign({ className: "justify-content-center" }, { children: _jsxs(Col, Object.assign({ xs: 10, md: 8, lg: 6 }, { children: [_jsx("h4", Object.assign({ className: 'main-heading' }, { children: t('createProj') })), _jsx("div", Object.assign({ className: 'instruction ' }, { children: _jsx("p", { children: t('projInstruction') }) })), _jsx(ProjectForm, { onSubmit: handleFormSubmit })] })) })) }));
+    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsxs(Col, { xs: 10, md: 8, lg: 6, children: [_jsx("h4", { className: 'main-heading', children: t('createProj') }), _jsx("div", { className: 'instruction ', children: _jsx("p", { children: t('projInstruction') }) }), _jsx(ProjectForm, { onSubmit: handleFormSubmit })] }) }) }));
 };
 export default AddNewProject;

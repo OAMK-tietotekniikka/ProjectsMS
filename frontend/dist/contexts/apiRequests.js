@@ -127,3 +127,20 @@ export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0,
         }
     }
 });
+// Email API requests
+export const sendEmailNotification = (to, subject, text) => __awaiter(void 0, void 0, void 0, function* () {
+    var _q, _r;
+    try {
+        const response = yield axios.post(`${baseUrl}/email`, { to, subject, text });
+        return response;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_q = error.response) === null || _q === void 0 ? void 0 : _q.data);
+            return (_r = error.response) === null || _r === void 0 ? void 0 : _r.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
