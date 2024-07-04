@@ -44,8 +44,6 @@ export const createResource = async (req: Request, res: Response): Promise<Respo
 export const updateResource = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let resource: Resource = { ...req.body };
-    console.log(resource);
-    console.log(req.params.resource_id);
     try {
         const pool = await connection();
         const findResource: ResultSet = await pool.query(QUERY.SELECT_RESOURCE, [req.params.resource_id]);

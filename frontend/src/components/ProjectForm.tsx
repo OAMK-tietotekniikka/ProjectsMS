@@ -10,7 +10,7 @@ import { selectTeacher } from './SelectTeacher';
 
 
 interface ProjectFormProps {
-    onSubmit: (formData: ProjectFormData, company_id: number, teacher_id: number) => void;
+    onSubmit: (formData: ProjectFormData, company_id: number, teacher_id: number, companyName: string) => void;
 }
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
@@ -62,7 +62,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
             const teacher_id = resource.teacher_id;
 
             updateTeacherResource(resource.resource_id, { ...resource, used_resources: resource.used_resources + 1 });
-            onSubmit(formData, company_id, teacher_id);
+            onSubmit(formData, company_id, teacher_id, companyName);
 
         } catch (error) {
             console.error("Failed to submit form:", error);

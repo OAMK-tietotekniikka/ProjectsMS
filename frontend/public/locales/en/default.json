@@ -14,5 +14,7 @@
   "obligatory": "* Obligatory field",
   "projCreated": "New project created successfully!",
   "projNotCreated": "Error, project was not created. Please, try again.",
-  "noResources": "Cannot create new project. There are no teacher resources available for the study year"
+  "noResources": "Cannot create new project. There are no teacher resources available for the study year",
+  "emailSent": "An email was sent to the supervising teacher with the project details",
+  "emailNotSent": "Error in automatic emailing, email was not sent to the supervising teacher."
 }

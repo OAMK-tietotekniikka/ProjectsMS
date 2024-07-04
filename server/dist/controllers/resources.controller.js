@@ -50,8 +50,6 @@ exports.createResource = createResource;
 const updateResource = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let resource = Object.assign({}, req.body);
-    console.log(resource);
-    console.log(req.params.resource_id);
     try {
         const pool = yield (0, mysql_config_1.connection)();
         const findResource = yield pool.query(resources_query_1.QUERY.SELECT_RESOURCE, [req.params.resource_id]);
