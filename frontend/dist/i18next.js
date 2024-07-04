@@ -5,7 +5,7 @@ i18n
     .use(httpApi)
     .use(initReactI18next)
     .init({
-    lng: 'en', // default language
+    lng: 'en',
     fallbackLng: 'en',
     backend: {
         loadPath: 'locales/{{lng}}/default.json', // path to translation files

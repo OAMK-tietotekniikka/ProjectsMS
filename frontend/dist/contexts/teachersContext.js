@@ -56,7 +56,7 @@ const TeachersContextProvider = (props) => {
         setResources,
         updateTeacherResource
     };
-    return (_jsx(TeachersContext.Provider, { value: value, children: props.children }));
+    return (_jsx(TeachersContext.Provider, Object.assign({ value: value }, { children: props.children })));
 };
 export const useTeachersContext = () => {
     const context = React.useContext(TeachersContext);

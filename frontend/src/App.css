@@ -1,4 +1,12 @@
 /* navbar */
+
+.nav-mainbar {
+  display: flex;
+  flex-direction: row;
+  padding-left: 4%;
+  margin-left: 0;
+  margin-right: 0;
+}
 .nav-language {
   display: flex;
   flex-direction: row;
@@ -10,6 +18,98 @@
 .nav-home {
   margin-right: 10%;
 }
+
+/*Landing page*/
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  text-align: start;
+  padding: 5%;
+}
+.login-buttons-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  text-align: start;
+  margin-bottom: 6%;
+}
+@media (max-width: 768px) {
+  .login-buttons-div {
+    flex-direction: column;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+.login-button {
+  background-color: transparent;
+  color: black;
+  margin: 6% 4% 0 0;
+  border: 1px solid  #535353;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 100px
+}
+.login-button.active {
+  background-color: #1A80E5;
+  color: white;
+  border: 1px solid #535353;
+}
+.submit-login {
+  background-color: #1A80E5;
+  color: white;
+  padding: 10px 15px;
+  margin: 4% 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: small;
+}
+
+
+/*Teacher dashboard*/
+
+.teacher-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 5% 5% 5% 10%;
+}
+
+.item-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 2%;
+}
+
+.second-heading {
+  font-weight: bold;
+  padding-top: 2%;
+}
+
+.resources-button {
+  background-color: #F7921E;
+  color: white;
+  margin: 2% 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  max-width: 300px;
+  width: 100%;
+  font-size: small;
+  font-weight: bold;
+}
+.resources-button:hover {
+  background-color: #faab51;
+  cursor: pointer;
+} 
+
 
 /*AddNewProject and form*/
 .main-heading {

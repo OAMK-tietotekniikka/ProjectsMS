@@ -1,11 +1,11 @@
 import { getTeachersByCompany } from "../contexts/apiRequests";
 import { Resource } from "../interface/resource";
+import { getStudyYear } from "./GetStudyYear";
 import i18n from 'i18next';
 
 export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<Resource> => {
     // use startDate to get the study year
-    const year = startDate.getFullYear();
-    const studyYear = startDate.getMonth() < 7 ? `${year-1}-${year}` : `${year}-${year+1}`
+    const studyYear = getStudyYear(startDate);
    
     // get the resources for the study year
     const resourcesForYear = resources.filter((resource: Resource) => resource.study_year === studyYear && resource.used_resources < resource.total_resources)

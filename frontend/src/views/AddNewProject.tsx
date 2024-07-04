@@ -49,7 +49,7 @@ const AddNewProject: React.FC = () => {
                     }
                 }
                 alert(t('projCreated'));
-                navigate('/');
+                navigate('/student');
             } else {
                 alert(t('projNotCreated'));
             }
