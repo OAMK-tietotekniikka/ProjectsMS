@@ -1,7 +1,8 @@
 {
   "appName": "Projects management",
   "home": "Home",
-  "login": "Login",
+  "login": "Sign in",
+  "logout": "Sign out",
   "createProj": "Create new project",
   "projInstruction": "Before you start, please make sure to review the project guidelines",
   "projName": "Project name *",
@@ -16,5 +17,22 @@
   "projNotCreated": "Error, project was not created. Please, try again.",
   "noResources": "Cannot create new project. There are no teacher resources available for the study year",
   "emailSent": "An email was sent to the supervising teacher with the project details",
-  "emailNotSent": "Error in automatic emailing, email was not sent to the supervising teacher."
+  "emailNotSent": "Error in automatic emailing, email was not sent to the supervising teacher.",
+  "welcome": "Welcome to the Company Oriented Development Projects management system.",
+  "welcomeText": "Please select below either teacher or student to login:",
+  "studentLogin": "Student",
+  "teacherLogin": "Teacher",
+  "username": "Username",
+  "enterUsername": "Enter your username",
+  "password": "Password",
+  "enterPassword": "Enter your password",
+  "addProject": "Add new project",
+  "resourcesCurr": "Supervision resources for study year ",
+  "totRes": "Total resources:  ",
+  "usedRes": "Used resources:  ",
+  "resourcesPast": "Resources listing for previous years",
+  "addCompFavo": "Add company favourities",
+  "projectsCurr": "Pending and ongoing projects",
+  "projectsPast": "Ended and past projects",
+  "notResources": "No resources available for the study year"
 }

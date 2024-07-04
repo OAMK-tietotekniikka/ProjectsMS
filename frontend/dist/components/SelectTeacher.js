@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { getTeachersByCompany } from "../contexts/apiRequests";
+import { getStudyYear } from "./GetStudyYear";
 import i18n from 'i18next';
 export const selectTeacher = (companyName, startDate, resources) => __awaiter(void 0, void 0, void 0, function* () {
     // use startDate to get the study year
-    const year = startDate.getFullYear();
-    const studyYear = startDate.getMonth() < 7 ? `${year - 1}-${year}` : `${year}-${year + 1}`;
+    const studyYear = getStudyYear(startDate);
     // get the resources for the study year
     const resourcesForYear = resources.filter((resource) => resource.study_year === studyYear && resource.used_resources < resource.total_resources);
     //sort resources ascending by used_resources
