@@ -34,5 +34,12 @@
   "addCompFavo": "Add company favourities",
   "projectsCurr": "Pending and ongoing projects",
   "projectsPast": "Ended and past projects",
-  "notResources": "No resources available for the study year"
+  "notResources": "No resources available for the study year",
+  "selectComp": "Select from companies list:",
+  "select": "Select company",
+  "selectedCompList": "Your favourite companies: ",
+  "enterNewComp": "If company is not on the list, enter new company: ",
+  "saveInput": "Save input",
+  "saveSelection": "Save selection",
+  "noFavoComp": "No favourite companies"
 }

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCompany = exports.getCompanies = void 0;
+exports.deleteFavoCompany = exports.addFavoCompany = exports.getFavoCompanies = exports.createCompany = exports.getCompanies = void 0;
 const mysql_config_1 = require("../config/mysql.config");
 const code_enum_1 = require("../enum/code.enum");
 const status_enum_1 = require("../enum/status.enum");
@@ -32,11 +32,13 @@ const getCompanies = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getCompanies = getCompanies;
 const createCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
-    let company = Object.assign({}, req.body);
+    let company = { company_name: req.body.company_name };
+    console.log(req.body);
     try {
         const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(companies_query_1.QUERY.CREATE_COMPANY, Object.values(company));
+        const result = yield pool.query(companies_query_1.QUERY.CREATE_COMPANY, [req.body.company_name]);
         company = Object.assign({ company_id: result[0].insertId }, req.body);
+        console.log(company);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Company created successfully', company));
     }
@@ -47,3 +49,56 @@ const createCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.createCompany = createCompany;
+const getFavoCompanies = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const result = yield pool.query(companies_query_1.QUERY.SELECT_FAVO_COMPANIES, [[req.params.teacher_id]]);
+        console.log(result);
+        if (result[0].length > 0) {
+            return res.status(code_enum_1.Code.OK)
+                .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Favourite companies fetched successfully', result[0]));
+        }
+        else {
+            return res.status(code_enum_1.Code.NOT_FOUND)
+                .send(new response_1.HttpResponse(code_enum_1.Code.NOT_FOUND, status_enum_1.Status.NOT_FOUND, 'Favourite companies not found'));
+        }
+    }
+    catch (error) {
+        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching favourite companies'));
+    }
+});
+exports.getFavoCompanies = getFavoCompanies;
+const addFavoCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    const favo = Object.assign({}, req.body);
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const result = yield pool.query(companies_query_1.QUERY.ADD_FAVO_COMPANY, Object.values(favo));
+        return res.status(code_enum_1.Code.CREATED)
+            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Favourite company added successfully', favo));
+    }
+    catch (error) {
+        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while adding favourite company'));
+    }
+});
+exports.addFavoCompany = addFavoCompany;
+const deleteFavoCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    try {
+        const pool = yield (0, mysql_config_1.connection)();
+        const result = yield pool.query(companies_query_1.QUERY.DELETE_FAVO_COMPANY, [req.params.teacher_id]);
+        return res.status(code_enum_1.Code.OK)
+            .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Favourite companies deleted successfully', req.params.company_id));
+    }
+    catch (error) {
+        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while deleting favourite company'));
+    }
+});
+exports.deleteFavoCompany = deleteFavoCompany;
