@@ -141,17 +141,17 @@ INSERT INTO company_teacher (company_id, teacher_id)
 VALUES (1,2);
 
 INSERT INTO company_teacher (company_id, teacher_id)
-VALUES (3,2);
+VALUES (5,1);
 
 -- Insert resources data
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
-VALUES (1, 5, 2, '2022-2023');
+VALUES (1, 5, 2, '2021-2022');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
-VALUES (2, 7, 3, '2023-2024');
+VALUES (2, 20, 0, '2023-2024');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
-VALUES (1, 5, 2, '2023-2024');
+VALUES (1, 5, 2, '2020-2021');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
 VALUES (3, 5, 5, '2023-2024');

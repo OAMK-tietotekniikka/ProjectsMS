@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource } from "./apiRequests";
+import { getTeachers, getResources, updateResource, getFavoCompanies } from "./apiRequests";
 import { Teacher } from "../interface/teacher";
 import { Resource } from "../interface/resource";
 

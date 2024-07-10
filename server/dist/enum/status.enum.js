@@ -17,4 +17,4 @@ var Status;
     Status["NOT_IMPLEMENTED"] = "NOT IMPLEMENTED";
     Status["BAD_GATEWAY"] = "BAD GATEWAY";
     Status["SERVICE_UNAVAILABLE"] = "SERVICE UNAVAILABLE";
-})(Status || (exports.Status = Status = {}));
+})(Status = exports.Status || (exports.Status = {}));

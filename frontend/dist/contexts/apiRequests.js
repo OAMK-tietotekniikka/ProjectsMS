@@ -13,7 +13,6 @@ const baseUrl = import.meta.env.VITE_API_URL;
 export const addProject = (formData) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        // verify the actual endpoint
         const response = yield axios.post(`${baseUrl}/projects`, formData);
         return response.data;
     }
@@ -27,12 +26,10 @@ export const addProject = (formData) => __awaiter(void 0, void 0, void 0, functi
         }
     }
 });
-// Teachers API requests
-export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* () {
     var _c, _d;
     try {
-        // verify the actual endpoint
-        const response = yield axios.get(`${baseUrl}/teachers`);
+        const response = yield axios.get(`${baseUrl}/projects`);
         return response.data;
     }
     catch (error) {
@@ -45,10 +42,12 @@ export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () 
         }
     }
 });
-export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+// Teachers API requests
+export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`);
+        // verify the actual endpoint
+        const response = yield axios.get(`${baseUrl}/teachers`);
         return response.data;
     }
     catch (error) {
@@ -61,11 +60,10 @@ export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, 
         }
     }
 });
-// Resources API requests
-export const getResources = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.get(`${baseUrl}/resources`);
+        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`);
         return response.data;
     }
     catch (error) {
@@ -78,10 +76,11 @@ export const getResources = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
+// Resources API requests
+export const getResources = () => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        const response = yield axios.get(`${baseUrl}/resources`);
         return response.data;
     }
     catch (error) {
@@ -94,11 +93,10 @@ export const updateResource = (resource_id, resource) => __awaiter(void 0, void 
         }
     }
 });
-// Companies API requests
-export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
+export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
     var _l, _m;
     try {
-        const response = yield axios.get(`${baseUrl}/companies`);
+        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
         return response.data;
     }
     catch (error) {
@@ -111,11 +109,12 @@ export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+// Companies API requests
+export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
     var _o, _p;
     try {
-        const response = yield axios.post(`${baseUrl}/companies`, { company_name });
-        return response.data.data;
+        const response = yield axios.get(`${baseUrl}/companies`);
+        return response.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
@@ -127,17 +126,97 @@ export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0,
         }
     }
 });
+export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+    var _q, _r;
+    console.log('company_name:', company_name);
+    try {
+        const response = yield axios.post(`${baseUrl}/companies`, { company_name });
+        if (response.data.statusCode === 201) {
+            alert('New Company added successfully.');
+            console.log('New Company added successfully:', response.data);
+            return response.data.data;
+        }
+        else {
+            console.error('Unexpected status code:', response.data.statusCode);
+            return null;
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_q = error.response) === null || _q === void 0 ? void 0 : _q.data);
+            return (_r = error.response) === null || _r === void 0 ? void 0 : _r.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+    var _s, _t;
+    try {
+        const response = yield axios.get(`${baseUrl}/companies/favo/${teacher_id}`);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_s = error.response) === null || _s === void 0 ? void 0 : _s.data);
+            return (_t = error.response) === null || _t === void 0 ? void 0 : _t.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0, void 0, function* () {
+    var _u, _v;
+    try {
+        const response = yield axios.post(`${baseUrl}/companies/favo`, companyFavourity);
+        if (response.data.statusCode === 201) {
+            console.log('New company favourity added successfully:', response.data);
+            return response.data.data;
+        }
+        else {
+            console.error('Unexpected status code:', response.data.statusCode);
+            return null;
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_u = error.response) === null || _u === void 0 ? void 0 : _u.data);
+            return (_v = error.response) === null || _v === void 0 ? void 0 : _v.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const deleteFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+    var _w, _x;
+    try {
+        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_w = error.response) === null || _w === void 0 ? void 0 : _w.data);
+            return (_x = error.response) === null || _x === void 0 ? void 0 : _x.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
 // Email API requests
 export const sendEmailNotification = (to, subject, text) => __awaiter(void 0, void 0, void 0, function* () {
-    var _q, _r;
+    var _y, _z;
     try {
         const response = yield axios.post(`${baseUrl}/email`, { to, subject, text });
         return response;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_q = error.response) === null || _q === void 0 ? void 0 : _q.data);
-            return (_r = error.response) === null || _r === void 0 ? void 0 : _r.data;
+            console.error('Failed to write data:', (_y = error.response) === null || _y === void 0 ? void 0 : _y.data);
+            return (_z = error.response) === null || _z === void 0 ? void 0 : _z.data;
         }
         else {
             console.error('An unexpected error:', error);

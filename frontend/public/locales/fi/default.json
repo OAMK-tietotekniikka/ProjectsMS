@@ -34,5 +34,12 @@
   "addCompFavo": "Lisää yritys suosikkeihin",
   "projectsCurr": "Alkavat ja käynnissä olevat projektit",
   "projectsPast": "Päättyneet projektit",
-  "notResources": "Resurssia ei ole vielä lisätty lukuvuodelle"
+  "notResources": "Resurssia ei ole vielä lisätty lukuvuodelle",
+  "selectComp": "Valitse yritykset listalta:",
+  "select": "Valitse yritys",
+  "selectedCompList": "Suosikkiyrityksesi: ",
+  "enterNewComp": "Jos yritys ei ole listalla, lisää uusi yritys: ",
+  "saveInput": "Tallenna yritys",
+  "saveSelection": "Tallenna valinta",
+  "noFavoComp": "Ei suosikkilistalla olevia yrityksiä"
 }

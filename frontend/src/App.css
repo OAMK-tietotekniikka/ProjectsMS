@@ -77,7 +77,7 @@
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  padding: 5% 5% 5% 10%;
+  padding: 5% 5% 0 10%;
 }
 
 .item-group {
@@ -89,8 +89,9 @@
 }
 
 .second-heading {
+  font-size: large;
   font-weight: bold;
-  padding-top: 2%;
+  padding-top: 4%;
 }
 
 .resources-button {
@@ -106,10 +107,93 @@
   font-weight: bold;
 }
 .resources-button:hover {
-  background-color: #faab51;
+  background-color: #dc7600;
+}
+.resources-table {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  width: 100%;
+  background-color: #f0f0f0;
+}
+.resources-table th {
+  background-color: #f0f0f0;
+}
+.resources-table td {
+  background-color: #f0f0f0;
+}
+.resources-table table {
+  background-color: #f0f0f0;
+  margin: 3% 3%;
+}
+.resources-table Button {
+  background-color: #F7921E;
+  color: white;
+  margin: 0 3% 3% 5%;
+  border: none;
   cursor: pointer;
-} 
+  border-radius: 12px;
+  font-size: small;
+  font-weight: bold;
+  width: 150px
+}
+.resources-table Button:hover {
+  background-color: #dc7600;
+}
 
+/*Dropdown*/
+.dropdown-row {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  width: 100%;
+  padding: 2% 0;
+}
+.dropdown-toggle,
+.dropdown-toggle:focus {
+  background-color: #f0f0f0;
+  color: black;
+  margin: 2% 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 0px;
+  width: 300px;
+  font-size: small;
+  font-weight: bold;
+}
+.dropdown-toggle:hover,
+.dropdown-toggle:active {
+  background-color: #d3d3d3;
+  color: black;
+  box-shadow: none;
+}
+.dropdown-item.active,
+.dropdown-item.active:focus,
+.dropdown-item.active:hover {
+  background-color: #d3d3d3 !important;
+  font-weight: bold;
+  color: black;
+}
+.addCompany-button {
+  background-color: #F7921E;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  font-size: small;
+  font-weight: bold;
+  width: 150px
+}
+.addCompany-button:hover {
+  background-color: #dc7600;
+}
+.list-item {
+  border: none;
+  padding-bottom: 0;
+  font-size: 14px;
+
+}
 
 /*AddNewProject and form*/
 .main-heading {
