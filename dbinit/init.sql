@@ -101,6 +101,15 @@ CREATE TABLE project_note (
     CONSTRAINT FK_ProjectNote_Project FOREIGN KEY (project_id) REFERENCES projects (project_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) AUTO_INCREMENT = 1;
 
+-- -----------------------------------------------------
+-- Table `student_project`
+-- -----------------------------------------------------
+CREATE TABLE student_project (
+    student_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
+    project_number INT DEFAULT 0,
+    PRIMARY KEY (student_id, project_id)
+);
 
 -- -- -----------------------------------------------------
 -- -- Table `company_teacher`

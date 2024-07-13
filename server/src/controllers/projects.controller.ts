@@ -29,26 +29,8 @@ export const getProjects = async (req: Request, res: Response): Promise<Response
         console.error(`[${new Date().toLocaleString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching projects'));
-    }
-};
-
-export const getProject = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
-    console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
-    try {
-        const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.project_id]);
-        if ((result[0] as Array<ResultSet>).length > 0) {
-            return res.status(Code.OK)
-                .send(new HttpResponse(Code.OK, Status.OK, 'Project fetched successfully', result[0]));
-        } else {
-            return res.status(Code.NOT_FOUND)
-                .send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, 'Project not found'));
-        }
-    } catch (error: unknown) {
-        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
-        return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching project'));
-
+    } finally {
+        if (connection) connection.release();
     }
 };
 
@@ -112,18 +94,51 @@ export const deleteProject = async (req: Request, res: Response): Promise<Respon
     }
 };
 
-export const addProjectNote = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+export const getStudentProjects = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
-    const {project_id} = req.params;
-    const { note, document_path } = req.body;
+    let connection: any;
     try {
-        const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.INSERT_PROJECT_NOTE, [project_id, note, document_path]);
-        return res.status(Code.CREATED)
-            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Project note added successfully'));
+        connection = await pool.getConnection();
+        const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT_PROJECTS);
+        console.log(result);
+        if ((result[0] as Array<ResultSet>).length === 0) {
+            return res.status(Code.NOT_FOUND)
+                .send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, 'No student_projects found'));
+        } else
+            return res.status(Code.OK)
+                .send(new HttpResponse(Code.OK, Status.OK, 'Student projects fetched successfully', result[0]));
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while adding project note'));
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching student projects'));
+    } finally {
+        if (connection) connection.release();
     }
-}
+};
+
+export const createStudentProject = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
+    let studentProject: StudentProject = { ...req.body };
+    let projectNumber: number;
+    let connection: any;
+    try {
+        connection = await pool.getConnection();
+        const previousProjects: ResultSet = await pool.query(QUERY.SELECT_STUDENT_PROJECTS_BY_STUDENT_ID, [studentProject.student_id]);
+        if ((previousProjects[0] as Array<ResultSet>).length === 0) {
+            projectNumber = 1;
+        } else {
+            projectNumber = (previousProjects[0] as Array<ResultSet>).length + 1;
+        }
+        studentProject.project_number = projectNumber;
+        const result: ResultSet = await pool.query(QUERY.CREATE_STUDENT_PROJECT, Object.values(studentProject));
+        return res.status(Code.CREATED)
+            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Student project created successfully', studentProject));
+    } catch (error: unknown) {
+        console.error(`[${new Date().toLocaleString()}] ${error}`);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating student project'));
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
