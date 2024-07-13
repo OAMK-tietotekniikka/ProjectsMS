@@ -34,7 +34,7 @@ export const getProject = async (req: Request, res: Response): Promise<Response<
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     try {
         const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.projectId]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.project_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Project fetched successfully', result[0]));
@@ -105,3 +105,19 @@ export const deleteProject = async (req: Request, res: Response): Promise<Respon
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while deleting project'));
     }
 };
+
+export const addProjectNote = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
+    const {project_id} = req.params;
+    const { note, document_path } = req.body;
+    try {
+        const pool = await connection();
+        const result: ResultSet = await pool.query(QUERY.INSERT_PROJECT_NOTE, [project_id, note, document_path]);
+        return res.status(Code.CREATED)
+            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Project note added successfully'));
+    } catch (error: unknown) {
+        console.error(`[${new Date().toLocaleString()}] ${error}`);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while adding project note'));
+    }
+}

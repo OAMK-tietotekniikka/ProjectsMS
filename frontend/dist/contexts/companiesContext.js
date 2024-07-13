@@ -87,7 +87,7 @@ const CompaniesContextProvider = (props) => {
         addCompany,
         addFavoCompany
     };
-    return (_jsx(CompaniesContext.Provider, Object.assign({ value: value }, { children: props.children })));
+    return (_jsx(CompaniesContext.Provider, { value: value, children: props.children }));
 };
 export const useCompaniesContext = () => {
     const context = React.useContext(CompaniesContext);

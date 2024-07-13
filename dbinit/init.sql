@@ -85,15 +85,29 @@ CONSTRAINT teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) 
 )AUTO_INCREMENT = 1;
 
 -- -----------------------------------------------------
--- Table `company_teacher`
+-- Table `project_note`
 -- -----------------------------------------------------
-CREATE TABLE company_teacher (
-    company_id BIGINT UNSIGNED NOT NULL,
-    teacher_id BIGINT UNSIGNED NOT NULL,
-    PRIMARY KEY (company_id, teacher_id),
-    CONSTRAINT comp_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT comp_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE NO ACTION ON UPDATE NO ACTION
-);
+CREATE TABLE project_note (
+    note_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    project_id    BIGINT UNSIGNED DEFAULT NULL,
+    note          VARCHAR(300) DEFAULT NULL,
+    document_path VARCHAR(255) DEFAULT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (note_id),
+    CONSTRAINT FK_ProjectNote_Project FOREIGN KEY (project_id) REFERENCES projects (project_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+) AUTO_INCREMENT = 1;
+
+
+-- -- -----------------------------------------------------
+-- -- Table `company_teacher`
+-- -- -----------------------------------------------------
+-- CREATE TABLE company_teacher (
+--     company_id BIGINT UNSIGNED NOT NULL,
+--     teacher_id BIGINT UNSIGNED NOT NULL,
+--     PRIMARY KEY (company_id, teacher_id),
+--     CONSTRAINT comp_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+--     CONSTRAINT comp_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+-- );
 
 
 -- Insert student data

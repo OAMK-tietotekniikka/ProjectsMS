@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 function App() {
     const { user } = useUserContext();
-    return (_jsx("div", { children: _jsxs(Router, { children: [_jsx(NavbarComponent, {}), _jsxs("div", Object.assign({ style: { display: 'flex' } }, { children: [" ", (user !== "") ? _jsx(SidebarComponent, {}) : null, " ", _jsxs("div", Object.assign({ style: { flex: 1 } }, { children: [" ", _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(LandingPage, {}) }), _jsx(Route, { path: "/teacher", element: _jsx(TeacherDashboard, {}) }), _jsx(Route, { path: "/student", element: _jsx(StudentDashboard, {}) }), _jsx(Route, { path: "/form", element: _jsx(AddNewProject, {}) })] })] }))] }))] }) }));
+    return (_jsx("div", { children: _jsxs(Router, { children: [_jsx(NavbarComponent, {}), _jsxs("div", { style: { display: 'flex' }, children: [" ", (user !== "") ? _jsx(SidebarComponent, {}) : null, " ", _jsxs("div", { style: { flex: 1 }, children: [" ", _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(LandingPage, {}) }), _jsx(Route, { path: "/teacher", element: _jsx(TeacherDashboard, {}) }), _jsx(Route, { path: "/student", element: _jsx(StudentDashboard, {}) }), _jsx(Route, { path: "/form", element: _jsx(AddNewProject, {}) })] })] })] })] }) }));
 }
 ;
 export default App;
