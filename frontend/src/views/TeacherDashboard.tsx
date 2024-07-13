@@ -13,24 +13,26 @@ import '../App.css'
 
 
 const TeacherDashboard: React.FC = () => {
-    const { resources } = useTeachersContext();
+    const { resources, signedInTeacher } = useTeachersContext();
     const { companies } = useCompaniesContext();
     const { t } = useTranslation();
     const currentDate = new Date();
     const stydyYear = getStudyYear(currentDate);
-    const [ showPastResources, setShowPastResources ] = useState(false);
+    const [showPastResources, setShowPastResources] = useState(false);
 
-    // teacher_id and teacher name below will be replaced with the actual values when the teacher login is implemented
-    const teacherCurrentResource = resources.find((resource) => resource.study_year === stydyYear && resource.teacher_id === 1);
+    // teacher_id will be replaced with the actual values when the teacher login is implemented
+    const teacherCurrentResource = resources?.find((resource) => resource.study_year === stydyYear && resource.teacher_id === 1) || null;
 
     return (
         <Container className='teacher-main-container'>
-            <Row style={{width: "100%"}}>
-                <Col xs={12} md={10} lg={11}>
-                    <div>
-                        <h4>Teacher Name</h4>
-                        <div style={{ fontSize: "small" }}>teacher@email</div>
-                    </div>
+            <Row style={{ width: "100%" }}>
+                <Col xs={12} md={12} lg={11}>
+                    {signedInTeacher ?
+                        <div>
+                            <h4>{signedInTeacher.first_name} {signedInTeacher.last_name}</h4>
+                            <div style={{ fontSize: "small" }}>{signedInTeacher.email}</div>
+                        </div>
+                        : "No teacher data"}
                     <div className='item-group'>
                         <div className='second-heading'>{t('resourcesCurr')} {stydyYear} </div>
                         {teacherCurrentResource ? (
@@ -57,12 +59,12 @@ const TeacherDashboard: React.FC = () => {
                         <div className='second-heading'>{t('addCompFavo')}</div>
                         <FavoCompDropdown data={companies} />
                     </div>
-                    
+
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsCurr')}</div>
                         <OngoingProjectsList />
                     </div>
-                    
+
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsPast')}</div>
                     </div>

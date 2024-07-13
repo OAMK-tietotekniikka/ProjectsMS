@@ -28,9 +28,9 @@ const PastResources: React.FC<PastResourcesProps> = ({ resources, id, showTable,
             <Table hover size='sm'>
                 <thead>
                     <tr style={{ fontSize: "13px", backgroundColor: "#eaeaea" }}>
-                        <th>Study Year</th>
-                        <th>Total Resources</th>
-                        <th>Used Resources</th>
+                        <th>{t('studyYear')}</th>
+                        <th>{t('totRes')}</th>
+                        <th>{t('usedRes')}</th>
                     </tr>
                 </thead>
                 <tbody>

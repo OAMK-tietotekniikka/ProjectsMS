@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Resource } from "../interface/resource";
-import { connection } from "../config/mysql.config";
+import pool from "../config/mysql.config";
 import { Code } from "../enum/code.enum";
 import { Status } from "../enum/status.enum";
 import { HttpResponse } from "../domain/response";
@@ -11,8 +11,9 @@ type ResultSet = [RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | 
 
 export const getResources = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_RESOURCES);
         return res.status(Code.OK)
             .send(new HttpResponse(Code.OK, Status.OK, 'Resources fetched successfully', result[0]));
@@ -22,14 +23,17 @@ export const getResources = async (req: Request, res: Response): Promise<Respons
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching resources'));
 
+    } finally {
+        if (connection) connection.release();
     }
 };
 
 export const createResource = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let resource: Resource = { ...req.body };
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.CREATE_RESOURCE, Object.values(resource));
         resource = { resource_id: (result[0] as ResultSetHeader).insertId, ...req.body };
         return res.status(Code.CREATED)
@@ -38,14 +42,17 @@ export const createResource = async (req: Request, res: Response): Promise<Respo
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating company'));
+    } finally {
+        if (connection) connection.release();
     }
 };
 
 export const updateResource = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let resource: Resource = { ...req.body };
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const findResource: ResultSet = await pool.query(QUERY.SELECT_RESOURCE, [req.params.resource_id]);
         if ((findResource[0] as RowDataPacket[]).length === 0) {
             return res.status(Code.NOT_FOUND)

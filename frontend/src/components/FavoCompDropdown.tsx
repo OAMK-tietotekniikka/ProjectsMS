@@ -77,7 +77,7 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
                             {t('select')}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {data.map((item: any, index) => (
+                            {data?.map((item: any, index) => (
                                 <Dropdown.Item
                                     key={index}
                                     onClick={() => addToList(item)}
@@ -86,7 +86,7 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
                                 >
                                     {item.company_name}
                                 </Dropdown.Item>
-                            ))}
+                            )) || <Dropdown.Item>{t('noComp')}</Dropdown.Item>}
                         </Dropdown.Menu>
                     </Dropdown>
                     <div style={{ marginLeft: "20%" }}>

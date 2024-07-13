@@ -12,14 +12,16 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/ProjectForm';
 import { useTranslation } from 'react-i18next';
-import { addProject, sendEmailNotification } from '../contexts/apiRequests';
+import { sendEmailNotification } from '../contexts/apiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
+import { useProjectsContext } from '../contexts/projectsContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { teachers } = useTeachersContext();
+    const { addNewProject } = useProjectsContext();
     const handleFormSubmit = (formData, companyId, teacherId, companyName) => __awaiter(void 0, void 0, void 0, function* () {
         // add company_id and teacher_id to formData
         formData.company_id = companyId;
@@ -34,7 +36,8 @@ const AddNewProject = () => {
             Start Date: ${formattedStartDate}\n
             Please login to the projects management system to view the project details.`;
         try {
-            const response = yield addProject(formData);
+            const studentId = 1; // replace with actual student id when student login is implemented
+            const response = yield addNewProject(formData, studentId);
             if (response.statusCode === 201) {
                 const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);
                 if (selectedTeacher) {

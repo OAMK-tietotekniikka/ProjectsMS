@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/ProjectForm';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../interface/formData';
-import { addProject, sendEmailNotification } from '../contexts/apiRequests';
+import { sendEmailNotification } from '../contexts/apiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
+import { useProjectsContext } from '../contexts/projectsContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css'
 
@@ -14,6 +15,7 @@ const AddNewProject: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { teachers } = useTeachersContext();
+    const { addNewProject } = useProjectsContext();
     
     const handleFormSubmit = async (formData: ProjectFormData, companyId: number, teacherId: number, companyName: String) => {
         // add company_id and teacher_id to formData
@@ -32,7 +34,8 @@ const AddNewProject: React.FC = () => {
             Please login to the projects management system to view the project details.`;
 
         try {
-            const response = await addProject(formData);
+            const studentId = 1; // replace with actual student id when student login is implemented
+            const response = await addNewProject(formData, studentId);
             if (response.statusCode === 201) {
                 const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);
                 

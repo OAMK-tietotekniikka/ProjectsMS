@@ -34,7 +34,7 @@ export const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_c = error.response) === null || _c === void 0 ? void 0 : _c.data);
+            console.error('Failed to fetch data:', (_c = error.response) === null || _c === void 0 ? void 0 : _c.data);
             return (_d = error.response) === null || _d === void 0 ? void 0 : _d.data;
         }
         else {
@@ -42,12 +42,10 @@ export const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* 
         }
     }
 });
-// Teachers API requests
-export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
+export const addStudentProject = (studentId, projectId) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        // verify the actual endpoint
-        const response = yield axios.get(`${baseUrl}/teachers`);
+        const response = yield axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId });
         return response.data;
     }
     catch (error) {
@@ -60,15 +58,16 @@ export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () 
         }
     }
 });
-export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+export const getAllStudentProjects = () => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`);
+        const response = yield axios.get(`${baseUrl}/projects/student`);
+        console.log('Student projects:', response.data);
         return response.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_g = error.response) === null || _g === void 0 ? void 0 : _g.data);
+            console.error('Failed to fetch data:', (_g = error.response) === null || _g === void 0 ? void 0 : _g.data);
             return (_h = error.response) === null || _h === void 0 ? void 0 : _h.data;
         }
         else {
@@ -76,11 +75,12 @@ export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, 
         }
     }
 });
-// Resources API requests
-export const getResources = () => __awaiter(void 0, void 0, void 0, function* () {
+// Teachers API requests
+export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.get(`${baseUrl}/resources`);
+        // verify the actual endpoint
+        const response = yield axios.get(`${baseUrl}/teachers`);
         return response.data;
     }
     catch (error) {
@@ -93,10 +93,10 @@ export const getResources = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
+export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
     var _l, _m;
     try {
-        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`);
         return response.data;
     }
     catch (error) {
@@ -109,11 +109,11 @@ export const updateResource = (resource_id, resource) => __awaiter(void 0, void 
         }
     }
 });
-// Companies API requests
-export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
+// Resources API requests
+export const getResources = () => __awaiter(void 0, void 0, void 0, function* () {
     var _o, _p;
     try {
-        const response = yield axios.get(`${baseUrl}/companies`);
+        const response = yield axios.get(`${baseUrl}/resources`);
         return response.data;
     }
     catch (error) {
@@ -126,20 +126,11 @@ export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
     var _q, _r;
-    console.log('company_name:', company_name);
     try {
-        const response = yield axios.post(`${baseUrl}/companies`, { company_name });
-        if (response.data.statusCode === 201) {
-            alert('New Company added successfully.');
-            console.log('New Company added successfully:', response.data);
-            return response.data.data;
-        }
-        else {
-            console.error('Unexpected status code:', response.data.statusCode);
-            return null;
-        }
+        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        return response.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
@@ -151,10 +142,11 @@ export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0,
         }
     }
 });
-export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+// Companies API requests
+export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
     var _s, _t;
     try {
-        const response = yield axios.get(`${baseUrl}/companies/favo/${teacher_id}`);
+        const response = yield axios.get(`${baseUrl}/companies`);
         return response.data;
     }
     catch (error) {
@@ -167,12 +159,14 @@ export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0
         }
     }
 });
-export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0, void 0, function* () {
+export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
     var _u, _v;
+    console.log('company_name:', company_name);
     try {
-        const response = yield axios.post(`${baseUrl}/companies/favo`, companyFavourity);
+        const response = yield axios.post(`${baseUrl}/companies`, { company_name });
         if (response.data.statusCode === 201) {
-            console.log('New company favourity added successfully:', response.data);
+            alert('New Company added successfully.');
+            console.log('New Company added successfully:', response.data);
             return response.data.data;
         }
         else {
@@ -190,10 +184,10 @@ export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0,
         }
     }
 });
-export const deleteFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
     var _w, _x;
     try {
-        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        const response = yield axios.get(`${baseUrl}/companies/favo/${teacher_id}`);
         return response.data;
     }
     catch (error) {
@@ -206,17 +200,73 @@ export const deleteFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, voi
         }
     }
 });
+export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0, void 0, function* () {
+    var _y, _z;
+    try {
+        const response = yield axios.post(`${baseUrl}/companies/favo`, companyFavourity);
+        if (response.data.statusCode === 201) {
+            console.log('New company favourity added successfully:', response.data);
+            return response.data.data;
+        }
+        else {
+            console.error('Unexpected status code:', response.data.statusCode);
+            return null;
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_y = error.response) === null || _y === void 0 ? void 0 : _y.data);
+            return (_z = error.response) === null || _z === void 0 ? void 0 : _z.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const deleteFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+    var _0, _1;
+    try {
+        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_0 = error.response) === null || _0 === void 0 ? void 0 : _0.data);
+            return (_1 = error.response) === null || _1 === void 0 ? void 0 : _1.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+// Students API requests
+export const getStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _2, _3;
+    try {
+        const response = yield axios.get(`${baseUrl}/students`);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_2 = error.response) === null || _2 === void 0 ? void 0 : _2.data);
+            return (_3 = error.response) === null || _3 === void 0 ? void 0 : _3.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
 // Email API requests
 export const sendEmailNotification = (to, subject, text) => __awaiter(void 0, void 0, void 0, function* () {
-    var _y, _z;
+    var _4, _5;
     try {
         const response = yield axios.post(`${baseUrl}/email`, { to, subject, text });
         return response;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_y = error.response) === null || _y === void 0 ? void 0 : _y.data);
-            return (_z = error.response) === null || _z === void 0 ? void 0 : _z.data;
+            console.error('Failed to write data:', (_4 = error.response) === null || _4 === void 0 ? void 0 : _4.data);
+            return (_5 = error.response) === null || _5 === void 0 ? void 0 : _5.data;
         }
         else {
             console.error('An unexpected error:', error);

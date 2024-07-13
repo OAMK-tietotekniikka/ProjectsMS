@@ -7,7 +7,9 @@ projectsRouter.route('/')
     .get(projects_controller_1.getProjects)
     .post(projects_controller_1.createProject);
 projectsRouter.route('/:project_id')
-    .get(projects_controller_1.getProject)
     .put(projects_controller_1.updateProject)
     .delete(projects_controller_1.deleteProject);
+projectsRouter.route('/student')
+    .get(projects_controller_1.getStudentProjects)
+    .post(projects_controller_1.createStudentProject);
 exports.default = projectsRouter;

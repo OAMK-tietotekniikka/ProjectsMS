@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { getTeachers, getResources, updateResource, getFavoCompanies } from "./apiRequests";
 import { Teacher } from "../interface/teacher";
 import { Resource } from "../interface/resource";
+import { use } from "i18next";
 
 
 interface TeachersContextType {
     teachers: Teacher[];
     setTeachers: React.Dispatch<React.SetStateAction<Teacher[]>>;
+    signedInTeacher: Teacher;
     resources: Resource[];
     setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
     updateTeacherResource: (id: number, resource: Resource) => Promise<Resource>;
@@ -17,6 +19,7 @@ const TeachersContext = React.createContext<TeachersContextType>({} as TeachersC
 const TeachersContextProvider = (props: any) => {
     const [teachers, setTeachers] = useState<Teacher[]>([]);
     const [resources, setResources] = useState<Resource[]>([]);
+    const [signedInTeacher, setSignedInTeacher] = useState<Teacher | null>(null);
 
     useEffect(() => {
         const fetchTeachers = async () => {
@@ -28,7 +31,7 @@ const TeachersContextProvider = (props: any) => {
             }
         };
         fetchTeachers();
-        
+
     }, []);
 
     useEffect(() => {
@@ -41,8 +44,16 @@ const TeachersContextProvider = (props: any) => {
             }
         };
         fetchResources();
-        
+
     }, []);
+
+    useEffect(() => {
+        if (!teachers) return;
+        const teacher = teachers.find(t => t.teacher_id === 1); // hardcoded for now
+        if (teacher) {
+            setSignedInTeacher(teacher);
+        }
+    }, [teachers]);
 
     const updateTeacherResource = async (id: number, resource: Resource) => {
         try {
@@ -55,15 +66,16 @@ const TeachersContextProvider = (props: any) => {
         }
     };
 
-    let value = { 
+    let value = {
         teachers,
         setTeachers,
+        signedInTeacher,
         resources,
         setResources,
         updateTeacherResource
     };
 
-    return  (
+    return (
         <TeachersContext.Provider value={value}>
             {props.children}
         </TeachersContext.Provider>
