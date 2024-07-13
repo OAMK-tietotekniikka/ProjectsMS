@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Student } from "../interface/student";
-import { connection } from "../config/mysql.config";
+import pool from "../config/mysql.config";
 import { Code } from "../enum/code.enum";
 import { Status } from "../enum/status.enum";
 import { HttpResponse } from "../domain/response";
@@ -12,8 +12,9 @@ type ResultSet = [RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | 
 
 export const getStudents = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_STUDENTS);
         return res.status(Code.OK)
             .send(new HttpResponse(Code.OK, Status.OK, 'Students fetched successfully', result[0]));
@@ -22,14 +23,16 @@ export const getStudents = async (req: Request, res: Response): Promise<Response
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
-
+    } finally {
+        if (connection) connection.release();
     }
 };
 
 export const getStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT, [req.params.student_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             return res.status(Code.OK)
@@ -50,8 +53,9 @@ export const getStudent = async (req: Request, res: Response): Promise<Response<
 export const createStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let student: Student = { ...req.body };
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.CREATE_STUDENT, Object.values(student));
         student = { student_id: (result[0] as ResultSetHeader).insertId, ...req.body };
         return res.status(Code.CREATED)
@@ -67,8 +71,9 @@ export const createStudent = async (req: Request, res: Response): Promise<Respon
 export const updateStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let student: Student = { ...req.body };
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT, [req.params.student_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             const result: ResultSet = await pool.query(QUERY.UPDATE_STUDENT, [...Object.values(student), req.params.student_id]);
@@ -88,8 +93,9 @@ export const updateStudent = async (req: Request, res: Response): Promise<Respon
 
 export const deleteStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection: any;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT, [req.params.student_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             const result: ResultSet = await pool.query(QUERY.DELETE_STUDENT, [req.params.student_id]);

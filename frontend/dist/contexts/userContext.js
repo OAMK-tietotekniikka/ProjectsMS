@@ -16,7 +16,7 @@ const UserContextProvider = (props) => {
         isAuthenticated,
         setIsAuthenticated
     };
-    return (_jsx(UserContext.Provider, Object.assign({ value: value }, { children: props.children })));
+    return (_jsx(UserContext.Provider, { value: value, children: props.children }));
 };
 export const useUserContext = () => {
     const context = React.useContext(UserContext);

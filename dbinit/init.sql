@@ -1,11 +1,15 @@
 CREATE DATABASE IF NOT EXISTS studentsdb;
 USE studentsdb;
-DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS company_teacher;
+DROP TABLE IF EXISTS student_project;
+DROP TABLE IF EXISTS resources;
 DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS teachers;
 DROP TABLE IF EXISTS companies;
-DROP TABLE IF EXISTS resources;
-DROP TABLE IF EXISTS company_teacher;
+
+
+
 
 -- -----------------------------------------------------
 -- Table `students`
@@ -49,7 +53,7 @@ CONSTRAINT name_company_id FOREIGN KEY (company_id) REFERENCES companies (compan
 -- Table `teachers`
 -- -----------------------------------------------------
 
-CREEATE TABLE teachers
+CREATE TABLE teachers
 (teacher_id  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 first_name   VARCHAR(255) DEFAULT NULL,
 last_name    VARCHAR(255) DEFAULT NULL,
@@ -64,7 +68,7 @@ CONSTRAINT UQ_Teachers_Email UNIQUE (email)
 -- -----------------------------------------------------
 
 CREATE TABLE companies
-(company_id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+(company_id  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 company_name VARCHAR(255) DEFAULT NULL,
 created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (company_id)
@@ -95,6 +99,15 @@ CREATE TABLE company_teacher (
     CONSTRAINT comp_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+-- -----------------------------------------------------
+-- Table `student_project`
+-- -----------------------------------------------------
+CREATE TABLE student_project (
+    student_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
+    project_number INT DEFAULT 0,
+    PRIMARY KEY (student_id, project_id)
+);
 
 -- Insert student data
 INSERT INTO students (first_name, last_name, email, class_code, password)
@@ -106,10 +119,10 @@ VALUES ('Jane', 'Doe', 'janedoe@email.com', 'din20sp', '1235');
 
 -- Insert project data
 INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
-VALUES ('Project 1', 'This is project 1', 1, 1, 'In Progress', 'http://project1.com', '2021-01-01', '2021-02-01');
+VALUES ('Project 1', 'This is project 1', 1, 1, 'ongoing', 'http://project1.com', '2021-01-01', '2021-02-01');
 
 INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
-VALUES ('Project 2', 'This is project 2', 2, 2, 'Completed', 'http://project2.com', '2021-02-01', '2021-03-01');
+VALUES ('Project 2', 'This is project 2', 2, 2, 'completed', 'http://project2.com', '2021-02-01', '2021-03-01');
 
 
 -- Insert company data
@@ -135,13 +148,13 @@ VALUES ('Teacher', 'Three', 'teacher3@mail.com');
 -- Insert company_teacher data
 
 INSERT INTO company_teacher (company_id, teacher_id)
-VALUES (1,1);
+VALUES (2,1);
 
 INSERT INTO company_teacher (company_id, teacher_id)
 VALUES (1,2);
 
 INSERT INTO company_teacher (company_id, teacher_id)
-VALUES (5,1);
+VALUES (3,1);
 
 -- Insert resources data
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
@@ -151,13 +164,24 @@ INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
 VALUES (2, 20, 0, '2023-2024');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
+VALUES (1, 7, 0, '2023-2024');
+
+INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
 VALUES (1, 5, 2, '2020-2021');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
 VALUES (3, 5, 5, '2023-2024');
 
 INSERT INTO resources (teacher_id, total_resources, used_resources, study_year)
-VALUES (5, 5, 0, '2023-2024'); 
+VALUES (1, 5, 0, '2023-2024'); 
+
+-- Insert student_project data
+
+INSERT INTO student_project (student_id, project_id, project_number)
+VALUES (1, 4, 2);
+
+INSERT INTO student_project (student_id, project_id, project_number)
+VALUES (2, 5, 3);
 ```
 
 
