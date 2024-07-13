@@ -27,6 +27,20 @@ export const getAllProjects = async () => {
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
+            console.error('Failed to fetch data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
+export const addStudentProject = async (studentId: number, projectId: number) => {
+    try {
+        const response = await axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
             console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
@@ -34,6 +48,22 @@ export const getAllProjects = async () => {
         }
     }
 };
+
+export const getAllStudentProjects = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}/projects/student`);
+        console.log('Student projects:', response.data);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to fetch data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
 
 // Teachers API requests
 export const getTeachers = async () => {
@@ -169,6 +199,22 @@ export const addNewFavoCompany = async (companyFavourity: FavoCompany) => {
 export const deleteFavoCompanies = async (teacher_id: number) => {
     try {
         const response = await axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
+// Students API requests
+
+export const getStudents = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}/students`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

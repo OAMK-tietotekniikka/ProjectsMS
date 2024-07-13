@@ -1,32 +1,33 @@
-import { connection } from "./config/mysql.config";
+import pool from "./config/mysql.config";
 
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 
 const createTables = async () => {
+    let connection;
     try {
-        const pool = await connection();
+        connection = await pool.getConnection();
 
-        if (!pool) {
+        if (!connection) {
             throw new Error('Failed to get database connection pool');
         }
 
         //delete tables if they exist
-        await pool.execute('DROP TABLE IF EXISTS students');
-        await pool.execute('DROP TABLE IF EXISTS projects');
-        await pool.execute('DROP TABLE IF EXISTS companies');
-        await pool.execute('DROP TABLE IF EXISTS resources');
-        await pool.execute('DROP TABLE IF EXISTS teachers');
-        await pool.execute('DROP TABLE IF EXISTS company_teacher');
+        await connection.execute('DROP TABLE IF EXISTS students');
+        await connection.execute('DROP TABLE IF EXISTS projects');
+        await connection.execute('DROP TABLE IF EXISTS companies');
+        await connection.execute('DROP TABLE IF EXISTS resources');
+        await connection.execute('DROP TABLE IF EXISTS teachers');
+        await connection.execute('DROP TABLE IF EXISTS company_teacher');
         
         //create tables
-        await pool.execute(`CREATE TABLE IF NOT EXISTS companies (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS companies (
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (company_id)
         )`);
 
-        await pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS teachers (
             teacher_id INT NOT NULL AUTO_INCREMENT,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
@@ -35,14 +36,14 @@ const createTables = async () => {
             PRIMARY KEY (teacher_id)
         )`);
 
-        await pool.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
             company_id INT,
             teacher_id INT,
             Foreign Key (company_id) REFERENCES companies(company_id),
             Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
         )`);
 
-        await pool.execute(`CREATE TABLE IF NOT EXISTS projects (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT NOT NULL AUTO_INCREMENT,
             project_name VARCHAR(255) DEFAULT NULL,
             project_desc TEXT DEFAULT NULL,
@@ -58,7 +59,7 @@ const createTables = async () => {
             Foreign Key (company_id) REFERENCES companies(company_id)
         )`);
 
-        await pool.execute(`CREATE TABLE IF NOT EXISTS students (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS students (
             student_id INT NOT NULL AUTO_INCREMENT,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
@@ -70,7 +71,7 @@ const createTables = async () => {
             UNIQUE (email)
         )`);
 
-        await pool.execute(`CREATE TABLE IF NOT EXISTS resources (
+        await connection.execute(`CREATE TABLE IF NOT EXISTS resources (
             resource_id INT NOT NULL AUTO_INCREMENT,
             teacher_id INT DEFAULT NULL,
             total_resources INT DEFAULT NULL,
@@ -83,7 +84,10 @@ const createTables = async () => {
         console.log('Tables created successfully');
     } catch (error) {
         console.error(`Table creation failed: [${new Date().toLocaleDateString()}] ${error}`);
+    } finally {
+        if (connection) connection.release(); 
     }
+
 };
 
 export default createTables;

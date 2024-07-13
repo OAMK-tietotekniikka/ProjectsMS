@@ -7,5 +7,7 @@ import i18n from './i18next';
 import TeachersContextProvider from './contexts/teachersContext';
 import CompaniesContextProvider from './contexts/companiesContext';
 import UserContextProvider from './contexts/userContext';
+import ProjectsContextProvider from './contexts/projectsContext';
+import StudentsContextProvider from './contexts/studentsContext';
 import './index.css';
-ReactDOM.createRoot(document.getElementById('root')).render(_jsx(React.StrictMode, { children: _jsx(I18nextProvider, Object.assign({ i18n: i18n }, { children: _jsx(UserContextProvider, { children: _jsx(TeachersContextProvider, { children: _jsx(CompaniesContextProvider, { children: _jsx(App, {}) }) }) }) })) }));
+ReactDOM.createRoot(document.getElementById('root')).render(_jsx(React.StrictMode, { children: _jsx(I18nextProvider, { i18n: i18n, children: _jsx(UserContextProvider, { children: _jsx(ProjectsContextProvider, { children: _jsx(StudentsContextProvider, { children: _jsx(TeachersContextProvider, { children: _jsx(CompaniesContextProvider, { children: _jsx(App, {}) }) }) }) }) }) }) }));

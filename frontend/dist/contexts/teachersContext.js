@@ -14,6 +14,7 @@ const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
     const [resources, setResources] = useState([]);
+    const [signedInTeacher, setSignedInTeacher] = useState(null);
     useEffect(() => {
         const fetchTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -38,6 +39,14 @@ const TeachersContextProvider = (props) => {
         });
         fetchResources();
     }, []);
+    useEffect(() => {
+        if (!teachers)
+            return;
+        const teacher = teachers.find(t => t.teacher_id === 1); // hardcoded for now
+        if (teacher) {
+            setSignedInTeacher(teacher);
+        }
+    }, [teachers]);
     const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateResource(id, resource);
@@ -52,11 +61,12 @@ const TeachersContextProvider = (props) => {
     let value = {
         teachers,
         setTeachers,
+        signedInTeacher,
         resources,
         setResources,
         updateTeacherResource
     };
-    return (_jsx(TeachersContext.Provider, Object.assign({ value: value }, { children: props.children })));
+    return (_jsx(TeachersContext.Provider, { value: value, children: props.children }));
 };
 export const useTeachersContext = () => {
     const context = React.useContext(TeachersContext);

@@ -8,30 +8,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mysql_config_1 = require("./config/mysql.config");
+const mysql_config_1 = __importDefault(require("./config/mysql.config"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        if (!pool) {
+        connection = yield mysql_config_1.default.getConnection();
+        if (!connection) {
             throw new Error('Failed to get database connection pool');
         }
         //delete tables if they exist
-        yield pool.execute('DROP TABLE IF EXISTS students');
-        yield pool.execute('DROP TABLE IF EXISTS projects');
-        yield pool.execute('DROP TABLE IF EXISTS companies');
-        yield pool.execute('DROP TABLE IF EXISTS resources');
-        yield pool.execute('DROP TABLE IF EXISTS teachers');
-        yield pool.execute('DROP TABLE IF EXISTS company_teacher');
+        yield connection.execute('DROP TABLE IF EXISTS students');
+        yield connection.execute('DROP TABLE IF EXISTS projects');
+        yield connection.execute('DROP TABLE IF EXISTS companies');
+        yield connection.execute('DROP TABLE IF EXISTS resources');
+        yield connection.execute('DROP TABLE IF EXISTS teachers');
+        yield connection.execute('DROP TABLE IF EXISTS company_teacher');
         //create tables
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS companies (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS companies (
             company_id INT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (company_id)
         )`);
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS teachers (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS teachers (
             teacher_id INT NOT NULL AUTO_INCREMENT,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
@@ -39,13 +43,13 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (teacher_id)
         )`);
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
             company_id INT,
             teacher_id INT,
             Foreign Key (company_id) REFERENCES companies(company_id),
             Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
         )`);
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS projects (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT NOT NULL AUTO_INCREMENT,
             project_name VARCHAR(255) DEFAULT NULL,
             project_desc TEXT DEFAULT NULL,
@@ -60,7 +64,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             Foreign Key (teacher_id) REFERENCES teachers(teacher_id),
             Foreign Key (company_id) REFERENCES companies(company_id)
         )`);
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS students (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS students (
             student_id INT NOT NULL AUTO_INCREMENT,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
@@ -71,7 +75,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             PRIMARY KEY (student_id),
             UNIQUE (email)
         )`);
-        yield pool.execute(`CREATE TABLE IF NOT EXISTS resources (
+        yield connection.execute(`CREATE TABLE IF NOT EXISTS resources (
             resource_id INT NOT NULL AUTO_INCREMENT,
             teacher_id INT DEFAULT NULL,
             total_resources INT DEFAULT NULL,
@@ -85,6 +89,10 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.error(`Table creation failed: [${new Date().toLocaleDateString()}] ${error}`);
+    }
+    finally {
+        if (connection)
+            connection.release();
     }
 });
 exports.default = createTables;

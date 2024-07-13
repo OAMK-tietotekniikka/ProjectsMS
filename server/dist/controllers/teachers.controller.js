@@ -8,18 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTeachersByCompany = exports.updateTeacher = exports.createTeacher = exports.getTeacher = exports.getTeachers = void 0;
-const mysql_config_1 = require("../config/mysql.config");
+const mysql_config_1 = __importDefault(require("../config/mysql.config"));
 const code_enum_1 = require("../enum/code.enum");
 const status_enum_1 = require("../enum/status.enum");
 const response_1 = require("../domain/response");
 const teachers_query_1 = require("../query/teachers.query");
 const getTeachers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(teachers_query_1.QUERY.SELECT_TEACHERS);
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHERS);
         return res.status(code_enum_1.Code.OK)
             .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teachers fetched successfully', result[0]));
     }
@@ -28,13 +32,18 @@ const getTeachers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
             .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching teachers'));
     }
+    finally {
+        if (connection)
+            connection.release();
+    }
 });
 exports.getTeachers = getTeachers;
 const getTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(teachers_query_1.QUERY.SELECT_TEACHER, [req.params.teacher_id]);
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHER, [req.params.teacher_id]);
         if (result[0].length > 0) {
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher fetched successfully', result[0]));
@@ -54,9 +63,10 @@ exports.getTeacher = getTeacher;
 const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let teacher = Object.assign({}, req.body);
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(teachers_query_1.QUERY.CREATE_TEACHER, Object.values(teacher));
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.CREATE_TEACHER, Object.values(teacher));
         teacher = Object.assign({ teacher_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Teacher created successfully', teacher));
@@ -71,11 +81,12 @@ exports.createTeacher = createTeacher;
 const updateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let teacher = Object.assign({}, req.body);
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(teachers_query_1.QUERY.SELECT_TEACHERS, [req.params.student_id]);
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHERS, [req.params.student_id]);
         if (result[0].length > 0) {
-            const result = yield pool.query(teachers_query_1.QUERY.UPDATE_TEACHER, [...Object.values(teacher), req.params.student_id]);
+            const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.UPDATE_TEACHER, [...Object.values(teacher), req.params.student_id]);
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher updated', Object.assign(Object.assign({}, teacher), { id: req.params.student_id })));
         }
@@ -93,9 +104,10 @@ const updateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.updateTeacher = updateTeacher;
 const getTeachersByCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    let connection;
     try {
-        const pool = yield (0, mysql_config_1.connection)();
-        const result = yield pool.query(teachers_query_1.QUERY.SELECT_TEACHERS_BY_COMPANY, [req.params.company_name]);
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHERS_BY_COMPANY, [req.params.company_name]);
         if (result[0].length > 0) {
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teachers by company fetched successfully', result[0]));
@@ -109,6 +121,10 @@ const getTeachersByCompany = (req, res) => __awaiter(void 0, void 0, void 0, fun
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
             .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching teachers'));
+    }
+    finally {
+        if (connection)
+            connection.release();
     }
 });
 exports.getTeachersByCompany = getTeachersByCompany;
