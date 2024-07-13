@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS teachers;
 DROP TABLE IF EXISTS companies;
+DROP TABLE IF EXISTS project_note;
 
 
 

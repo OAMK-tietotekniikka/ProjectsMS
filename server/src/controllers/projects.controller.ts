@@ -142,3 +142,19 @@ export const createStudentProject = async (req: Request, res: Response): Promise
     }
 };
 
+export const addProjectNote = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
+    let connection: any;
+    try {
+        connection = await pool.getConnection();
+        const result: ResultSet = await pool.query(QUERY.INSERT_PROJECT_NOTE, [req.params.project_id, req.body.note, req.body.document_path]);
+        return res.status(Code.CREATED)
+            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Project note added successfully', req.body));
+    } catch (error: unknown) {
+        console.error(`[${new Date().toLocaleString()}] ${error}`);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while adding project note'));
+    } finally {
+        if (connection) connection.release();
+    }
+}
