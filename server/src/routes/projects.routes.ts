@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProject, getProjects, updateProject, deleteProject, getStudentProjects, createStudentProject } from "../controllers/projects.controller";
+import { createProject, getProjects, updateProject, deleteProject, getStudentProjects, createStudentProject ,addProjectNote} from "../controllers/projects.controller";
 
 
 const projectsRouter = Router();
@@ -11,6 +11,9 @@ projectsRouter.route('/')
 projectsRouter.route('/:project_id')
   .put(updateProject)
   .delete(deleteProject);
+
+projectsRouter.route('/:project_id/addNote')
+  .post(addProjectNote);
 
 projectsRouter.route('/student')
   .get(getStudentProjects)
