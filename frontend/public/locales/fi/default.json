@@ -41,5 +41,19 @@
   "enterNewComp": "Jos yritys ei ole listalla, lisää uusi yritys: ",
   "saveInput": "Tallenna yritys",
   "saveSelection": "Tallenna valinta",
-  "noFavoComp": "Ei suosikkilistalla olevia yrityksiä"
+  "noFavoComp": "Ei suosikkilistalla olevia yrityksiä",
+  "studyYear": "Lukuvuosi",
+  "studyGroup": "Ryhmä",
+  "started": "Aloitus",
+  "ended": "Loppuu",
+  "companyName": "Yritys",
+  "projectNo": "Projektinumero",
+  "setEnded": "Aseta päättyneeksi",
+  "noComp": "Ei yrityksiä",
+  "selectStudents": "Valitse opiskelijat",
+  "selectAll": "Valitse kaikki",
+  "selectByClass": "Valitse ryhmän mukaan",
+  "selectByYear": "Valitse lukuvuoden mukaan",
+  "selectByStudent": "Valitse opiskelijan nimellä",
+  "enterStudName": "Syötä opiskelijan nimi (Etunimi Sukunimi)"
 }

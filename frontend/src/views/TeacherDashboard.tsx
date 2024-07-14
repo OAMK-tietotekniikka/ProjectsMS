@@ -7,8 +7,10 @@ import { useCompaniesContext } from '../contexts/companiesContext';
 import PastResources from '../components/PastResources';
 import FavoCompDropdown from '../components/FavoCompDropdown';
 import OngoingProjectsList from '../components/OngoingProjectsList';
+import PastProjectsList from '../components/PastProjectsList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css'
+
 
 
 
@@ -67,6 +69,7 @@ const TeacherDashboard: React.FC = () => {
 
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsPast')}</div>
+                        <PastProjectsList />
                     </div>
                 </Col>
             </Row>
