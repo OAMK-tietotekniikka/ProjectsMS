@@ -150,6 +150,13 @@
   width: 100%;
   padding: 2% 0;
 }
+@media (max-width: 768px) {
+  .dropdown-row {
+    flex-direction: column;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
 .dropdown-toggle,
 .dropdown-toggle:focus {
   background-color: #f0f0f0;

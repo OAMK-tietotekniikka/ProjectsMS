@@ -36,7 +36,7 @@ const AddNewProject = () => {
             Start Date: ${formattedStartDate}\n
             Please login to the projects management system to view the project details.`;
         try {
-            const studentId = 1; // replace with actual student id when student login is implemented
+            const studentId = 2; // replace with actual student id when student login is implemented
             const response = yield addNewProject(formData, studentId);
             if (response.statusCode === 201) {
                 const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);

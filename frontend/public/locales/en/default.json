@@ -48,6 +48,12 @@
   "ended": "Ending",
   "companyName": "Company",
   "projectNo": "Project no",
-  "setEnded": "Set ended",
-  "noComp": "No companies added yet"
+  "setEnded": "Set completed",
+  "noComp": "No companies added yet",
+  "selectStudents": "Select students",
+  "selectAll": "Select all",
+  "selectByClass": "Select by class code",
+  "selectByYear": "Select by study year",
+  "selectByStudent": "Select by student name",
+  "enterStudName": "Enter student name (Firstname Lastname)"
 }
