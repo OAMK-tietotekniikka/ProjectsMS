@@ -11,8 +11,6 @@ DROP TABLE IF EXISTS companies;
 
 
 
-
-
 -- -----------------------------------------------------
 -- Table `students`
 -- -----------------------------------------------------
@@ -200,7 +198,7 @@ INSERT INTO student_project (student_id, project_id, project_number)
 VALUES (2, 2, 1);
 
 INSERT INTO student_project (student_id, project_id, project_number)
-VALUES (2, 4, 1);
+VALUES (2, 3, 3);
 ```
 
 

@@ -59,6 +59,8 @@ export const createProject = async (req: Request, res: Response): Promise<Respon
 export const updateProject = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     let project: Project = { ...req.body };
+    project.start_date = new Date(formatDate(new Date(project.start_date)));
+    project.end_date = new Date(formatDate(new Date(project.end_date)));
     let connection: any;
     try {
         connection = await pool.getConnection();
@@ -70,6 +72,8 @@ export const updateProject = async (req: Request, res: Response): Promise<Respon
         console.error(`[${new Date().toLocaleString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while updating project'));
+    } finally {
+        if (connection) connection.release();
     }
 };
 
@@ -100,7 +104,6 @@ export const getStudentProjects = async (req: Request, res: Response): Promise<R
     try {
         connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT_PROJECTS);
-        console.log(result);
         if ((result[0] as Array<ResultSet>).length === 0) {
             return res.status(Code.NOT_FOUND)
                 .send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, 'No student_projects found'));

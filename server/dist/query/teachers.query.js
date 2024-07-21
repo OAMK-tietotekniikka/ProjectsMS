@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QUERY = void 0;
 exports.QUERY = {
-    SELECT_TEACHERS: 'SELECT * FROM teachers ORDER BY created_at DESC LIMIT 50',
+    SELECT_TEACHERS: 'SELECT * FROM teachers ORDER BY last_name ASC LIMIT 50',
     SELECT_TEACHER: 'SELECT * FROM teachers WHERE teacher_id = ?',
     CREATE_TEACHER: 'INSERT INTO teachers (first_name, last_name, email) VALUES (?, ?, ?)',
     UPDATE_TEACHER: 'UPDATE teachers SET first_name = ?, last_name = ?, email = ? WHERE teacher_id = ?',

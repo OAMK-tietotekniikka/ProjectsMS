@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
 import { Resource } from '../interface/resource';
+import { newResource } from '../interface/newResource';
 import { FavoCompany } from '../interface/favoCompany';
 
 
@@ -52,11 +53,27 @@ export const addStudentProject = async (studentId: number, projectId: number) =>
 export const getAllStudentProjects = async () => {
     try {
         const response = await axios.get(`${baseUrl}/projects/student`);
-        console.log('Student projects:', response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             console.error('Failed to fetch data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
+export const updateProject = async (projectData: ProjectFormData, projectId: number) => {
+    try {
+        const response = await axios.put(`${baseUrl}/projects/${projectId}`, projectData);
+        if (response.data.statusCode === 200) {
+            alert('Project data updated successfully.');
+            return response.data;
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
             return error.response?.data;
         } else {
             console.error('An unexpected error:', error);
@@ -125,6 +142,23 @@ export const updateResource = async (resource_id: number, resource: Resource) =>
 
 };
 
+export const createResource = async (resource: newResource) => {
+    try {
+        const response = await axios.post(`${baseUrl}/resources`, resource);
+        if (response.data.statusCode === 201) {
+            alert('New resource created successfully.');
+            return response.data;
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
 // Companies API requests
 export const getCompanies = async () => {
     try {
@@ -146,7 +180,6 @@ export const addNewCompany = async (company_name: string) => {
         const response = await axios.post(`${baseUrl}/companies`, { company_name });
         if (response.data.statusCode === 201) {
             alert('New Company added successfully.');
-            console.log('New Company added successfully:', response.data);
             return response.data.data;
         } else {
             console.error('Unexpected status code:', response.data.statusCode);
@@ -180,7 +213,6 @@ export const addNewFavoCompany = async (companyFavourity: FavoCompany) => {
     try {
         const response = await axios.post(`${baseUrl}/companies/favo`, companyFavourity);
         if (response.data.statusCode === 201) {
-            console.log('New company favourity added successfully:', response.data);
             return response.data.data;
         } else {
             console.error('Unexpected status code:', response.data.statusCode);

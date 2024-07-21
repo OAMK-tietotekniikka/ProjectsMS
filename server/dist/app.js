@@ -16,9 +16,10 @@ const companies_routes_1 = __importDefault(require("./routes/companies.routes"))
 const teachers_routes_1 = __importDefault(require("./routes/teachers.routes"));
 const resources_routes_1 = __importDefault(require("./routes/resources.routes"));
 const email_routes_1 = __importDefault(require("./routes/email.routes"));
+const createTables_1 = __importDefault(require("./createTables"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 //Comment out when working with development/feature branch
-//createTables();
+(0, createTables_1.default)();
 class App {
     constructor(port = process.env.SERVER_PORT || 8080) {
         this.port = port;

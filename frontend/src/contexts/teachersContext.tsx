@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource, getFavoCompanies } from "./apiRequests";
+import { getTeachers, getResources, updateResource, getFavoCompanies, createResource } from "./apiRequests";
 import { Teacher } from "../interface/teacher";
 import { Resource } from "../interface/resource";
-import { use } from "i18next";
+import { newResource } from "../interface/newResource";
 
 
 interface TeachersContextType {
@@ -11,7 +11,9 @@ interface TeachersContextType {
     signedInTeacher: Teacher;
     resources: Resource[];
     setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
-    updateTeacherResource: (id: number, resource: Resource) => Promise<Resource>;
+    updateTeacherResource: (id: number, resource: newResource) => Promise<Resource>;
+    addTeacherResource: (resource: newResource) => Promise<Resource>;
+
 }
 
 const TeachersContext = React.createContext<TeachersContextType>({} as TeachersContextType);
@@ -58,11 +60,20 @@ const TeachersContextProvider = (props: any) => {
     const updateTeacherResource = async (id: number, resource: Resource) => {
         try {
             const response = await updateResource(id, resource);
-            console.log(`From updateTeacherResource, response:`, response);
             setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
             return response.data;
         } catch (error) {
             console.error("Failed to update resource:", error);
+        }
+    };
+
+    const addTeacherResource = async (resource: newResource) => {
+        try {
+            const response = await createResource(resource);
+            setResources(prevResources => [...prevResources, response.data]);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to add resource:", error);
         }
     };
 
@@ -72,7 +83,8 @@ const TeachersContextProvider = (props: any) => {
         signedInTeacher,
         resources,
         setResources,
-        updateTeacherResource
+        updateTeacherResource,
+        addTeacherResource
     };
 
     return (

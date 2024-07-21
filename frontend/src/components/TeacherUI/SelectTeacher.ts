@@ -1,6 +1,6 @@
-import { getTeachersByCompany } from "../contexts/apiRequests";
-import { Resource } from "../interface/resource";
-import { getStudyYear } from "./GetStudyYear";
+import { getTeachersByCompany } from "../../contexts/apiRequests";
+import { Resource } from "../../interface/resource";
+import { getStudyYear } from "../GetStudyYear";
 import i18n from 'i18next';
 
 export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<Resource> => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import ProjectForm from '../components/ProjectForm';
+import ProjectForm from '../components/StudentUI/ProjectForm';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../interface/formData';
 import { sendEmailNotification } from '../contexts/apiRequests';

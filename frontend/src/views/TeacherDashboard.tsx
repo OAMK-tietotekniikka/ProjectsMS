@@ -4,39 +4,39 @@ import { useTranslation } from 'react-i18next';
 import { getStudyYear } from '../components/GetStudyYear';
 import { useTeachersContext } from '../contexts/teachersContext';
 import { useCompaniesContext } from '../contexts/companiesContext';
-import PastResources from '../components/PastResources';
-import FavoCompDropdown from '../components/FavoCompDropdown';
-import OngoingProjectsList from '../components/OngoingProjectsList';
-import PastProjectsList from '../components/PastProjectsList';
+import PastResources from '../components/TeacherUI/PastResources';
+import FavoCompDropdown from '../components/TeacherUI/FavoCompDropdown';
+import OngoingProjectsList from '../components/TeacherUI/OngoingProjectsList';
+import PastProjectsList from '../components/TeacherUI/PastProjectsList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css'
 
 
-
-
 const TeacherDashboard: React.FC = () => {
-    const { resources, signedInTeacher } = useTeachersContext();
+    const { resources, signedInTeacher, teachers } = useTeachersContext();
     const { companies } = useCompaniesContext();
     const { t } = useTranslation();
     const currentDate = new Date();
-    const stydyYear = getStudyYear(currentDate);
+    const studyYear = getStudyYear(currentDate);
     const [showPastResources, setShowPastResources] = useState(false);
 
     // teacher_id will be replaced with the actual values when the teacher login is implemented
-    const teacherCurrentResource = resources?.find((resource) => resource.study_year === stydyYear && resource.teacher_id === 1) || null;
+    const teacherId = signedInTeacher?.teacher_id || null;
+    const teacherCurrentResource = resources?.find((resource) => resource.study_year === studyYear && resource.teacher_id === teacherId) || null;
+    const teacherDetails = teachers?.find((teacher) => teacher.teacher_id === teacherId) || null;
 
     return (
         <Container className='teacher-main-container'>
             <Row style={{ width: "100%" }}>
                 <Col xs={12} md={12} lg={11}>
-                    {signedInTeacher ?
+                    {teacherDetails ?
                         <div>
-                            <h4>{signedInTeacher.first_name} {signedInTeacher.last_name}</h4>
-                            <div style={{ fontSize: "small" }}>{signedInTeacher.email}</div>
+                            <h4>{teacherDetails.first_name} {teacherDetails.last_name}</h4>
+                            <div style={{ fontSize: "small" }}>{teacherDetails.email}</div>
                         </div>
                         : "No teacher data"}
                     <div className='item-group'>
-                        <div className='second-heading'>{t('resourcesCurr')} {stydyYear} </div>
+                        <div className='second-heading'>{t('resourcesCurr')} {studyYear} </div>
                         {teacherCurrentResource ? (
                             <>
                                 <div style={{ fontSize: "medium", paddingLeft: "5%" }}>
@@ -54,9 +54,8 @@ const TeacherDashboard: React.FC = () => {
                     </div>
                     <div className='item-group'>
                         <Button onClick={() => setShowPastResources(true)} className='resources-button'>{t('resourcesPast')}</ Button>
-                        {showPastResources ? <PastResources resources={resources} id={1} showTable={showPastResources} handleClose={() => setShowPastResources(false)} /> : null}
+                        {showPastResources ? <PastResources study_year={studyYear} resources={resources} id={teacherId} showTable={showPastResources} handleClose={() => setShowPastResources(false)} /> : null}
                     </div>
-
                     <div className='item-group'>
                         <div className='second-heading'>{t('addCompFavo')}</div>
                         <FavoCompDropdown data={companies} />
@@ -64,12 +63,12 @@ const TeacherDashboard: React.FC = () => {
 
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsCurr')}</div>
-                        <OngoingProjectsList />
+                        <OngoingProjectsList teacherId={teacherId}/>
                     </div>
 
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsPast')}</div>
-                        <PastProjectsList />
+                        <PastProjectsList teacherId={teacherId}/>
                     </div>
                 </Col>
             </Row>

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStudentProject = exports.getStudentProjects = exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjects = void 0;
+exports.addProjectNote = exports.createStudentProject = exports.getStudentProjects = exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjects = void 0;
 const mysql_config_1 = __importDefault(require("../config/mysql.config"));
 const projects_query_1 = require("../query/projects.query");
 const code_enum_1 = require("../enum/code.enum");
@@ -71,6 +71,8 @@ exports.createProject = createProject;
 const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
     let project = Object.assign({}, req.body);
+    project.start_date = new Date(formatDate(new Date(project.start_date)));
+    project.end_date = new Date(formatDate(new Date(project.end_date)));
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
@@ -83,6 +85,10 @@ const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         console.error(`[${new Date().toLocaleString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
             .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while updating project'));
+    }
+    finally {
+        if (connection)
+            connection.release();
     }
 });
 exports.updateProject = updateProject;
@@ -115,7 +121,6 @@ const getStudentProjects = (req, res) => __awaiter(void 0, void 0, void 0, funct
     try {
         connection = yield mysql_config_1.default.getConnection();
         const result = yield mysql_config_1.default.query(projects_query_1.QUERY.SELECT_STUDENT_PROJECTS);
-        console.log(result);
         if (result[0].length === 0) {
             return res.status(code_enum_1.Code.NOT_FOUND)
                 .send(new response_1.HttpResponse(code_enum_1.Code.NOT_FOUND, status_enum_1.Status.NOT_FOUND, 'No student_projects found'));
@@ -165,3 +170,23 @@ const createStudentProject = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.createStudentProject = createStudentProject;
+const addProjectNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
+    let connection;
+    try {
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(projects_query_1.QUERY.INSERT_PROJECT_NOTE, [req.params.project_id, req.body.note, req.body.document_path]);
+        return res.status(code_enum_1.Code.CREATED)
+            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Project note added successfully', req.body));
+    }
+    catch (error) {
+        console.error(`[${new Date().toLocaleString()}] ${error}`);
+        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while adding project note'));
+    }
+    finally {
+        if (connection)
+            connection.release();
+    }
+});
+exports.addProjectNote = addProjectNote;

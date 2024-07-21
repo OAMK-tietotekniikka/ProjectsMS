@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css';
+import '../../App.css';
 
 interface DropdownProps {
     data: any[];
@@ -17,7 +17,7 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
     const [studyYearList, setStudyYearList] = useState<string[]>([]);
     const [classCodeList, setClassCodeList] = useState<string[]>([]);
     const [showSecondSelection, setShowSecondSelection] = useState<string>("");
-    const [student, setStudent] = useState<string>("");
+    const [name, setName] = useState<string>("");
 
     const handleSelection = (e: React.FormEvent, item: string) => {
         e.preventDefault();
@@ -26,14 +26,16 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
             setShowSecondSelection("");
         } else if (item === "selectByYear") {
             const studyYears = data.map((item: any) => item.study_year);
-            setStudyYearList(studyYears);
+            const uniqueStudyYears = [...new Set(studyYears)];
+            setStudyYearList(uniqueStudyYears);
             setShowSecondSelection("studyYear");
         } else if (item === "selectByClass") {
             const classCodes = data.map((item: any) => item.class_code);
-            setClassCodeList(classCodes);
+            const uniqueClassCodes = [...new Set(classCodes)];
+            setClassCodeList(uniqueClassCodes);
             setShowSecondSelection("classCode");
         } else {
-            setShowSecondSelection("studentName");
+            setShowSecondSelection("name");
         }
     };
 
@@ -51,15 +53,21 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
 
     const handleChange = (value: string) => {
         if (value !== '') {
-            setStudent(value);
+            setName(value);
         }
     };
 
-    const handleStudentSelection = () => {
-        const filteredData = data.filter((data: any) => (data.name).toLowerCase() === student.toLowerCase());
+    const handleNameSelection = () => {
+        const filteredData = data.filter((data: any) => (data.name).toLowerCase() === name.toLowerCase());
         console.log(filteredData);
         console.log(data);
-        setSelectedData(filteredData);
+        if (filteredData.length === 0)  {
+            setSelectedData([]);
+            alert("Name not found");
+        } else {
+            setSelectedData(filteredData);
+        }
+        
     };
 
     return (
@@ -87,7 +95,7 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
                         {showSecondSelection === "studyYear" && (
                             <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic" className='dropdown-toggle'>
-                                    select study year
+                                    {t('selectByStudyYear')}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {studyYearList?.map((item: any, index) => (
@@ -106,7 +114,7 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
                         {showSecondSelection === "classCode" && (
                             <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic" className='dropdown-toggle'>
-                                    select class
+                                    {t('selectClass')}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {classCodeList?.map((item: any, index) => (
@@ -122,24 +130,24 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
                                 </Dropdown.Menu>
                             </Dropdown>
                         )}
-                        {showSecondSelection === "studentName" && (
-                            <div style={{display: "flex", flexDirection: "column"}}>
+                        {showSecondSelection === "name" && (
+                            <div style={{ display: "flex", flexDirection: "column" }}>
                                 <Form>
                                     <Form.Control
                                         type="text"
-                                        placeholder={t('enterStudName')}
+                                        placeholder={t('enterName')}
                                         style={{ width: "300px", fontSize: "13px" }}
                                         onChange={(e) => handleChange(e.target.value)}
-                                        value={student}
+                                        value={name}
                                     />
                                 </Form>
                                 <Button
                                     style={{ marginLeft: "20%", marginTop: "4%" }}
                                     type='button'
                                     className='addCompany-button'
-                                    onClick={handleStudentSelection}
+                                    onClick={handleNameSelection}
                                 >
-                                    {t('selectStudent')}
+                                    {t('selectName')}
                                 </Button>
                             </div>
                         )}

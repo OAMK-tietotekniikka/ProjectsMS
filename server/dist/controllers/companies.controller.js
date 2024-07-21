@@ -46,7 +46,6 @@ const createCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         connection = yield mysql_config_1.default.getConnection();
         const result = yield mysql_config_1.default.query(companies_query_1.QUERY.CREATE_COMPANY, [req.body.company_name]);
         company = Object.assign({ company_id: result[0].insertId }, req.body);
-        console.log(company);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Company created successfully', company));
     }

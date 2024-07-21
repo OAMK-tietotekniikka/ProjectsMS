@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource } from "./apiRequests";
+import { getTeachers, getResources, updateResource, createResource } from "./apiRequests";
 const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
@@ -50,12 +50,21 @@ const TeachersContextProvider = (props) => {
     const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateResource(id, resource);
-            console.log(`From updateTeacherResource, response:`, response);
             setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
             return response.data;
         }
         catch (error) {
             console.error("Failed to update resource:", error);
+        }
+    });
+    const addTeacherResource = (resource) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield createResource(resource);
+            setResources(prevResources => [...prevResources, response.data]);
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to add resource:", error);
         }
     });
     let value = {
@@ -64,7 +73,8 @@ const TeachersContextProvider = (props) => {
         signedInTeacher,
         resources,
         setResources,
-        updateTeacherResource
+        updateTeacherResource,
+        addTeacherResource
     };
     return (_jsx(TeachersContext.Provider, { value: value, children: props.children }));
 };

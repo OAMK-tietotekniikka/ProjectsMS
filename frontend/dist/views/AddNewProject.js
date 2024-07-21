@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import ProjectForm from '../components/ProjectForm';
+import ProjectForm from '../components/StudentUI/ProjectForm';
 import { useTranslation } from 'react-i18next';
 import { sendEmailNotification } from '../contexts/apiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
