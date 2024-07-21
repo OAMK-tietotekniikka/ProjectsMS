@@ -1,4 +1,4 @@
-import { Company } from '../interface/company'
+import { Company } from '../../interface/company'
 
 export const getCompanyId = async (companyName: string, companies: Company[], addCompany: (name: string) => Promise<number>): Promise<number> => {
     const lowerCaseCompanyName = companyName.toLowerCase();

@@ -54,6 +54,20 @@
   "selectAll": "Valitse kaikki",
   "selectByClass": "Valitse ryhmän mukaan",
   "selectByYear": "Valitse lukuvuoden mukaan",
-  "selectByStudent": "Valitse opiskelijan nimellä",
-  "enterStudName": "Syötä opiskelijan nimi (Etunimi Sukunimi)"
+  "selectByName": "Valitse nimellä",
+  "selectByStudyYear": "Valitse lukuvuosi",
+  "selectClass": "Valitse ryhmä",
+  "enterName": "Syötä nimi (Etunimi Sukunimi)",
+  "selectName": "Valitse",
+  "dashb": "Oma työpöytä",
+  "teachers": "Opettajat",
+  "teachersMain": "Etsi ja lisää ohjaavia opettajia",
+  "students": "Opiskelijat",
+  "companies": "Yritykset",
+  "selectTeachers": "Valitse opettaja",
+  "modifyRes": "Lisää tai muokkaa ohjausresurssia",
+  "enterRes": "Lisää kokonaisresurssin määrä lukuvuodelle",
+  "save": "Tallenna",
+  "selectStudyYear": "Valitse lukuvuosi, jonka resurssia haluat muokata",
+  "close": "Sulje"
 }

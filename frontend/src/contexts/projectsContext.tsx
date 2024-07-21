@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject } from "./apiRequests";
+import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject } from "./apiRequests";
 import { Project } from "../interface/project";
 import { ProjectFormData } from "../interface/formData";
 import { StudentProject } from "../interface/studentProject";
@@ -8,7 +8,8 @@ interface ProjectsContextType {
     projects: Project[];
     setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
     studentProjects: StudentProject[];
-    addNewProject: (FormData: ProjectFormData, studentId: number) => Promise<any>;
+    addNewProject: (formData: ProjectFormData, studentId: number) => Promise<any>;
+    modifyProject: (project: ProjectFormData, projectId: number) => Promise<Project>;
 };
 
 const ProjectsContext = React.createContext<ProjectsContextType>({} as ProjectsContextType);
@@ -33,7 +34,6 @@ const ProjectsContextProvider = (props: any) => {
         const fetchStudentProjects = async () => {
             try {
                 const projectsList = await getAllStudentProjects();
-                console.log('Student projects:', projectsList);
                 setStudentProjects(projectsList.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
@@ -59,14 +59,26 @@ const ProjectsContextProvider = (props: any) => {
         } catch (error) {
             console.error("Failed to add Project:", error);
         }
-
     };
+
+    const modifyProject = async (projecct: ProjectFormData, projectId: number): Promise<Project> => {
+        try {
+            const response = await updateProject(projecct, projectId);
+            setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId).concat(response.data));
+            console.log("Modified Project:", projects);
+            return response;
+        } catch (error) {
+            console.error("Failed to add modified Project:", error);
+        }
+    };
+
 
     let value = {
         projects,
         setProjects,
         studentProjects,
-        addNewProject
+        addNewProject,
+        modifyProject
     };
 
     return (

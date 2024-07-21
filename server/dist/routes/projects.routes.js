@@ -9,6 +9,8 @@ projectsRouter.route('/')
 projectsRouter.route('/:project_id')
     .put(projects_controller_1.updateProject)
     .delete(projects_controller_1.deleteProject);
+projectsRouter.route('/:project_id/addNote')
+    .post(projects_controller_1.addProjectNote);
 projectsRouter.route('/student')
     .get(projects_controller_1.getStudentProjects)
     .post(projects_controller_1.createStudentProject);

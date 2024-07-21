@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
-import { ProjectFormData } from '../interface/formData';
-import { useCompaniesContext } from '../contexts/companiesContext';
-import { useTeachersContext } from '../contexts/teachersContext';
-import { getCompanyId } from './GetCompanyId';
-import { selectTeacher } from './SelectTeacher';
+import { ProjectFormData } from '../../interface/formData';
+import { useCompaniesContext } from '../../contexts/companiesContext';
+import { useTeachersContext } from '../../contexts/teachersContext';
+import { getCompanyId } from '../TeacherUI/GetCompanyId';
+import { selectTeacher } from '../TeacherUI/SelectTeacher';
 
 
 interface ProjectFormProps {

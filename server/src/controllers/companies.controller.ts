@@ -35,7 +35,6 @@ export const createCompany = async (req: Request, res: Response): Promise<Respon
         connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.CREATE_COMPANY, [req.body.company_name]);
         company = { company_id: (result[0] as ResultSetHeader).insertId, ...req.body };
-        console.log(company);
         return res.status(Code.CREATED)
             .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Company created successfully', company));
     } catch (error: unknown) {

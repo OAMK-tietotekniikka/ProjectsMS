@@ -3,11 +3,11 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Table, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useProjectsContext } from '../contexts/projectsContext';
-import { useCompaniesContext } from '../contexts/companiesContext';
-import { useStudentsContext } from '../contexts/studentsContext';
-import checkboxImage from '../assets/checkbox.svg';
-import squareImage from '../assets/square.svg';
+import { useProjectsContext } from '../../contexts/projectsContext';
+import { useCompaniesContext } from '../../contexts/companiesContext';
+import { useStudentsContext } from '../../contexts/studentsContext';
+import checkboxImage from '../../assets/checkbox.svg';
+import squareImage from '../../assets/square.svg';
 import SelectionDropdown from './SelectionDropdown';
 const OngoingProjectsList = ({ teacherId }) => {
     const { t } = useTranslation();

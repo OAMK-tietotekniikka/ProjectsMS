@@ -54,6 +54,20 @@
   "selectAll": "Select all",
   "selectByClass": "Select by class code",
   "selectByYear": "Select by study year",
-  "selectByStudent": "Select by student name",
-  "enterStudName": "Enter student name (Firstname Lastname)"
+  "selectByName": "Select by name",
+  "selectByStudyYear": "Select study year",
+  "selectClass": "Select class",
+  "enterName": "Enter name (Firstname Lastname)",
+  "selectName": "Select",
+  "dashb": "My dashboard",
+  "teachers": "Teachers",
+  "teachersMain": "Search and add supervising teachers",
+  "students": "Students",
+  "companies": "Companies",
+  "selectTeachers": "Select teachers",
+  "modifyRes": "Add or modify resources",
+  "enterRes": "Enter the amount of total resources for study year",
+  "save": "Save",
+  "selectStudyYear": "Select study year to add or modify resources",
+  "close": "Close"
 }

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject } from "./apiRequests";
+import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject } from "./apiRequests";
 ;
 const ProjectsContext = React.createContext({});
 const ProjectsContextProvider = (props) => {
@@ -31,7 +31,6 @@ const ProjectsContextProvider = (props) => {
         const fetchStudentProjects = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const projectsList = yield getAllStudentProjects();
-                console.log('Student projects:', projectsList);
                 setStudentProjects(projectsList.data);
             }
             catch (error) {
@@ -59,11 +58,23 @@ const ProjectsContextProvider = (props) => {
             console.error("Failed to add Project:", error);
         }
     });
+    const modifyProject = (projecct, projectId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield updateProject(projecct, projectId);
+            setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId).concat(response.data));
+            console.log("Modified Project:", projects);
+            return response;
+        }
+        catch (error) {
+            console.error("Failed to add modified Project:", error);
+        }
+    });
     let value = {
         projects,
         setProjects,
         studentProjects,
-        addNewProject
+        addNewProject,
+        modifyProject
     };
     return (_jsx(ProjectsContext.Provider, { value: value, children: props.children }));
 };
