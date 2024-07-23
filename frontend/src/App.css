@@ -96,7 +96,7 @@
   align-items: start;
   text-align: start;
   width: 100%;
-  padding: 3% 5% 0 15%;
+  padding: 3% 5% 5% 15%;
 }
 
 .item-group {
@@ -272,6 +272,80 @@
 
 
 /*STUDENT UI*/
+
+/*Student dashboard*/
+.student-main-container {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  text-align: start;
+  width: 100%;
+  padding: 3% 5% 5% 10%;
+}
+.student-main-row {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-align: start;
+  width: 100%;
+}
+.student-main-container .row {
+  justify-content: start;
+  align-items: start;
+  text-align: start;
+  width: 100%;
+  padding: 1% 0 0 0;
+}
+.student-main-row .col {
+  font-size: small;
+}
+.heading-row {
+  font-weight: bold;
+  font-size: small;
+  padding: 2%;
+}
+.data-item {
+  font-size: small;
+  margin: 0;
+  padding: 1% 0 1% 2%;
+}
+.data-row:hover {
+  background-color: #ececec;
+}
+.note-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin: 0;
+  font-size: small;
+  
+}
+.notes-listing {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  margin: 0;
+  padding: 0;
+}
+.note-item {
+  margin: 4% 0; ;
+  padding: 0;
+  font-size: small;
+}
+.note-img {
+  width: 18px;
+  height: 18px;
+  margin-right: 2%;
+}
+.hr-style {
+  border: none;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1));
+  margin: 2% 0;
+}
+
 /*AddNewProject and form*/
 .main-heading {
   text-align: center;

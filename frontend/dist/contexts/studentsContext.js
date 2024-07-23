@@ -14,6 +14,10 @@ import { getStudents } from "./apiRequests";
 const StudentsContext = React.createContext({});
 const StudentsContextProvider = (props) => {
     const [students, setStudents] = useState([]);
+    const [signedInStudent, setSignedInStudentState] = useState(() => {
+        const savedStudent = localStorage.getItem('signedInStudent');
+        return savedStudent ? JSON.parse(savedStudent) : null;
+    });
     useEffect(() => {
         const fetchStudents = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -26,8 +30,27 @@ const StudentsContextProvider = (props) => {
         });
         fetchStudents();
     }, []);
+    useEffect(() => {
+        if (!students)
+            return;
+        const student = students.find(s => s.student_id === 1); // hardcoded for now
+        if (student) {
+            setSignedInStudent(student);
+        }
+    }, [students]);
+    const setSignedInStudent = (student) => {
+        setSignedInStudentState(student);
+        if (student) {
+            localStorage.setItem('signedInStudent', JSON.stringify(student));
+        }
+        else {
+            localStorage.removeItem('signedInStudent');
+        }
+    };
     let value = {
-        students
+        students,
+        signedInStudent,
+        setSignedInStudent
     };
     return (_jsx(StudentsContext.Provider, { value: value, children: props.children }));
 };

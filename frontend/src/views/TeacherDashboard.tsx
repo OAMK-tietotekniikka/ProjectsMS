@@ -56,16 +56,17 @@ const TeacherDashboard: React.FC = () => {
                         <Button onClick={() => setShowPastResources(true)} className='resources-button'>{t('resourcesPast')}</ Button>
                         {showPastResources ? <PastResources study_year={studyYear} resources={resources} id={teacherId} showTable={showPastResources} handleClose={() => setShowPastResources(false)} /> : null}
                     </div>
+                    <hr className="hr-style"/>
                     <div className='item-group'>
                         <div className='second-heading'>{t('addCompFavo')}</div>
                         <FavoCompDropdown data={companies} />
                     </div>
-
+                    <hr className="hr-style"/>
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsCurr')}</div>
                         <OngoingProjectsList teacherId={teacherId}/>
                     </div>
-
+                    <hr className="hr-style"/>
                     <div className='item-group'>
                         <div className='second-heading'>{t('projectsPast')}</div>
                         <PastProjectsList teacherId={teacherId}/>

@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject } from "./apiRequests";
+import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, getNotes, createNote } from "./apiRequests";
 ;
 const ProjectsContext = React.createContext({});
 const ProjectsContextProvider = (props) => {
     const [projects, setProjects] = useState([]);
     const [studentProjects, setStudentProjects] = useState([]);
+    const [projectNotes, setProjectNotes] = useState([]);
     useEffect(() => {
         const fetchProjects = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -69,12 +70,40 @@ const ProjectsContextProvider = (props) => {
             console.error("Failed to add modified Project:", error);
         }
     });
+    const getProjectNotes = (projectId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield getNotes(projectId);
+            if (response.statusCode === 200) {
+                setProjectNotes(response.data);
+                return response.data;
+            }
+            else {
+                setProjectNotes([]);
+            }
+        }
+        catch (error) {
+            console.error("Failed to fetch Project Notes:", error);
+        }
+    });
+    const addProjectNote = (projectId, note) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield createNote(projectId, note);
+            setProjectNotes([...projectNotes, response.data]);
+            return response;
+        }
+        catch (error) {
+            console.error("Failed to add Project Note:", error);
+        }
+    });
     let value = {
         projects,
         setProjects,
         studentProjects,
         addNewProject,
-        modifyProject
+        modifyProject,
+        projectNotes,
+        getProjectNotes,
+        addProjectNote
     };
     return (_jsx(ProjectsContext.Provider, { value: value, children: props.children }));
 };

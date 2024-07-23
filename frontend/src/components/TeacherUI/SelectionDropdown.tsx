@@ -135,7 +135,7 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
                                 <Form>
                                     <Form.Control
                                         type="text"
-                                        placeholder={t('enterName')}
+                                        placeholder={t('enterNote')}
                                         style={{ width: "300px", fontSize: "13px" }}
                                         onChange={(e) => handleChange(e.target.value)}
                                         value={name}

@@ -96,6 +96,7 @@ CREATE TABLE project_note (
     project_id    BIGINT UNSIGNED DEFAULT NULL,
     note          VARCHAR(300) DEFAULT NULL,
     document_path VARCHAR(255) DEFAULT NULL,
+    created_by    VARCHAR(255) DEFAULT NULL,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (note_id),
     CONSTRAINT FK_ProjectNote_Project FOREIGN KEY (project_id) REFERENCES projects (project_id) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -198,7 +199,11 @@ INSERT INTO student_project (student_id, project_id, project_number)
 VALUES (2, 2, 1);
 
 INSERT INTO student_project (student_id, project_id, project_number)
-VALUES (2, 3, 3);
-```
+VALUES (1, 2, 2);
+
+-- Insert project_note data
+
+INSERT INTO project_note (project_id, note, document_path, created_by)
+VALUES (1, 'This is a note for project 1', 'http://note1.com', "Teacher One");
 
 

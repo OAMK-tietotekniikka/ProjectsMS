@@ -1,5 +1,14 @@
 import { Router } from "express";
-import { createProject, getProjects, updateProject, deleteProject, getStudentProjects, createStudentProject ,addProjectNote} from "../controllers/projects.controller";
+import {
+  createProject,
+  getProjects,
+  updateProject,
+  deleteProject,
+  getStudentProjects,
+  createStudentProject,
+  addProjectNote,
+  getProjectNotes
+} from "../controllers/projects.controller";
 
 
 const projectsRouter = Router();
@@ -18,6 +27,9 @@ projectsRouter.route('/:project_id/addNote')
 projectsRouter.route('/student')
   .get(getStudentProjects)
   .post(createStudentProject);
+
+projectsRouter.route('/:project_id/notes')
+  .get(getProjectNotes)
 
 export default projectsRouter;
 

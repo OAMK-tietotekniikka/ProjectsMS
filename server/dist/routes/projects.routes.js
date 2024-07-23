@@ -14,4 +14,6 @@ projectsRouter.route('/:project_id/addNote')
 projectsRouter.route('/student')
     .get(projects_controller_1.getStudentProjects)
     .post(projects_controller_1.createStudentProject);
+projectsRouter.route('/:project_id/notes')
+    .get(projects_controller_1.getProjectNotes);
 exports.default = projectsRouter;

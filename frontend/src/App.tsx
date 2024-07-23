@@ -8,6 +8,7 @@ import TeacherDashboard from './views/TeacherDashboard';
 import StudentDashboard from './views/StudentDashboard';
 import Teachers from './views/Teachers';
 import ModifyTeacher from './views/ModifyTeacher';
+import StudentProjectDetails from './views/StudentProjectDetails';
 import { useUserContext } from './contexts/userContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/teacher" element={<TeacherDashboard />} />
               <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />
               <Route path="/student" element={<StudentDashboard />} />
+              <Route path="/studentProject/:id" element={<StudentProjectDetails />} />
               <Route path="/form" element={<AddNewProject />} />
               <Route path="/teachers" element={<Teachers />} />
             </Routes>

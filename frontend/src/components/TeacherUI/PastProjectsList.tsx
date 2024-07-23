@@ -91,7 +91,7 @@ const PastProjectsList: React.FC<PastProjectsListProps> = ({ teacherId }) => {
                             <th>{t('studyGroup')}</th>
                             <th>{t('started')}</th>
                             <th>{t('ended')}</th>
-                            <th>{t('companyName')}</th>
+                            <th>{t('company')}</th>
                             <th>{t('projectNo')}</th>
                         </tr>
                     </thead>
