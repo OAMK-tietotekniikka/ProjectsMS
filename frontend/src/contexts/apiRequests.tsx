@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ProjectFormData } from '../interface/formData';
-import { Resource } from '../interface/resource';
-import { newResource } from '../interface/newResource';
+import { Resource, NewResource } from '../interface/resource';
 import { FavoCompany } from '../interface/favoCompany';
+import { Note, NewNote } from '../interface/newNote';
 
 
 const baseUrl = import.meta.env.VITE_API_URL
@@ -142,7 +142,7 @@ export const updateResource = async (resource_id: number, resource: Resource) =>
 
 };
 
-export const createResource = async (resource: newResource) => {
+export const createResource = async (resource: NewResource) => {
     try {
         const response = await axios.post(`${baseUrl}/resources`, resource);
         if (response.data.statusCode === 201) {
@@ -272,4 +272,30 @@ export const sendEmailNotification = async (to: string, subject: string, text: s
             console.error('An unexpected error:', error);
         }
     }
-}
+};
+
+// Project notes API requests
+
+export const getNotes = async (projectId: number) => {
+    try {
+        const response = await axios.get(`${baseUrl}/projects/${projectId}/notes`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to write data:', error.response?.data);
+        return error.response?.data;
+    }
+};
+
+export const createNote = async (projectId: number, note: NewNote) => {
+    try {
+        const response = await axios.post(`${baseUrl}/projects/${projectId}/addNote`, note);
+        if (response.data.statusCode === 201) {
+            alert('New note created successfully.');
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Failed to write data:', error.response?.data);
+        return error.response?.data;
+    }
+};
+

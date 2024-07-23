@@ -59,8 +59,6 @@ const ModifyTeacher: React.FC = () => {
                     <div>
                        {showAddResources ? <ModifyResource teacherId={teacherId} handleClose={() => setShowAddResources(false)}/> : null} 
                     </div>
-                    
-
                     <div className='item-group'>
                         <Button onClick={() => setShowPastResources(true)} className='resources-button' style={{ marginTop: "5%" }}>{t('resourcesPast')}</ Button>
                         {showPastResources ? <PastResources study_year={studyYear} resources={resources} id={teacherId} showTable={showPastResources} handleClose={() => setShowPastResources(false)} /> : null}

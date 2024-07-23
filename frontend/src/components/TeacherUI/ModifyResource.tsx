@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { getStudyYear } from '../GetStudyYear';
 import { useTranslation } from 'react-i18next';
-import { newResource } from '../../interface/newResource';
+import { NewResource } from '../../interface/resource';
 import { useTeachersContext } from '../../contexts/teachersContext';
 import '../../App.css'
 
@@ -32,7 +32,7 @@ const ModifyResource: React.FC<ModifyResourceProps> = ({ teacherId, handleClose 
 
         const teacherCurrentResource = resources.find(res => res.teacher_id === teacherId && res.study_year === studyYear);
         if (!teacherCurrentResource) {
-            const newResource: newResource = {
+            const newResource: NewResource = {
                 teacher_id: teacherId,
                 total_resources: totalResources,
                 used_resources: 0,
@@ -42,7 +42,7 @@ const ModifyResource: React.FC<ModifyResourceProps> = ({ teacherId, handleClose 
             handleClose();
 
         } else {
-            const modifiedResource: newResource = {
+            const modifiedResource: NewResource = {
                 teacher_id: teacherCurrentResource.teacher_id,
                 total_resources: totalResources,
                 used_resources: teacherCurrentResource.used_resources,

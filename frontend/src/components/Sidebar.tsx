@@ -17,12 +17,6 @@ const SidebarComponent: React.FC = () => {
     const { signedInTeacher } = useTeachersContext();
     const userType = localStorage.getItem('user');
 
-    const handleClick = () => {
-        localStorage.setItem("fromTeachersList", "false");
-        localStorage.setItem("selectedTeacherId", String(signedInTeacher?.teacher_id));
-    }
-
-
     return (
         <Nav className="sidebar-links" style={{padding: "1% 16%"}} >
             {userType === "student" ? (
@@ -39,7 +33,7 @@ const SidebarComponent: React.FC = () => {
                 </>
             ) : (
                 <>
-                    <NavLink to="/teacher" className="nav-link" onClick={() => handleClick()}>
+                    <NavLink to="/teacher" className="nav-link">
                         <img src={home} alt="home" />
                         {t('dashb')}
                         </NavLink>

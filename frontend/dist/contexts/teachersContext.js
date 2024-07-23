@@ -14,7 +14,10 @@ const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
     const [resources, setResources] = useState([]);
-    const [signedInTeacher, setSignedInTeacher] = useState(null);
+    const [signedInTeacher, setSignedInTeacherState] = useState(() => {
+        const savedTeacher = localStorage.getItem('signedInTeacher');
+        return savedTeacher ? JSON.parse(savedTeacher) : null;
+    });
     useEffect(() => {
         const fetchTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -47,6 +50,15 @@ const TeachersContextProvider = (props) => {
             setSignedInTeacher(teacher);
         }
     }, [teachers]);
+    const setSignedInTeacher = (teacher) => {
+        setSignedInTeacherState(teacher);
+        if (teacher) {
+            localStorage.setItem('signedInTeacher', JSON.stringify(teacher));
+        }
+        else {
+            localStorage.removeItem('signedInTeacher');
+        }
+    };
     const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateResource(id, resource);

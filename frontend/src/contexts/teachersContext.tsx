@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getTeachers, getResources, updateResource, getFavoCompanies, createResource } from "./apiRequests";
 import { Teacher } from "../interface/teacher";
-import { Resource } from "../interface/resource";
-import { newResource } from "../interface/newResource";
+import { Resource, NewResource } from "../interface/resource";
 
 
 interface TeachersContextType {
@@ -11,8 +10,8 @@ interface TeachersContextType {
     signedInTeacher: Teacher;
     resources: Resource[];
     setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
-    updateTeacherResource: (id: number, resource: newResource) => Promise<Resource>;
-    addTeacherResource: (resource: newResource) => Promise<Resource>;
+    updateTeacherResource: (id: number, resource: NewResource) => Promise<Resource>;
+    addTeacherResource: (resource: NewResource) => Promise<Resource>;
 
 }
 
@@ -21,7 +20,10 @@ const TeachersContext = React.createContext<TeachersContextType>({} as TeachersC
 const TeachersContextProvider = (props: any) => {
     const [teachers, setTeachers] = useState<Teacher[]>([]);
     const [resources, setResources] = useState<Resource[]>([]);
-    const [signedInTeacher, setSignedInTeacher] = useState<Teacher | null>(null);
+    const [signedInTeacher, setSignedInTeacherState] = useState<Teacher | null>(() => {
+        const savedTeacher = localStorage.getItem('signedInTeacher');
+        return savedTeacher ? JSON.parse(savedTeacher) : null;
+    });
 
     useEffect(() => {
         const fetchTeachers = async () => {
@@ -57,6 +59,15 @@ const TeachersContextProvider = (props: any) => {
         }
     }, [teachers]);
 
+    const setSignedInTeacher = (teacher: Teacher | null) => {
+        setSignedInTeacherState(teacher);
+        if (teacher) {
+            localStorage.setItem('signedInTeacher', JSON.stringify(teacher));
+        } else {
+            localStorage.removeItem('signedInTeacher');
+        }
+    };
+
     const updateTeacherResource = async (id: number, resource: Resource) => {
         try {
             const response = await updateResource(id, resource);
@@ -67,7 +78,7 @@ const TeachersContextProvider = (props: any) => {
         }
     };
 
-    const addTeacherResource = async (resource: newResource) => {
+    const addTeacherResource = async (resource: NewResource) => {
         try {
             const response = await createResource(resource);
             setResources(prevResources => [...prevResources, response.data]);

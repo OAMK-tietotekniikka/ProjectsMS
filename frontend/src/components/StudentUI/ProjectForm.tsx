@@ -73,7 +73,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
         <Container>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="project_name" className="form-item">
-                    <Form.Label>{t('projName')}</Form.Label>
+                    <Form.Label>{t('projName')} *</Form.Label>
                     <Form.Control
                         type="text"
                         name="project_name"
@@ -84,7 +84,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                 </Form.Group>
 
                 <Form.Group controlId="companyName" className="form-item">
-                    <Form.Label>{t('company')}</Form.Label>
+                    <Form.Label>{t('companyName')} *</Form.Label>
                     <Form.Control
                         type="text"
                         name="companyName"
@@ -97,7 +97,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                 <Row>
                     <Col md={6}>
                         <Form.Group controlId="start_date" className="form-item">
-                            <Form.Label>{t('startDate')}</Form.Label>
+                            <Form.Label>{t('startDate')} *</Form.Label>
                             <Form.Control
                                 type="date"
                                 name="start_date"
@@ -110,7 +110,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
 
                     <Col md={6}>
                         <Form.Group controlId="end_date" className="form-item">
-                            <Form.Label>{t('dueDate')}</Form.Label>
+                            <Form.Label>{t('dueDate')} *</Form.Label>
                             <Form.Control
                                 type="date"
                                 name="end_date"
@@ -122,7 +122,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                 </Row>
 
                 <Form.Group controlId="project_desc" className="form-item" style={{ paddingTop: '2%' }}>
-                    <Form.Label>{t('projDesc')}</Form.Label>
+                    <Form.Label>{t('projDesc')} *</Form.Label>
                     <Form.Control
                         as="textarea"
                         rows={3}

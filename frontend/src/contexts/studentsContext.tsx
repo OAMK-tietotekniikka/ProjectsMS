@@ -5,12 +5,18 @@ import { Student } from "../interface/student";
 
 interface StudentsContextType {
     students: Student[];
+    signedInStudent: Student;
+    setSignedInStudent: (student: Student | null) => void;
 };
 
 const StudentsContext = React.createContext<StudentsContextType>({} as StudentsContextType);
 
 const StudentsContextProvider = (props: any) => {
     const [students, setStudents] = useState<Student[]>([]);
+    const [signedInStudent, setSignedInStudentState] = useState<Student | null>(() => {
+        const savedStudent = localStorage.getItem('signedInStudent');
+        return savedStudent ? JSON.parse(savedStudent) : null;
+    });
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -24,8 +30,28 @@ const StudentsContextProvider = (props: any) => {
         fetchStudents();
     }, []);
 
+
+    useEffect(() => {
+        if (!students) return;
+        const student = students.find(s => s.student_id === 1); // hardcoded for now
+        if (student) {
+            setSignedInStudent(student);
+        } 
+    }, [students]);
+
+    const setSignedInStudent = (student: Student | null) => {
+        setSignedInStudentState(student);
+        if (student) {
+            localStorage.setItem('signedInStudent', JSON.stringify(student));
+        } else {
+            localStorage.removeItem('signedInStudent');
+        }
+    };
+
     let value = { 
-        students
+        students,
+        signedInStudent,
+        setSignedInStudent
     };
 
     return (

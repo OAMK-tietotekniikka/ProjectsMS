@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject } from "./apiRequests";
+import {
+    getAllProjects,
+    addProject,
+    getAllStudentProjects,
+    addStudentProject,
+    updateProject,
+    getNotes,
+    createNote
+} from "./apiRequests";
 import { Project } from "../interface/project";
 import { ProjectFormData } from "../interface/formData";
 import { StudentProject } from "../interface/studentProject";
+import { NewNote, Note } from "../interface/newNote";
+
 
 interface ProjectsContextType {
     projects: Project[];
@@ -10,6 +20,9 @@ interface ProjectsContextType {
     studentProjects: StudentProject[];
     addNewProject: (formData: ProjectFormData, studentId: number) => Promise<any>;
     modifyProject: (project: ProjectFormData, projectId: number) => Promise<Project>;
+    projectNotes: Note[];
+    getProjectNotes: (projectId: number) => Promise<Note[]>;
+    addProjectNote: (projectId: number, note: NewNote) => Promise<Note>;
 };
 
 const ProjectsContext = React.createContext<ProjectsContextType>({} as ProjectsContextType);
@@ -17,6 +30,7 @@ const ProjectsContext = React.createContext<ProjectsContextType>({} as ProjectsC
 const ProjectsContextProvider = (props: any) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [studentProjects, setStudentProjects] = useState<StudentProject[]>([]);
+    const [projectNotes, setProjectNotes] = useState<Note[]>([]);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -41,7 +55,6 @@ const ProjectsContextProvider = (props: any) => {
         }
         fetchStudentProjects();
     }, []);
-
 
     const addNewProject = async (formData: ProjectFormData, studentId: number): Promise<any> => {
         try {
@@ -72,13 +85,39 @@ const ProjectsContextProvider = (props: any) => {
         }
     };
 
+    const getProjectNotes = async (projectId: number) => {
+        try {
+            const response = await getNotes(projectId);
+            if (response.statusCode === 200) {
+              setProjectNotes(response.data);
+            return response.data;  
+            } else {
+                setProjectNotes([]);
+            }   
+        } catch (error) {
+            console.error("Failed to fetch Project Notes:", error);
+        }
+    };
+
+    const addProjectNote = async (projectId: number, note: NewNote): Promise<Note> => {
+        try {
+            const response = await createNote(projectId, note);
+            setProjectNotes([...projectNotes, response.data]);
+            return response;
+        } catch (error) {
+            console.error("Failed to add Project Note:", error);
+        }
+    };
 
     let value = {
         projects,
         setProjects,
         studentProjects,
         addNewProject,
-        modifyProject
+        modifyProject,
+        projectNotes,
+        getProjectNotes,
+        addProjectNote
     };
 
     return (

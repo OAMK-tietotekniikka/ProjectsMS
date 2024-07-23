@@ -109,7 +109,7 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
                             <th>{t('studyGroup')}</th>
                             <th>{t('started')}</th>
                             <th>{t('ended')}</th>
-                            <th>{t('companyName')}</th>
+                            <th>{t('company')}</th>
                             <th>{t('projectNo')}</th>
                             <th>{t('setEnded')}</th>
                         </tr>
@@ -146,23 +146,23 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
 
             <Modal show={show} onHide={() => {handleClose(); setSelectedProjectId(null)}} animation={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Are you sure you want to set the following project completed?</Modal.Title>
+                    <Modal.Title>{t('projCloseModalTitle')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <h6>Modified data:</h6>
-                        <div>Student name: {studentName}</div>
-                        <div>Project name: {modifiedProjectData?.project_name}</div>
-                        <div>Ending date: {modifiedProjectData?.end_date.toISOString().split('T')[0]}</div>
-                        <div>Project status: {modifiedProjectData?.project_status}</div>
+                        <h6>{t('modifiedData')}:</h6>
+                        <div>{t('studName')}: {studentName}</div>
+                        <div>{t('projName')}: {modifiedProjectData?.project_name}</div>
+                        <div>{t('dueDate')}: {modifiedProjectData?.end_date.toISOString().split('T')[0]}</div>
+                        <div>{t('status')}: {modifiedProjectData?.project_status}</div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => {handleClose(); setSelectedProjectId(null)}}>
-                        No, go back
+                        {t('goBack')}
                     </Button>
                     <Button style={{backgroundColor: "#F7921E"}} onClick={() => handleConfirm()}>
-                        Yes, save changes
+                        {t('yesSave')}
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -308,3 +308,29 @@ export const sendEmailNotification = (to, subject, text) => __awaiter(void 0, vo
         }
     }
 });
+// Project notes API requests
+export const getNotes = (projectId) => __awaiter(void 0, void 0, void 0, function* () {
+    var _10, _11;
+    try {
+        const response = yield axios.get(`${baseUrl}/projects/${projectId}/notes`);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Failed to write data:', (_10 = error.response) === null || _10 === void 0 ? void 0 : _10.data);
+        return (_11 = error.response) === null || _11 === void 0 ? void 0 : _11.data;
+    }
+});
+export const createNote = (projectId, note) => __awaiter(void 0, void 0, void 0, function* () {
+    var _12, _13;
+    try {
+        const response = yield axios.post(`${baseUrl}/projects/${projectId}/addNote`, note);
+        if (response.data.statusCode === 201) {
+            alert('New note created successfully.');
+            return response.data;
+        }
+    }
+    catch (error) {
+        console.error('Failed to write data:', (_12 = error.response) === null || _12 === void 0 ? void 0 : _12.data);
+        return (_13 = error.response) === null || _13 === void 0 ? void 0 : _13.data;
+    }
+});
