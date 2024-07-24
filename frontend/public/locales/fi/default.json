@@ -75,7 +75,7 @@
   "enterNote": "Lisää uusi kommentti",
   "saveNote": "Tallenna kommentti",
   "projListBelow": "Alla on yhteenveto projekteistasi. Näet projektin tiedot tarkemmin, kun klikkaat proektin riviä.",
-  "noProjects": "Sinulla ei ole tallennettuja projekteja. Voit lisätä uuden projektin alta.",
+  "noProjects": "Sinulla ei ole tallennettuja projekteja. Voit lisätä uuden projektin kohdasta 'Luo uusi projekti'.",
   "status": "Projektin tila",
   "url": "Projektin URL",
   "supervisor": "Ohjaava opettaja",
