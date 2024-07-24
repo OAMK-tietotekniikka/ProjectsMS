@@ -7,7 +7,7 @@ teachersRouter.route('/')
     .get(getTeachers)
     .post(createTeacher);
 
-teachersRouter.route('/:student_id')
+teachersRouter.route('/:teacher_id')
     .get(getTeacher)
     .put(updateTeacher)
 

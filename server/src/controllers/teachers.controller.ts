@@ -72,11 +72,11 @@ export const updateTeacher = async (req: Request, res: Response): Promise<Respon
     let connection: any;
     try {
         connection = await pool.getConnection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_TEACHERS, [req.params.student_id]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_TEACHERS, [req.params.teacher_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
-            const result: ResultSet = await pool.query(QUERY.UPDATE_TEACHER, [...Object.values(teacher), req.params.student_id]);
+            const result: ResultSet = await pool.query(QUERY.UPDATE_TEACHER, [...Object.values(teacher), req.params.teacher_id]);
             return res.status(Code.OK)
-                .send(new HttpResponse(Code.OK, Status.OK, 'Teacher updated', { ...teacher, id: req.params.student_id }));
+                .send(new HttpResponse(Code.OK, Status.OK, 'Teacher updated', { ...teacher, id: req.params.teacher_id }));
         } else {
             return res.status(Code.NOT_FOUND)
                 .send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, 'Teacher not found'));
