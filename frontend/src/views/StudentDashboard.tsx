@@ -19,22 +19,22 @@ const StudentDashboard: React.FC = () => {
     const navigate = useNavigate();
     
     const studentId = signedInStudent.student_id || null;
-    const studentProjectsList = studentProjects.filter(project => project.student_id === studentId);
+    const studentProjectsList = studentProjects?.filter(project => project.student_id === studentId) || [];
       
 
-    const studentProjectsWithData = studentProjectsList.map(project => {
-        const projectData = projects.find(proj => proj.project_id === project.project_id);
+    const studentProjectsWithData = studentProjectsList?.map(project => {
+        const projectData = projects?.find(proj => proj.project_id === project.project_id);
         return {
             ...project,
-            project_name: projectData?.project_name,
-            project_description: projectData?.project_desc,
-            project_status: projectData?.project_status,
-            teacher_name: teachers.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.last_name,
-            company_name: companies.find(company => company.company_id === projectData?.company_id)?.company_name,
-            start_date: projectData?.start_date,
-            end_date: projectData?.end_date,
-            project_url: projectData?.project_url,
-            studentsInvolved: studentProjects.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.first_name + ' ' + students.find(stud => stud.student_id === student.student_id)?.last_name)
+            project_name: projectData?.project_name || "No project name",
+            project_description: projectData?.project_desc || "No project description",
+            project_status: projectData?.project_status || "No project status",
+            teacher_name: teachers?.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.last_name || "No teacher name",
+            company_name: companies?.find(company => company.company_id === projectData?.company_id)?.company_name || "No company name",
+            start_date: projectData?.start_date || "No start date",
+            end_date: projectData?.end_date || "No end date",
+            project_url: projectData?.project_url || "No project url",
+            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.first_name + ' ' + students.find(stud => stud.student_id === student.student_id)?.last_name) || "No students involved"
         }
     });
 
@@ -71,7 +71,7 @@ const StudentDashboard: React.FC = () => {
                                 </Row>
                             ))}
                         </>
-                        : <div className="second-heading" >{t('noProject')}</div>}
+                        : <div className="second-heading" >{t('noProjects')}</div>}
                 <hr />
                 </Col>
                 <Col xs="12" lg="4" style={{ marginTop: "25%" }}>

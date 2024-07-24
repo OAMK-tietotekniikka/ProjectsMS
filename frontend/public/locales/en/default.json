@@ -75,7 +75,7 @@
   "enterNote": "Enter a new note to the project",
   "saveNote": "Save new note",
   "projListBelow": "Below is the summary of your projects. You can see further details of a project by selecting the project row.",
-  "noProjects": "You have no saved projects. You can add new project below.",
+  "noProjects": "You have no saved projects. You can add new project from 'Create new project'.",
   "status": "Project status",
   "url": "Project URL",
   "supervisor": "Supervisor",
