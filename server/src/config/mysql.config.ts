@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+
 const pool: Pool = createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,

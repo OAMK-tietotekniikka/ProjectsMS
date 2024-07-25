@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { Teacher } from "../interface/teacher";
 import pool from "../config/mysql.config";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"; 
 import { Code } from "../enum/code.enum";
 import { Status } from "../enum/status.enum";
 import { HttpResponse } from "../domain/response";
 import { ResultSetHeader, RowDataPacket, FieldPacket, OkPacket } from "mysql2";
 import { QUERY } from "../query/teachers.query";
+import dotenv from "dotenv";
 
 
 type ResultSet = [RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader, FieldPacket[]];
@@ -110,3 +113,77 @@ export const getTeachersByCompany = async (req: Request, res: Response): Promise
         if (connection) connection.release();
     }
 };
+
+export const authenticateTeacher = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+    dotenv.config();
+    const { email, password } = req.body;
+    let connection: any;
+    try {
+        connection = await pool.getConnection();
+        const [rows]: [RowDataPacket[], any] = await pool.query(QUERY.SELECT_TEACHER_BY_EMAIL, [email]);
+        if (rows.length > 0) {
+            const teacher = rows[0];
+            // Directly comparing the plaintext passwords
+            if (password === teacher.password) {
+                // Generate JWT token
+                const token = jwt.sign(
+                    { teacher_id: teacher.teacher_id, email: teacher.email },
+                    process.env.JWT_SECRET ?? 'default-secret',
+                    { expiresIn: '1h' }
+                );
+                return res.status(Code.OK)
+                    .send(new HttpResponse(Code.OK, Status.OK, 'Teacher authenticated', { token }));
+            } else {
+                return res.status(Code.UNAUTHORIZED)
+                    .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+            }
+        } else {
+            return res.status(Code.UNAUTHORIZED)
+                .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+        }
+    } catch (error: unknown) {
+        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while authenticating teacher'));
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+
+//  using bcrypt to compare the hashed password
+// export const authenticateTeacher = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+//     dotenv.config();
+//     const { email, password } = req.body;
+//     let connection: any;
+//     try {
+//         connection = await pool.getConnection();
+//         const [rows]: [RowDataPacket[], any] = await pool.query(QUERY.SELECT_TEACHER_BY_EMAIL, [email] );
+//         if (rows.length > 0) {
+//             const teacher = rows[0];
+//             const passwordMatch = await bcrypt.compare(password, teacher.password);
+//             if (passwordMatch) {
+//                 // Generate JWT token
+//                 const token = jwt.sign(
+//                     { teacher_id: teacher.teacher_id, email: teacher.email },
+//                     process.env.JWT_SECRET ?? 'default-secret', // Make sure to have a JWT_SECRET in your .env
+//                     { expiresIn: '1h' } // Token expires in 1 hour
+//                 );
+//                 return res.status(Code.OK)
+//                     .send(new HttpResponse(Code.OK, Status.OK, 'Teacher authenticated', { token }));
+//             } else {
+//                 return res.status(Code.UNAUTHORIZED)
+//                     .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+//             }
+//         } else {
+//             return res.status(Code.UNAUTHORIZED)
+//                 .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+//         }
+//     } catch (error: unknown) {
+//         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+//         return res.status(Code.INTERNAL_SERVER_ERROR)
+//             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while authenticating teacher'));
+//     } finally {
+//         if (connection) connection.release();
+//     }
+// };
