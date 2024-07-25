@@ -29,27 +29,6 @@ CONSTRAINT UQ_Students_Email UNIQUE (email)
 )AUTO_INCREMENT = 1;
 
 -- -----------------------------------------------------
--- Table `projects`
--- -----------------------------------------------------
-
-CREATE TABLE  projects
-(
-project_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-project_name    VARCHAR(255) DEFAULT NULL,
-project_desc    TEXT DEFAULT NULL,
-teacher_id      BIGINT UNSIGNED DEFAULT NULL,
-company_id      BIGINT UNSIGNED DEFAULT NULL,
-project_status  VARCHAR(255) DEFAULT NULL,
-project_url     VARCHAR(255) DEFAULT NULL,
-start_date     DATE DEFAULT NULL,
-end_date       DATE DEFAULT NULL,
-created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-PRIMARY KEY    (project_id),
-CONSTRAINT name_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-CONSTRAINT name_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE NO ACTION ON UPDATE NO ACTION
-)AUTO_INCREMENT = 1;
-
--- -----------------------------------------------------
 -- Table `teachers`
 -- -----------------------------------------------------
 
@@ -58,6 +37,7 @@ CREATE TABLE teachers
 first_name   VARCHAR(255) DEFAULT NULL,
 last_name    VARCHAR(255) DEFAULT NULL,
 email        VARCHAR(255) DEFAULT NULL,
+password     VARCHAR (32) DEFAULT NULL,
 created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (teacher_id),
 CONSTRAINT UQ_Teachers_Email UNIQUE (email)
@@ -88,19 +68,7 @@ PRIMARY KEY (resource_id),
 CONSTRAINT teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 )AUTO_INCREMENT = 1;
 
--- -----------------------------------------------------
--- Table `project_note`
--- -----------------------------------------------------
-CREATE TABLE project_note (
-    note_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    project_id    BIGINT UNSIGNED DEFAULT NULL,
-    note          VARCHAR(300) DEFAULT NULL,
-    document_path VARCHAR(255) DEFAULT NULL,
-    created_by    VARCHAR(255) DEFAULT NULL,
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (note_id),
-    CONSTRAINT FK_ProjectNote_Project FOREIGN KEY (project_id) REFERENCES projects (project_id) ON DELETE NO ACTION ON UPDATE NO ACTION
-) AUTO_INCREMENT = 1;
+
 
 -- -----------------------------------------------------
 -- Table `student_project`
@@ -120,7 +88,40 @@ CREATE TABLE company_teacher (
     teacher_id BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (company_id, teacher_id)
 );
+-------------------------------------------------------
+-- Table `projects`
+-- -----------------------------------------------------
 
+CREATE TABLE  projects
+(
+project_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+project_name    VARCHAR(255) DEFAULT NULL,
+project_desc    TEXT DEFAULT NULL,
+teacher_id      BIGINT UNSIGNED DEFAULT NULL,
+company_id      BIGINT UNSIGNED DEFAULT NULL,
+project_status  VARCHAR(255) DEFAULT NULL,
+project_url     VARCHAR(255) DEFAULT NULL,
+start_date     DATE DEFAULT NULL,
+end_date       DATE DEFAULT NULL,
+created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY    (project_id),
+CONSTRAINT name_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+CONSTRAINT name_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+)AUTO_INCREMENT = 1;
+
+-- -----------------------------------------------------
+-- Table `project_note`
+-- -----------------------------------------------------
+CREATE TABLE project_note (
+    note_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    project_id    BIGINT UNSIGNED DEFAULT NULL,
+    note          VARCHAR(300) DEFAULT NULL,
+    document_path VARCHAR(255) DEFAULT NULL,
+    created_by    VARCHAR(255) DEFAULT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (note_id),
+    CONSTRAINT FK_ProjectNote_Project FOREIGN KEY (project_id) REFERENCES projects (project_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+) AUTO_INCREMENT = 1;
 
 -- Insert student data
 INSERT INTO students (first_name, last_name, email, class_code, password)
@@ -130,15 +131,6 @@ INSERT INTO students (first_name, last_name, email, class_code, password)
 VALUES ('Jane', 'Doe', 'janedoe@email.com', 'din20sp', '1235');
 
 
--- Insert project data
-INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
-VALUES ('Project 1', 'This is project 1', 1, 1, 'ongoing', 'http://project1.com', '2021-01-01', '2021-02-01');
-
-INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
-VALUES ('Project 2', 'This is project 2', 2, 2, 'completed', 'http://project2.com', '2021-02-01', '2021-03-01');
-
-INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
-VALUES ('Project 3', 'This is project 3', 1, 3, 'completed', 'http://project3.com', '2021-03-01', '2021-04-01');
 
 -- Insert company data
 INSERT INTO companies (company_name)
@@ -151,14 +143,14 @@ INSERT INTO companies (company_name)
 VALUES ('Google');
 
 -- Insert teacher data
-INSERT INTO teachers (first_name, last_name, email)
-VALUES ('Teacher', 'One', 'teacher1@mail.com');
+INSERT INTO teachers (first_name, last_name, email,password)
+VALUES ('Teacher', 'One', 'teacher1@mail.com', '1234');
 
-INSERT INTO teachers (first_name, last_name, email)
-VALUES ('Teacher', 'Two', 'teacher2@mail.com');
+INSERT INTO teachers (first_name, last_name, email,password)
+VALUES ('Teacher', 'Two', 'teacher2@mail.com','1236');
 
-INSERT INTO teachers (first_name, last_name, email)
-VALUES ('Teacher', 'Three', 'teacher3@mail.com');
+INSERT INTO teachers (first_name, last_name, email,password)
+VALUES ('Teacher', 'Three', 'teacher3@mail.com','1235');
 
 -- Insert company_teacher data
 
@@ -201,9 +193,20 @@ VALUES (2, 2, 1);
 INSERT INTO student_project (student_id, project_id, project_number)
 VALUES (1, 2, 2);
 
+
+-- Insert project data
+INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
+VALUES ('Project 1', 'This is project 1', 1, 1, 'ongoing', 'http://project1.com', '2021-01-01', '2021-02-01');
+
+INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
+VALUES ('Project 2', 'This is project 2', 2, 2, 'completed', 'http://project2.com', '2021-02-01', '2021-03-01');
+
+INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
+VALUES ('Project 3', 'This is project 3', 1, 3, 'completed', 'http://project3.com', '2021-03-01', '2021-04-01');
+
 -- Insert project_note data
 
 INSERT INTO project_note (project_id, note, document_path, created_by)
-VALUES (1, 'This is a note for project 1', 'http://note1.com', "Teacher One");
+VALUES (2, 'This is a note for project 2', 'http://note1.com', "Teacher One");
 
 

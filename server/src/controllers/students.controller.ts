@@ -6,6 +6,8 @@ import { Status } from "../enum/status.enum";
 import { HttpResponse } from "../domain/response";
 import { ResultSetHeader, RowDataPacket, FieldPacket, OkPacket } from "mysql2";
 import { QUERY } from "../query/students.query";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
 
 type ResultSet = [RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader, FieldPacket[]];
@@ -110,5 +112,42 @@ export const deleteStudent = async (req: Request, res: Response): Promise<Respon
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
 
+    }
+};
+
+
+export const authenticateStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
+    dotenv.config();
+    const { email, password } = req.body;
+    let connection: any;
+    try {
+        connection = await pool.getConnection();
+        const [rows]: [RowDataPacket[], any] = await pool.query(QUERY.SELECT_STUDENT_BY_EMAIL, [email]);
+        if (rows.length > 0) {
+            const student = rows[0];
+            // Directly comparing the plaintext passwords
+            if (password === student.password) {
+                // Generate JWT token
+                const token = jwt.sign(
+                    { student_id: student.student_id, email: student.email },
+                    process.env.JWT_SECRET ?? 'default-secret',
+                    { expiresIn: '1h' }
+                );
+                return res.status(Code.OK)
+                    .send(new HttpResponse(Code.OK, Status.OK, 'Student authenticated', { token }));
+            } else {
+                return res.status(Code.UNAUTHORIZED)
+                    .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+            }
+        } else {
+            return res.status(Code.UNAUTHORIZED)
+                .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+        }
+    } catch (error: unknown) {
+        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while authenticating student'));
+    } finally {
+        if (connection) connection.release();
     }
 };
