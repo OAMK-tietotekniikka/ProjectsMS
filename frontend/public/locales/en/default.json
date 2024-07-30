@@ -101,6 +101,11 @@
   "pending": "pending",
   "ongoing": "ongoing",
   "completed": "completed",
-  "studInProj": "Students in project"
+  "studInProj": "Students in project",
+  "saveModify": "Save modifications",
+  "pendingRadio": "project is created but not started yet",
+  "ongoingRadio": "project work has started",
+  "completedRadio": "if project is finished, set it completed",
+  "changeStatus": "Change project status"
 
 }

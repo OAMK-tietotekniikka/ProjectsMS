@@ -83,10 +83,8 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
                 </Col>
                 <Col className="note-row" style={{ margin: "10px 0" }}>
                     <Button
-                        style={{ width: "200px", marginLeft: "10%", marginTop: "4%" }}
+                        className="student-view-button"
                         type='button'
-                        size="sm"
-                        variant='primary'
                         onClick={() => setShowModal(true)}
                     >
                         {t('addDoc')}
@@ -113,11 +111,11 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
                         style={{ display: 'none' }}
                         onChange={handleFileChange}
                     />
-                    <div style={{textAlign: "center", paddingBottom: "10px"}}>
+                    <div style={{ textAlign: "center", paddingBottom: "10px" }}>
                         {selectedFile &&
                             <>
                                 <div>{t('selectedFile')}:</div>
-                                <div style={{fontFamily: "monospace", fontWeight: "bold"}}>{selectedFile.name}</div>
+                                <div style={{ fontFamily: "monospace", fontWeight: "bold" }}>{selectedFile.name}</div>
                             </>
                         }
                     </div>
@@ -143,7 +141,7 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
                         {t('cancel')}
                     </Button>
                     <Button
-                        style={{ width: "100px"}}
+                        style={{ width: "100px" }}
                         onClick={() => handleSave()}
                     >
                         {t('save')}

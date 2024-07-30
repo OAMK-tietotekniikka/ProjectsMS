@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import DocumentsListing from "../components/StudentUI/DocumentsListing";
 import NotesListing from "../components/StudentUI/NotesListing";
+import ChangeProjectStatus from "../components/StudentUI/ChangeProjectStatus";
+import { useProjectsContext } from "../contexts/projectsContext";
 
 
 const StudentProjectDetails = () => {
@@ -13,6 +15,7 @@ const StudentProjectDetails = () => {
     const { id } = useParams<{ id: string }>();
     const projectId = parseInt(id);
     const [studentName, setStudentName] = useState<string>("");
+    const navigate = useNavigate();
 
     const handleChange = (value: string) => {
         if (value !== '') {
@@ -20,15 +23,16 @@ const StudentProjectDetails = () => {
         }
     };
 
-    const handleClick = () => {
+    const handleAddStudent = () => {
         console.log(studentName);
+        console.log(proj.company_id);
         // Functionality to add student to project will be added here
     };
 
     return (
         <Container className="student-main-container">
             <Row className="student-main-row">
-                <Col xs="12" lg="8">
+                <Col xs="12" lg="7">
                     <h4>{t('projectNo')} {proj.project_number}</h4>
                     <h6>{proj.project_name}</h6>
                     <div style={{ margin: "20px 0" }}>
@@ -68,16 +72,18 @@ const StudentProjectDetails = () => {
                         </Col>
 
                     </Row>
-                </Col>
-                <Col xs="12" lg="4" style={{ marginTop: "20%" }}>
                     <Button
-                        variant="primary"
-                        size="sm"
-                        style={{ width: "200px" }}
+                        className="student-view-button"
+                        onClick={() => navigate('/form', { state: { proj } })}
                     >
                         {t('modifyData')}
                     </Button>
                 </Col>
+                <Col xs="12" lg="5" style={{ marginTop: "15%" }}>
+                    <div style={{ fontWeight: "bold", marginBottom: "10px" }}>{t('changeStatus')}:</div>
+                    <ChangeProjectStatus projectData={proj} />
+                </Col>
+
                 <hr className="hr-style" />
 
                 <div style={{ fontWeight: "bold" }}>{t('projNotes')}</div>
@@ -102,18 +108,16 @@ const StudentProjectDetails = () => {
                         <Form>
                             <Form.Control
                                 type="text"
-                                placeholder={t('addStudent')}
+                                placeholder={t('enterName')}
                                 style={{ width: "300px", fontSize: "13px" }}
                                 onChange={(e) => handleChange(e.target.value)}
                                 value={studentName}
                             />
                         </Form>
                         <Button
-                            style={{ width: "200px", marginLeft: "10%", marginTop: "4%" }}
+                            className="student-view-button"
                             type='button'
-                            size="sm"
-                            variant='primary'
-                            onClick={() => handleClick()}
+                            onClick={() => handleAddStudent()}
                         >
                             {t('addStudent')}
                         </Button>

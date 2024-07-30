@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx } from "react/jsx-runtime";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/StudentUI/ProjectForm';
@@ -62,6 +62,6 @@ const AddNewProject = () => {
             alert(t('projNotCreated'));
         }
     });
-    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsxs(Col, { xs: 10, md: 8, lg: 6, children: [_jsx("h4", { className: 'main-heading', children: t('createProj') }), _jsx("div", { className: 'instruction ', children: _jsx("p", { children: t('projInstruction') }) }), _jsx(ProjectForm, { onSubmit: handleFormSubmit })] }) }) }));
+    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsx(Col, { xs: 10, md: 8, lg: 6, children: _jsx(ProjectForm, { onSubmit: handleFormSubmit }) }) }) }));
 };
 export default AddNewProject;

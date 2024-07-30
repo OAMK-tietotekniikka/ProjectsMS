@@ -101,5 +101,10 @@
   "pending": "vireillä",
   "ongoing": "käynnissä",
   "completed": "päättynyt",
-  "studInProj": "Projektin opiskelijat"
+  "studInProj": "Projektin opiskelijat",
+  "saveModify": "Tallenna muutokset",
+  "pendingRadio": "projekti on luotu, mutta ei vielä aloitettu",
+  "ongoingRadio": "projekti on käynnissä",
+  "completedRadio": "jos projekti on loppunut, aseta se päättyneeksi",
+  "changeStatus": "Muokkaa projektin tilaa"
 }

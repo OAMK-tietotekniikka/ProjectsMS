@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useStudentsContext } from '../contexts/studentsContext';
@@ -13,15 +13,18 @@ import '../App.css'
 const StudentDashboard: React.FC = () => {
     const { t } = useTranslation();
     const { students, signedInStudent } = useStudentsContext();
-    const { projects, studentProjects } = useProjectsContext();
+    const { projects, studentProjects, fetchProjects } = useProjectsContext();
     const { teachers } = useTeachersContext();
     const { companies } = useCompaniesContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchProjects();  
+    }, [fetchProjects]);
     
     const studentId = signedInStudent.student_id || null;
     const studentProjectsList = studentProjects?.filter(project => project.student_id === studentId) || [];
       
-
     const studentProjectsWithData = studentProjectsList?.map(project => {
         const projectData = projects?.find(proj => proj.project_id === project.project_id);
         return {
@@ -30,6 +33,8 @@ const StudentDashboard: React.FC = () => {
             project_description: projectData?.project_desc || "No project description",
             project_status: projectData?.project_status || "No project status",
             teacher_name: teachers?.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.last_name || "No teacher name",
+            teacher_id: projectData?.teacher_id || "No teacher id",
+            company_id: projectData?.company_id || "No company id",
             company_name: companies?.find(company => company.company_id === projectData?.company_id)?.company_name || "No company name",
             start_date: projectData?.start_date || "No start date",
             end_date: projectData?.end_date || "No end date",
@@ -75,7 +80,7 @@ const StudentDashboard: React.FC = () => {
                 <hr />
                 </Col>
                 <Col xs="12" lg="4" style={{ marginTop: "25%" }}>
-                    <Button href="/form" variant="primary" size="sm" style={{width: "200px" }}>{t('createProj')}</Button>
+                    <Button href="/form" className='student-view-button'>{t('createProj')}</Button>
                 </Col>
             </Row>
         </Container>
