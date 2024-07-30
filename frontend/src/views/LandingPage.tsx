@@ -54,7 +54,7 @@ const LandingPage: React.FC = () => {
                             <Form.Label>{t('password')}</Form.Label>
                             <Form.Control type="password" placeholder={t('enterPassword')} />
                         </Form.Group>
-                        <Button className='submit-login' variant="primary" type="submit">
+                        <Button className='submit-login' type="submit">
                             {t('login')}
                         </Button>
                     </Form>

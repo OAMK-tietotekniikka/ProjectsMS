@@ -77,7 +77,6 @@
 .submit-login {
   background-color: #1A80E5;
   color: white;
-  padding: 10px 15px;
   margin: 4% 0;
   border: none;
   cursor: pointer;
@@ -122,7 +121,7 @@
   border-radius: 12px;
   max-width: 300px;
   width: 100%;
-  height: 30px;
+  height: 33px;
   font-size: small;
   font-weight: bold;
 }
@@ -345,6 +344,21 @@
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1));
   margin: 2% 0;
 }
+.student-view-button {
+  background-color: #1A80E5;
+  color: white;
+  margin: 4% 0 1% 0;; 
+  border: none;
+  cursor: pointer;
+  width: 200px;
+  font-size: small;
+  font-weight: bold;
+  border-radius: 12px;
+}
+.student-view-button:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
 
 /*AddNewProject and form*/
 .main-heading {
@@ -370,15 +384,70 @@
 .submit-button {
   background-color: #1A80E5;
   color: white;
-  padding: 10px 15px;
   margin: 4% 0;
   border: none;
   cursor: pointer;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 .submit-button:disabled {
   background-color: #cccccc;
   color: black;
   cursor: not-allowed;
+}
+
+/*Modify state radio buttons*/
+.form-check .form-check-input {
+  background-color: #ffffff;
+  border-color: #545454;
+  position: relative;
+  cursor: pointer;
+  width: 14px; /* Adjust size of the outer circle */
+  height: 14px;
+}
+.form-check .form-check-input:checked::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px; /* Adjust size of the inner circle */
+  height: 7px;
+  background-color: #1A80E5; 
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.form-check .form-check-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.form-check .form-check-input:focus::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px; /* Adjust size of the inner circle */
+  height: 7px;
+  background-color: #1A80E5; /* Change this to your desired focus color */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.radio-span {
+  position: absolute;
+  left: 70% 
+}
+.radio-column {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 5px 
+}
+@media (max-width: 768px) {
+  .radio-span {
+    position: absolute;
+    left: 35%
+  }
+  .radio-column {
+    margin-left: 0px;
+    padding-left: 0px
+  }
 }

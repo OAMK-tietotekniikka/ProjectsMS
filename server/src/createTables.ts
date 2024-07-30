@@ -20,7 +20,7 @@ const createTables = async () => {
         await connection.execute('DROP TABLE IF EXISTS companies');
         await connection.execute('DROP TABLE IF EXISTS resources');
         await connection.execute('DROP TABLE IF EXISTS teachers');
-        
+
         
         //create tables
         await connection.execute(`CREATE TABLE IF NOT EXISTS companies (
@@ -37,12 +37,6 @@ const createTables = async () => {
             email VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (teacher_id)
-        )`);
-
-        await connection.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
-            company_id INT UNSIGNED NOT NULL,
-            teacher_id INT UNSIGNED NOT NULL,
-            PRIMARY KEY (company_id, teacher_id),
         )`);
 
         await connection.execute(`CREATE TABLE IF NOT EXISTS projects (
@@ -99,8 +93,46 @@ const createTables = async () => {
             student_id INT UNSIGNED DEFAULT NULL,
             project_id INT UNSIGNED DEFAULT NULL,
             project_number INT DEFAULT NULL,
-            PRIMARY KEY (student_id, project_id),
+            PRIMARY KEY (student_id, project_id)
+        )`);    
+
+        await connection.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
+            company_id INT UNSIGNED NOT NULL,
+            teacher_id INT UNSIGNED NOT NULL,
+            PRIMARY KEY (company_id, teacher_id)
         )`);
+
+        //add dummy data to tables
+
+        await connection.execute(`INSERT INTO companies (company_name) VALUES ('Google')`);
+        await connection.execute(`INSERT INTO companies (company_name) VALUES ('Nokia')`);
+        await connection.execute(`INSERT INTO companies (company_name) VALUES ('Microsoft')`);
+
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email) VALUES ('Lasse', 'Haverinen', lasse@mail.com)`);
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email) VALUES ('Jukka', 'Korhonen', jukka@mail.com)`);
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email) VALUES ('Meja', 'Lohiniva', meja@mail.com)`);
+
+        await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project 1', 'Description 1', 1, 1, 'ongoing, 'www.google.com', '2024-01-01', '2024-08-08')`);
+        await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project 2', 'Description 2', 2, 2, 'ongoing, 'no url', '2024-01-01', '2024-08-08')`);
+
+        await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Liisa', 'Törmäkangas', 'liisa@mail.com', 'din22sp', 'password')`);
+        await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('John', 'Doe', 'john@mail.com', 'din22sp', 'password2')`);
+        await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Jane', 'Doe', 'jane@mail.com', 'din21sp', 'password2')`);
+
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 10, 7, '2021-2022')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 7, '2022-2023')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 1, '2023-2024')`);
+
+        await connection.execute(`INSERT INTO project_note (project_id, note, document_path, created_by) VALUES (1, 'Note 1', 'path/to/document', 'Liisa Törmäkangas')`);
+
+        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (1, 1, 1)`);
+        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (1, 2, 2)`);
+        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (2, 1, 1)`);
+
+        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (1, 1)`);
+        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 2)`);
+        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (3, 3)`);
+        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 1)`);
 
         console.log('Tables created successfully');
     } catch (error) {

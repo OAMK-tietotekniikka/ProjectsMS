@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     getAllProjects,
     addProject,
@@ -23,6 +23,7 @@ interface ProjectsContextType {
     projectNotes: Note[];
     getProjectNotes: (projectId: number) => Promise<Note[]>;
     addProjectNote: (projectId: number, note: NewNote) => Promise<Note>;
+    fetchProjects: () => Promise<void>;
 };
 
 const ProjectsContext = React.createContext<ProjectsContextType>({} as ProjectsContextType);
@@ -32,17 +33,18 @@ const ProjectsContextProvider = (props: any) => {
     const [studentProjects, setStudentProjects] = useState<StudentProject[]>([]);
     const [projectNotes, setProjectNotes] = useState<Note[]>([]);
 
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const projectsList = await getAllProjects();
-                setProjects(projectsList.data);
-            } catch (error) {
-                console.error("Failed to fetch data:", error);
-            }
+    const fetchProjects = useCallback(async () => {
+        try {
+            const projectsList = await getAllProjects();
+            setProjects(projectsList.data);
+        } catch (error) {
+            console.error("Failed to fetch data:", error);
         }
-        fetchProjects();
     }, []);
+
+    useEffect(() => {
+        fetchProjects();
+    }, [fetchProjects]);
 
     useEffect(() => {
         const fetchStudentProjects = async () => {
@@ -78,7 +80,7 @@ const ProjectsContextProvider = (props: any) => {
         try {
             const response = await updateProject(projecct, projectId);
             setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId).concat(response.data));
-            console.log("Modified Project:", projects);
+            await fetchProjects();
             return response;
         } catch (error) {
             console.error("Failed to add modified Project:", error);
@@ -117,7 +119,8 @@ const ProjectsContextProvider = (props: any) => {
         modifyProject,
         projectNotes,
         getProjectNotes,
-        addProjectNote
+        addProjectNote,
+        fetchProjects
     };
 
     return (

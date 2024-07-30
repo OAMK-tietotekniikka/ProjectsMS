@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { jsx as _jsx } from "react/jsx-runtime";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, getNotes, createNote } from "./apiRequests";
 ;
 const ProjectsContext = React.createContext({});
@@ -16,18 +16,18 @@ const ProjectsContextProvider = (props) => {
     const [projects, setProjects] = useState([]);
     const [studentProjects, setStudentProjects] = useState([]);
     const [projectNotes, setProjectNotes] = useState([]);
+    const fetchProjects = useCallback(() => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const projectsList = yield getAllProjects();
+            setProjects(projectsList.data);
+        }
+        catch (error) {
+            console.error("Failed to fetch data:", error);
+        }
+    }), []);
     useEffect(() => {
-        const fetchProjects = () => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                const projectsList = yield getAllProjects();
-                setProjects(projectsList.data);
-            }
-            catch (error) {
-                console.error("Failed to fetch data:", error);
-            }
-        });
         fetchProjects();
-    }, []);
+    }, [fetchProjects]);
     useEffect(() => {
         const fetchStudentProjects = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -63,7 +63,7 @@ const ProjectsContextProvider = (props) => {
         try {
             const response = yield updateProject(projecct, projectId);
             setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId).concat(response.data));
-            console.log("Modified Project:", projects);
+            yield fetchProjects();
             return response;
         }
         catch (error) {
@@ -103,7 +103,8 @@ const ProjectsContextProvider = (props) => {
         modifyProject,
         projectNotes,
         getProjectNotes,
-        addProjectNote
+        addProjectNote,
+        fetchProjects
     };
     return (_jsx(ProjectsContext.Provider, { value: value, children: props.children }));
 };

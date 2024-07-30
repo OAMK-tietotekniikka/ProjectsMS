@@ -66,10 +66,6 @@ const AddNewProject: React.FC = () => {
         <Container>
             <Row className="justify-content-center">
                 <Col xs={10} md={8} lg={6}>
-                    <h4 className='main-heading'>{t('createProj')}</h4>
-                    <div className='instruction '>
-                        <p>{t('projInstruction')}</p>
-                    </div>
                     <ProjectForm onSubmit={handleFormSubmit} />
                 </Col>
             </Row>

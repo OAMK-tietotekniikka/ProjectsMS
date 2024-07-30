@@ -11,9 +11,11 @@ interface NotesListingProps {
 
 const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
     const { t } = useTranslation();
-    const { getProjectNotes, addProjectNote, projectNotes } = useProjectsContext();
+    const { getProjectNotes, addProjectNote, projectNotes, projects } = useProjectsContext();
     const [note, setNote] = useState<string>("");
     const [notes, setNotes] = useState([]);
+
+    const currentProject = projects.find((project) => project.project_id === projectId);
 
     useEffect(() => {
         const fetchNotes = async () => {
@@ -36,7 +38,7 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
     const handleNewNote = () => {
         const getStudent = JSON.parse(localStorage.getItem('signedInStudent') || '{}');
         const studentName = `${getStudent.first_name} ${getStudent.last_name}`;
-    
+
         const newNote = {
             note: note,
             document_path: "",
@@ -61,26 +63,27 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
                 ))
                     : <div className="note-item">{t('noNotes')}</div>}
             </Col>
-            <Col className="note-row" style={{ margin: "10px 0" }}>
-                <Form>
-                    <Form.Control
-                        type="text"
-                        placeholder={t('enterNote')}
-                        style={{ width: "300px", fontSize: "13px" }}
-                        onChange={(e) => handleChange(e.target.value)}
-                        value={note}
-                    />
-                </Form>
-                <Button
-                    style={{ width: "200px", marginLeft: "10%", marginTop: "4%" }}
-                    type='button'
-                    size="sm"
-                    variant='primary'
-                    onClick={handleNewNote}
-                >
-                    {t('saveNote')}
-                </Button>
-            </Col>
+            {currentProject?.project_status !== "completed" ?
+                <Col className="note-row" style={{ margin: "10px 0" }}>
+                    <Form>
+                        <Form.Control
+                            type="text"
+                            placeholder={t('enterNote')}
+                            style={{ width: "300px", fontSize: "13px" }}
+                            onChange={(e) => handleChange(e.target.value)}
+                            value={note}
+                        />
+                    </Form>
+                    <Button
+                        className="student-view-button"
+                        type='button'
+                        onClick={handleNewNote}
+                        disabled={note === ""}
+                    >
+                        {t('saveNote')}
+                    </Button>
+                </Col>
+                : null}
         </Row>
     );
 };
