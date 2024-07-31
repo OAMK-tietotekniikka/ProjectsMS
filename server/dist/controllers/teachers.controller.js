@@ -145,16 +145,16 @@ const authenticateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, func
                 // Generate JWT token
                 const token = jsonwebtoken_1.default.sign({ teacher_id: teacher.teacher_id, email: teacher.email }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
                 return res.status(code_enum_1.Code.OK)
-                    .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher authenticated', { token }));
+                    .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher authenticated', { token, teacherId: teacher.teacher_id }));
             }
             else {
                 return res.status(code_enum_1.Code.UNAUTHORIZED)
-                    .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid credentials'));
+                    .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid password'));
             }
         }
         else {
             return res.status(code_enum_1.Code.UNAUTHORIZED)
-                .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid credentials'));
+                .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid user email'));
         }
     }
     catch (error) {

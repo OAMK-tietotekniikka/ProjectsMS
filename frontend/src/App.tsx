@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import AddNewProject from './views/AddNewProject';
 import NavbarComponent from './components/Navbar';
 import SidebarComponent from './components/Sidebar'; // Step 1: Import SidebarComponent
@@ -18,7 +18,6 @@ function App() {
 
   return (
     <div>
-      <Router>
         <NavbarComponent />
         <div style={{ display: 'flex', flexDirection: "column" }}> {/* Use a flex container to layout sidebar and main content */}
           {(user !== "") ? <SidebarComponent /> : null} {/* Step 2: Include SidebarComponent */}
@@ -35,7 +34,6 @@ function App() {
             </Routes>
           </div>
         </div>
-      </Router>
     </div>
   );
 };

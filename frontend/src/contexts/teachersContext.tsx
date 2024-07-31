@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource, getFavoCompanies, createResource } from "./apiRequests";
+import { getTeachers, getResources, updateResource, createResource } from "./apiRequests/teachersApiRequests";
 import { Teacher } from "../interface/teacher";
 import { Resource, NewResource } from "../interface/resource";
+import { useUserContext } from "./userContext";
 
 
 interface TeachersContextType {
@@ -24,6 +25,7 @@ const TeachersContextProvider = (props: any) => {
         const savedTeacher = localStorage.getItem('signedInTeacher');
         return savedTeacher ? JSON.parse(savedTeacher) : null;
     });
+    const { teacherId } = useUserContext();
 
     useEffect(() => {
         const fetchTeachers = async () => {
@@ -52,12 +54,12 @@ const TeachersContextProvider = (props: any) => {
     }, []);
 
     useEffect(() => {
-        if (!teachers) return;
-        const teacher = teachers.find(t => t.teacher_id === 1); // hardcoded for now
+        if (teachers.length === 0 || teacherId === 0) return;
+        const teacher = teachers.find(t => t.teacher_id === teacherId);
         if (teacher) {
             setSignedInTeacher(teacher);
         }
-    }, [teachers]);
+    }, [teachers, teacherId]);
 
     const setSignedInTeacher = (teacher: Teacher | null) => {
         setSignedInTeacherState(teacher);

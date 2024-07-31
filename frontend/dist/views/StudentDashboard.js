@@ -19,7 +19,7 @@ const StudentDashboard = () => {
     useEffect(() => {
         fetchProjects();
     }, [fetchProjects]);
-    const studentId = signedInStudent.student_id || null;
+    const studentId = (signedInStudent === null || signedInStudent === void 0 ? void 0 : signedInStudent.student_id) || null;
     const studentProjectsList = (studentProjects === null || studentProjects === void 0 ? void 0 : studentProjects.filter(project => project.student_id === studentId)) || [];
     const studentProjectsWithData = studentProjectsList === null || studentProjectsList === void 0 ? void 0 : studentProjectsList.map(project => {
         var _a, _b, _c;

@@ -1,4 +1,4 @@
-import { getTeachersByCompany } from "../../contexts/apiRequests";
+import { getTeachersByCompany } from "../../contexts/apiRequests/teachersApiRequests";
 import { Resource } from "../../interface/resource";
 import { getStudyYear } from "../GetStudyYear";
 import i18n from 'i18next';

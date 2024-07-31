@@ -92,8 +92,8 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             Foreign Key (project_id) REFERENCES projects (project_id)
         )`);
         yield connection.execute(`CREATE TABLE IF NOT EXISTS student_project (
-            student_id INT UNSIGNED DEFAULT NULL,
-            project_id INT UNSIGNED DEFAULT NULL,
+            student_id INT UNSIGNED NOT NULL,
+            project_id INT UNSIGNED NOT NULL,
             project_number INT DEFAULT NULL,
             PRIMARY KEY (student_id, project_id)
         )`);

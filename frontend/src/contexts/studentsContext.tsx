@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getStudents } from "./apiRequests";
+import { getStudents } from "./apiRequests/studentsApiRequests";
 import { Student } from "../interface/student";
+import { useUserContext } from "./userContext";
 
 
 interface StudentsContextType {
@@ -17,6 +18,7 @@ const StudentsContextProvider = (props: any) => {
         const savedStudent = localStorage.getItem('signedInStudent');
         return savedStudent ? JSON.parse(savedStudent) : null;
     });
+    const { studentId } = useUserContext();
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -32,12 +34,12 @@ const StudentsContextProvider = (props: any) => {
 
 
     useEffect(() => {
-        if (!students) return;
-        const student = students.find(s => s.student_id === 1); // hardcoded for now
+        if (students.length === 0 || studentId === 0) return;
+        const student = students.find(s => s.student_id === studentId);
         if (student) {
             setSignedInStudent(student);
         } 
-    }, [students]);
+    }, [students, studentId]);
 
     const setSignedInStudent = (student: Student | null) => {
         setSignedInStudentState(student);

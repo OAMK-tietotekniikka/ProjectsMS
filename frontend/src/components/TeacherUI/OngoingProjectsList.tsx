@@ -29,9 +29,7 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
     const [studentName, setStudentName] = useState('');
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
-    
     const projectsForSignedInTeacher = projects?.filter(project => project.teacher_id === teacherId && (project.project_status === 'pending' || project.project_status === 'ongoing')) || [];
 
     // add company_name to items in projectsForSignedInTeacher array using company_id and companies array

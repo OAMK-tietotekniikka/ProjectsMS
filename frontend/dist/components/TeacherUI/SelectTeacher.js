@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getTeachersByCompany } from "../../contexts/apiRequests";
+import { getTeachersByCompany } from "../../contexts/apiRequests/teachersApiRequests";
 import { getStudyYear } from "../GetStudyYear";
 import i18n from 'i18next';
 export const selectTeacher = (companyName, startDate, resources) => __awaiter(void 0, void 0, void 0, function* () {

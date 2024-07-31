@@ -7,7 +7,7 @@ import { useUserContext } from '../contexts/userContext';
 
 const NavbarComponent = () => { 
     const {t, i18n} = useTranslation();
-    const {user} = useUserContext();
+    const {token, logout} = useUserContext();
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
@@ -28,7 +28,7 @@ const NavbarComponent = () => {
                         <Nav.Link onClick={() => changeLanguage("en")}>EN</Nav.Link>
                     </div>
                     <div>
-                        <Nav.Link>{user !== "" ? t('logout') : t('login')}</Nav.Link>
+                        <Nav.Link onClick={logout}>{token !== "" ? t('logout') : ""}</Nav.Link>
                     </div>
                 </Navbar.Collapse>
             </Container>

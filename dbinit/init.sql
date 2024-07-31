@@ -193,6 +193,9 @@ VALUES (2, 2, 1);
 INSERT INTO student_project (student_id, project_id, project_number)
 VALUES (1, 2, 2);
 
+INSERT INTO student_project (student_id, project_id, project_number)
+VALUES (2, 3, 3);
+
 
 -- Insert project data
 INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date)
