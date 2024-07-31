@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getCompanies, addNewCompany, getFavoCompanies, addNewFavoCompany, deleteFavoCompanies } from "./apiRequests";
+import { getCompanies, addNewCompany, getFavoCompanies, addNewFavoCompany, deleteFavoCompanies } from "./apiRequests/companiesApiRequests";
 import { Company } from "../interface/company";
 import { FavoCompany } from "../interface/favoCompany";
 

@@ -21,7 +21,6 @@ const OngoingProjectsList = ({ teacherId }) => {
     const [show, setShow] = useState(false);
     const [studentName, setStudentName] = useState('');
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const projectsForSignedInTeacher = (projects === null || projects === void 0 ? void 0 : projects.filter(project => project.teacher_id === teacherId && (project.project_status === 'pending' || project.project_status === 'ongoing'))) || [];
     // add company_name to items in projectsForSignedInTeacher array using company_id and companies array
     const projectsWithCompanyNames = projectsForSignedInTeacher.map((project) => {

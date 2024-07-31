@@ -7,7 +7,7 @@ import {
     updateProject,
     getNotes,
     createNote
-} from "./apiRequests";
+} from "./apiRequests/projectsApiRequests";
 import { Project } from "../interface/project";
 import { ProjectFormData } from "../interface/formData";
 import { StudentProject } from "../interface/studentProject";

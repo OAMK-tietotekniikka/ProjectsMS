@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect, useCallback } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, getNotes, createNote } from "./apiRequests";
+import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, getNotes, createNote } from "./apiRequests/projectsApiRequests";
 ;
 const ProjectsContext = React.createContext({});
 const ProjectsContextProvider = (props) => {

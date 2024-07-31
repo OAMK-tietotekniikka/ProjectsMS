@@ -22,7 +22,7 @@ const StudentDashboard: React.FC = () => {
         fetchProjects();  
     }, [fetchProjects]);
     
-    const studentId = signedInStudent.student_id || null;
+    const studentId = signedInStudent?.student_id || null;
     const studentProjectsList = studentProjects?.filter(project => project.student_id === studentId) || [];
       
     const studentProjectsWithData = studentProjectsList?.map(project => {

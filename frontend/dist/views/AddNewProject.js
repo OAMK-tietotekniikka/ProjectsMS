@@ -12,9 +12,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/StudentUI/ProjectForm';
 import { useTranslation } from 'react-i18next';
-import { sendEmailNotification } from '../contexts/apiRequests';
+import { sendEmailNotification } from '../contexts/apiRequests/userApiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
 import { useProjectsContext } from '../contexts/projectsContext';
+import { useStudentsContext } from '../contexts/studentsContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
@@ -22,6 +23,7 @@ const AddNewProject = () => {
     const navigate = useNavigate();
     const { teachers } = useTeachersContext();
     const { addNewProject } = useProjectsContext();
+    const { signedInStudent } = useStudentsContext();
     const handleFormSubmit = (formData, companyId, teacherId, companyName) => __awaiter(void 0, void 0, void 0, function* () {
         // add company_id and teacher_id to formData
         formData.company_id = companyId;
@@ -36,7 +38,11 @@ const AddNewProject = () => {
             Start Date: ${formattedStartDate}\n
             Please login to the projects management system to view the project details.`;
         try {
-            const studentId = 2; // replace with actual student id when student login is implemented
+            if (!signedInStudent) {
+                alert(t('studentNotLoggedIn'));
+                return;
+            }
+            const studentId = signedInStudent.student_id;
             const response = yield addNewProject(formData, studentId);
             if (response.statusCode === 201) {
                 const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);

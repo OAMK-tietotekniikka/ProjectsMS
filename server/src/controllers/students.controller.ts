@@ -134,14 +134,14 @@ export const authenticateStudent = async (req: Request, res: Response): Promise<
                     { expiresIn: '1h' }
                 );
                 return res.status(Code.OK)
-                    .send(new HttpResponse(Code.OK, Status.OK, 'Student authenticated', { token }));
+                    .send(new HttpResponse(Code.OK, Status.OK, 'Student authenticated', { token, studentId: student.student_id }));
             } else {
                 return res.status(Code.UNAUTHORIZED)
-                    .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+                    .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid password'));
             }
         } else {
             return res.status(Code.UNAUTHORIZED)
-                .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid credentials'));
+                .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid user email'));
         }
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);

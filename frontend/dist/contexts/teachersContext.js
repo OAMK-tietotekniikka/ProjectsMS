@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource, createResource } from "./apiRequests";
+import { getTeachers, getResources, updateResource, createResource } from "./apiRequests/teachersApiRequests";
+import { useUserContext } from "./userContext";
 const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
     const [teachers, setTeachers] = useState([]);
@@ -18,6 +19,7 @@ const TeachersContextProvider = (props) => {
         const savedTeacher = localStorage.getItem('signedInTeacher');
         return savedTeacher ? JSON.parse(savedTeacher) : null;
     });
+    const { teacherId } = useUserContext();
     useEffect(() => {
         const fetchTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -43,13 +45,13 @@ const TeachersContextProvider = (props) => {
         fetchResources();
     }, []);
     useEffect(() => {
-        if (!teachers)
+        if (teachers.length === 0 || teacherId === 0)
             return;
-        const teacher = teachers.find(t => t.teacher_id === 1); // hardcoded for now
+        const teacher = teachers.find(t => t.teacher_id === teacherId);
         if (teacher) {
             setSignedInTeacher(teacher);
         }
-    }, [teachers]);
+    }, [teachers, teacherId]);
     const setSignedInTeacher = (teacher) => {
         setSignedInTeacherState(teacher);
         if (teacher) {

@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getStudents } from "./apiRequests";
+import { getStudents } from "./apiRequests/studentsApiRequests";
+import { useUserContext } from "./userContext";
 ;
 const StudentsContext = React.createContext({});
 const StudentsContextProvider = (props) => {
@@ -18,6 +19,7 @@ const StudentsContextProvider = (props) => {
         const savedStudent = localStorage.getItem('signedInStudent');
         return savedStudent ? JSON.parse(savedStudent) : null;
     });
+    const { studentId } = useUserContext();
     useEffect(() => {
         const fetchStudents = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -31,13 +33,13 @@ const StudentsContextProvider = (props) => {
         fetchStudents();
     }, []);
     useEffect(() => {
-        if (!students)
+        if (students.length === 0 || studentId === 0)
             return;
-        const student = students.find(s => s.student_id === 1); // hardcoded for now
+        const student = students.find(s => s.student_id === studentId);
         if (student) {
             setSignedInStudent(student);
         }
-    }, [students]);
+    }, [students, studentId]);
     const setSignedInStudent = (student) => {
         setSignedInStudentState(student);
         if (student) {
