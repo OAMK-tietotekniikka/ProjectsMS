@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Teacher } from "../interface/teacher";
 import pool from "../config/mysql.config";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"; 
+import jwt from "jsonwebtoken";
 import { Code } from "../enum/code.enum";
 import { Status } from "../enum/status.enum";
 import { HttpResponse } from "../domain/response";
@@ -127,10 +127,15 @@ export const authenticateTeacher = async (req: Request, res: Response): Promise<
             if (password === teacher.password) {
                 // Generate JWT token
                 const token = jwt.sign(
-                    { teacher_id: teacher.teacher_id, email: teacher.email },
+                    {
+                        teacher_id: teacher.teacher_id,
+                        email: teacher.email,
+                        role: 'teacher'
+                    },
                     process.env.JWT_SECRET ?? 'default-secret',
                     { expiresIn: '1h' }
                 );
+                console.log(`TeacterId: ${teacher.teacher_id} authenticated successfully.`)
                 return res.status(Code.OK)
                     .send(new HttpResponse(Code.OK, Status.OK, 'Teacher authenticated', { token, teacherId: teacher.teacher_id }));
             } else {

@@ -5,9 +5,9 @@ const baseUrl = import.meta.env.VITE_API_URL
 
 // Students API requests
 
-export const getStudents = async () => {
+export const getStudents = async (authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/students`);
+        const response = await axios.get(`${baseUrl}/students`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

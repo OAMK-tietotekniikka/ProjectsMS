@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
-const ip_1 = __importDefault(require("ip"));
 const code_enum_1 = require("./enum/code.enum");
 const response_1 = require("./domain/response");
 const status_enum_1 = require("./enum/status.enum");
@@ -16,6 +15,7 @@ const companies_routes_1 = __importDefault(require("./routes/companies.routes"))
 const teachers_routes_1 = __importDefault(require("./routes/teachers.routes"));
 const resources_routes_1 = __importDefault(require("./routes/resources.routes"));
 const email_routes_1 = __importDefault(require("./routes/email.routes"));
+const passportMiddleware_1 = __importDefault(require("./passportMiddleware"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 //Comment out when working with development/feature branch
 //createTables();
@@ -30,12 +30,13 @@ class App {
     }
     listen() {
         this.app.listen(this.port, () => {
-            console.info(`${this.APPLICATION_RUNNING} ${ip_1.default.address()}:${this.port}`);
+            console.info(`${this.APPLICATION_RUNNING} port: ${this.port}`);
         });
     }
     middlewares() {
         this.app.use((0, cors_1.default)({ origin: '*' }));
         this.app.use(express_1.default.json());
+        this.app.use(passportMiddleware_1.default.initialize());
     }
     routes() {
         this.app.use('/students', students_routes_1.default); // This is a students route.

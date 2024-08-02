@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const companies_controller_1 = require("../controllers/companies.controller");
+const passportMiddleware_1 = require("../passportMiddleware");
 const companiesRouter = (0, express_1.Router)();
 companiesRouter.route('/')
-    .get(companies_controller_1.getCompanies)
-    .post(companies_controller_1.createCompany);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), companies_controller_1.getCompanies)
+    .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), companies_controller_1.createCompany);
 companiesRouter.route('/favo')
-    .post(companies_controller_1.addFavoCompany);
+    .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher'), companies_controller_1.addFavoCompany);
 companiesRouter.route('/favo/:teacher_id')
-    .get(companies_controller_1.getFavoCompanies);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), companies_controller_1.getFavoCompanies);
 companiesRouter.route('/deleteFavo/:teacher_id')
-    .delete(companies_controller_1.deleteFavoCompany);
+    .delete(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher'), companies_controller_1.deleteFavoCompany);
 exports.default = companiesRouter;

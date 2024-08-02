@@ -18,28 +18,37 @@ const StudentsContextProvider = (props: any) => {
         const savedStudent = localStorage.getItem('signedInStudent');
         return savedStudent ? JSON.parse(savedStudent) : null;
     });
-    const { studentId } = useUserContext();
+    const { studentId, token } = useUserContext();
+
+    let authHeader: any = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
 
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const studentsList = await getStudents();
+                const studentsList = await getStudents(authHeader);
                 setStudents(studentsList.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
             }
         }
-        fetchStudents();
-    }, []);
+        if (token) {
+            fetchStudents();
+        } else {
+            setStudents([]);
+        }
+    }, [token]);
 
 
     useEffect(() => {
-        if (students.length === 0 || studentId === 0) return;
-        const student = students.find(s => s.student_id === studentId);
+        if (students?.length === 0 || studentId === 0) return;
+        const student = students?.find(s => s.student_id === studentId);
         if (student) {
             setSignedInStudent(student);
         } 
-    }, [students, studentId]);
+    }, [students, studentId, token]);
 
     const setSignedInStudent = (student: Student | null) => {
         setSignedInStudentState(student);

@@ -51,8 +51,6 @@ const SelectionDropdown = ({ data, options, toggle, setSelectedData }) => {
     };
     const handleNameSelection = () => {
         const filteredData = data.filter((data) => (data.name).toLowerCase() === name.toLowerCase());
-        console.log(filteredData);
-        console.log(data);
         if (filteredData.length === 0) {
             setSelectedData([]);
             alert("Name not found");

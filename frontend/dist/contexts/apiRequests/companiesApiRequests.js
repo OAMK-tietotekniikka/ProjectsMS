@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 const baseUrl = import.meta.env.VITE_API_URL;
 // Companies API requests
-export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getCompanies = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        const response = yield axios.get(`${baseUrl}/companies`);
+        const response = yield axios.get(`${baseUrl}/companies`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -26,11 +26,10 @@ export const getCompanies = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+export const addNewCompany = (company_name, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _c, _d;
-    console.log('company_name:', company_name);
     try {
-        const response = yield axios.post(`${baseUrl}/companies`, { company_name });
+        const response = yield axios.post(`${baseUrl}/companies`, { company_name }, authHeader);
         if (response.data.statusCode === 201) {
             alert('New Company added successfully.');
             return response.data.data;
@@ -50,10 +49,10 @@ export const addNewCompany = (company_name) => __awaiter(void 0, void 0, void 0,
         }
     }
 });
-export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+export const getFavoCompanies = (teacher_id, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        const response = yield axios.get(`${baseUrl}/companies/favo/${teacher_id}`);
+        const response = yield axios.get(`${baseUrl}/companies/favo/${teacher_id}`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -66,10 +65,10 @@ export const getFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0
         }
     }
 });
-export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0, void 0, function* () {
+export const addNewFavoCompany = (companyFavourity, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.post(`${baseUrl}/companies/favo`, companyFavourity);
+        const response = yield axios.post(`${baseUrl}/companies/favo`, companyFavourity, authHeader);
         if (response.data.statusCode === 201) {
             return response.data.data;
         }
@@ -88,10 +87,10 @@ export const addNewFavoCompany = (companyFavourity) => __awaiter(void 0, void 0,
         }
     }
 });
-export const deleteFavoCompanies = (teacher_id) => __awaiter(void 0, void 0, void 0, function* () {
+export const deleteFavoCompanies = (teacher_id, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`, authHeader);
         return response.data;
     }
     catch (error) {

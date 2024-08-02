@@ -67,7 +67,6 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
             start_date: project.start_date,
             end_date: currentDate,
         }
-        console.log('New project data:', newProjectData);
         setModifiedProjectData(newProjectData);
         setStudentName(project.name);
         setShow(true);

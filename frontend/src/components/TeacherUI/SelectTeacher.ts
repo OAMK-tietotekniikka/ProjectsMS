@@ -6,6 +6,12 @@ import i18n from 'i18next';
 export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<Resource> => {
     // use startDate to get the study year
     const studyYear = getStudyYear(startDate);
+    const token = localStorage.getItem('token');
+
+    let authHeader: any = {};
+    if (token) {
+        authHeader = {headers: { Authorization: `Bearer ${token}` }};
+    }
    
     // get the resources for the study year
     const resourcesForYear = resources.filter((resource: Resource) => resource.study_year === studyYear && resource.used_resources < resource.total_resources)
@@ -18,7 +24,7 @@ export const selectTeacher = async (companyName: string, startDate: Date, resour
         return null;
     }
     
-    const response = await getTeachersByCompany(companyName)
+    const response = await getTeachersByCompany(companyName, authHeader)
 
     if (response.statusCode === 200) {
         const teachersWithFavoComp = response.data

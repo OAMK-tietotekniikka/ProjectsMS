@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getCompanies, addNewCompany, getFavoCompanies, addNewFavoCompany, deleteFavoCompanies } from "./apiRequests/companiesApiRequests";
 import { Company } from "../interface/company";
-import { FavoCompany } from "../interface/favoCompany";
+import { useUserContext } from "./userContext";
 
 interface CompaniesContextType {
     companies: Company[];
@@ -17,11 +17,17 @@ const CompaniesContext = React.createContext<CompaniesContextType>({} as Compani
 const CompaniesContextProvider = (props: any) => {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [teacherFavoCompanies, setTeacherFavoCompanies] = useState<Company[]>([]);
+    const { token, teacherId } = useUserContext();
+
+    let authHeader: any = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
 
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const companiesList = await getCompanies();
+                const companiesList = await getCompanies(authHeader);
                 setCompanies(companiesList.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
@@ -29,14 +35,12 @@ const CompaniesContextProvider = (props: any) => {
         };
         fetchCompanies();
         
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         const fetchFavoCompanies = async () => {
             try {
-                // id is hardcoded now; when sign in works, use the signed in teacher id
-                //const id = Number(localStorage.getItem("teacher_id"));
-                const companies = await getFavoCompanies(1);
+                const companies = await getFavoCompanies(teacherId, authHeader);
                 setTeacherFavoCompanies(companies.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error)
@@ -44,13 +48,11 @@ const CompaniesContextProvider = (props: any) => {
         };
         fetchFavoCompanies();
 
-    }, []);
+    }, [token]);
     
     const addCompany = async (companyName: string): Promise<number> => {
-        console.log(`From addCompany, companyName:`, companyName);
         try {
-            const response = await addNewCompany(companyName);
-            console.log(`From addCompany, response:`, response);
+            const response = await addNewCompany(companyName, authHeader);
             setCompanies([...companies, response]);
             return response.company_id;
         } catch (error) {
@@ -61,14 +63,13 @@ const CompaniesContextProvider = (props: any) => {
     const addFavoCompany = async (companiesList: Company[], teacherId: number) => {
         //first delete all the companies from the teacher's favourite list
         try {
-            const response = await deleteFavoCompanies(teacherId);
+            const response = await deleteFavoCompanies(teacherId, authHeader);
             if (response.statusCode === 200) {
-                console.log('All companies deleted successfully:', response);
 
                 //then add the new companies to the teacher's favourite list
                 const addPromises = companiesList.map(async (company) => {
                     try {
-                        const response = await addNewFavoCompany({ company_id: company.company_id, teacher_id: teacherId });
+                        const response = await addNewFavoCompany({ company_id: company.company_id, teacher_id: teacherId }, authHeader);
                         return response;
                     } catch (error) {
                         console.error("Failed to add company:", error);
@@ -78,7 +79,6 @@ const CompaniesContextProvider = (props: any) => {
     
                 //wait for all add operations to complete
                 await Promise.all(addPromises);
-                console.log('New companies added successfully');
             }
         } catch (error) {
             console.error("Failed to delete companies:", error);

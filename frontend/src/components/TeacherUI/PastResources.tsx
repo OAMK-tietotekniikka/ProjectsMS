@@ -18,7 +18,7 @@ const PastResources: React.FC<PastResourcesProps> = ({ study_year, resources, id
 
     if (!showTable) return null;
     // Filter resources by teacher id and sort ascending by study year
-    const filteredResources = resources.filter(resource => {
+    const filteredResources = resources?.filter(resource => {
         const resourceYear = parseInt(resource.study_year.split('-')[0], 10);
         return resource.teacher_id === id && resourceYear < currentYear && resource.study_year !== study_year;
     });

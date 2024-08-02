@@ -5,9 +5,9 @@ import { FavoCompany } from '../../interface/favoCompany';
 const baseUrl = import.meta.env.VITE_API_URL
 
 // Companies API requests
-export const getCompanies = async () => {
+export const getCompanies = async (authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/companies`);
+        const response = await axios.get(`${baseUrl}/companies`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -19,10 +19,9 @@ export const getCompanies = async () => {
     }
 }
 
-export const addNewCompany = async (company_name: string) => {
-    console.log('company_name:', company_name);
+export const addNewCompany = async (company_name: string, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/companies`, { company_name });
+        const response = await axios.post(`${baseUrl}/companies`, { company_name }, authHeader);
         if (response.data.statusCode === 201) {
             alert('New Company added successfully.');
             return response.data.data;
@@ -40,9 +39,9 @@ export const addNewCompany = async (company_name: string) => {
     }
 };
 
-export const getFavoCompanies = async (teacher_id: number) => {
+export const getFavoCompanies = async (teacher_id: number, authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/companies/favo/${teacher_id}`);
+        const response = await axios.get(`${baseUrl}/companies/favo/${teacher_id}`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -54,9 +53,9 @@ export const getFavoCompanies = async (teacher_id: number) => {
     }
 };
 
-export const addNewFavoCompany = async (companyFavourity: FavoCompany) => {
+export const addNewFavoCompany = async (companyFavourity: FavoCompany, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/companies/favo`, companyFavourity);
+        const response = await axios.post(`${baseUrl}/companies/favo`, companyFavourity, authHeader);
         if (response.data.statusCode === 201) {
             return response.data.data;
         } else {
@@ -73,9 +72,9 @@ export const addNewFavoCompany = async (companyFavourity: FavoCompany) => {
     }
 };
 
-export const deleteFavoCompanies = async (teacher_id: number) => {
+export const deleteFavoCompanies = async (teacher_id: number, authHeader: any) => {
     try {
-        const response = await axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`);
+        const response = await axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

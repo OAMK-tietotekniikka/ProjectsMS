@@ -10,11 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 const baseUrl = import.meta.env.VITE_API_URL;
 // Teachers API requests
-export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getTeachers = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        // verify the actual endpoint
-        const response = yield axios.get(`${baseUrl}/teachers`);
+        const response = yield axios.get(`${baseUrl}/teachers`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -27,10 +26,10 @@ export const getTeachers = () => __awaiter(void 0, void 0, void 0, function* () 
         }
     }
 });
-export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, void 0, function* () {
+export const getTeachersByCompany = (company_name, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _c, _d;
     try {
-        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`);
+        const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -44,10 +43,10 @@ export const getTeachersByCompany = (company_name) => __awaiter(void 0, void 0, 
     }
 });
 // Resources API requests
-export const getResources = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getResources = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        const response = yield axios.get(`${baseUrl}/resources`);
+        const response = yield axios.get(`${baseUrl}/resources`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -60,10 +59,10 @@ export const getResources = () => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-export const updateResource = (resource_id, resource) => __awaiter(void 0, void 0, void 0, function* () {
+export const updateResource = (resource_id, resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource, authHeader);
         return response.data;
     }
     catch (error) {
@@ -76,10 +75,10 @@ export const updateResource = (resource_id, resource) => __awaiter(void 0, void 
         }
     }
 });
-export const createResource = (resource) => __awaiter(void 0, void 0, void 0, function* () {
+export const createResource = (resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.post(`${baseUrl}/resources`, resource);
+        const response = yield axios.post(`${baseUrl}/resources`, resource, authHeader);
         if (response.data.statusCode === 201) {
             alert('New resource created successfully.');
             return response.data;

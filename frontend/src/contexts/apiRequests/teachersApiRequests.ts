@@ -5,10 +5,10 @@ import { Resource, NewResource } from '../../interface/resource';
 const baseUrl = import.meta.env.VITE_API_URL
 
 // Teachers API requests
-export const getTeachers = async () => {
+export const getTeachers = async (authHeader: any) => {
     try {
-        // verify the actual endpoint
-        const response = await axios.get(`${baseUrl}/teachers`);
+        const response = await axios.get(`${baseUrl}/teachers`, authHeader);
+        
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -20,9 +20,9 @@ export const getTeachers = async () => {
     }
 };
 
-export const getTeachersByCompany = async (company_name: string) => {
+export const getTeachersByCompany = async (company_name: string, authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/teachers/company/${company_name}`);
+        const response = await axios.get(`${baseUrl}/teachers/company/${company_name}`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -35,9 +35,9 @@ export const getTeachersByCompany = async (company_name: string) => {
 };
 
 // Resources API requests
-export const getResources = async () => {
+export const getResources = async (authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/resources`);
+        const response = await axios.get(`${baseUrl}/resources`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -49,9 +49,9 @@ export const getResources = async () => {
     }
 };
 
-export const updateResource = async (resource_id: number, resource: Resource) => {
+export const updateResource = async (resource_id: number, resource: Resource, authHeader: any) => {
     try {
-        const response = await axios.put(`${baseUrl}/resources/${resource_id}`, resource);
+        const response = await axios.put(`${baseUrl}/resources/${resource_id}`, resource, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -64,9 +64,9 @@ export const updateResource = async (resource_id: number, resource: Resource) =>
 
 };
 
-export const createResource = async (resource: NewResource) => {
+export const createResource = async (resource: NewResource, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/resources`, resource);
+        const response = await axios.post(`${baseUrl}/resources`, resource, authHeader);
         if (response.data.statusCode === 201) {
             alert('New resource created successfully.');
             return response.data;
