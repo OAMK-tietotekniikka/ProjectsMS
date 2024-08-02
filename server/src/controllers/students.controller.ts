@@ -129,7 +129,11 @@ export const authenticateStudent = async (req: Request, res: Response): Promise<
             if (password === student.password) {
                 // Generate JWT token
                 const token = jwt.sign(
-                    { student_id: student.student_id, email: student.email },
+                    {
+                        student_id: student.student_id,
+                        email: student.email,
+                        role: 'student'
+                    },
                     process.env.JWT_SECRET ?? 'default-secret',
                     { expiresIn: '1h' }
                 );

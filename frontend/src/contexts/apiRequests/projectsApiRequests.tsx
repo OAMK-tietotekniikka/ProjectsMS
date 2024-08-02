@@ -6,9 +6,9 @@ import {NewNote } from '../../interface/newNote';
 const baseUrl = import.meta.env.VITE_API_URL
 
 // Projects API requests
-export const addProject = async (formData: ProjectFormData) => {
+export const addProject = async (formData: ProjectFormData, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/projects`, formData);
+        const response = await axios.post(`${baseUrl}/projects`, formData, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -20,9 +20,9 @@ export const addProject = async (formData: ProjectFormData) => {
     }
 };
 
-export const getAllProjects = async () => {
+export const getAllProjects = async (authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/projects`);
+        const response = await axios.get(`${baseUrl}/projects`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -34,9 +34,9 @@ export const getAllProjects = async () => {
     }
 };
 
-export const addStudentProject = async (studentId: number, projectId: number) => {
+export const addStudentProject = async (studentId: number, projectId: number, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId });
+        const response = await axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId }, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -48,9 +48,9 @@ export const addStudentProject = async (studentId: number, projectId: number) =>
     }
 };
 
-export const getAllStudentProjects = async () => {
+export const getAllStudentProjects = async (authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/projects/student`);
+        const response = await axios.get(`${baseUrl}/projects/student`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -62,9 +62,9 @@ export const getAllStudentProjects = async () => {
     }
 };
 
-export const updateProject = async (projectData: ProjectFormData, projectId: number) => {
+export const updateProject = async (projectData: ProjectFormData, projectId: number, authHeader: any) => {
     try {
-        const response = await axios.put(`${baseUrl}/projects/${projectId}`, projectData);
+        const response = await axios.put(`${baseUrl}/projects/${projectId}`, projectData, authHeader);
         if (response.data.statusCode === 200) {
             alert('Project data updated successfully.');
             return response.data;
@@ -81,9 +81,9 @@ export const updateProject = async (projectData: ProjectFormData, projectId: num
 
 // Project notes API requests
 
-export const getNotes = async (projectId: number) => {
+export const getNotes = async (projectId: number, authHeader: any) => {
     try {
-        const response = await axios.get(`${baseUrl}/projects/${projectId}/notes`);
+        const response = await axios.get(`${baseUrl}/projects/${projectId}/notes`, authHeader);
         return response.data;
     } catch (error) {
         console.error('Failed to write data:', error.response?.data);
@@ -91,9 +91,9 @@ export const getNotes = async (projectId: number) => {
     }
 };
 
-export const createNote = async (projectId: number, note: NewNote) => {
+export const createNote = async (projectId: number, note: NewNote, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/projects/${projectId}/addNote`, note);
+        const response = await axios.post(`${baseUrl}/projects/${projectId}/addNote`, note, authHeader);
         if (response.data.statusCode === 201) {
             alert('New note created successfully.');
             return response.data;

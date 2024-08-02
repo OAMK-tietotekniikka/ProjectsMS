@@ -85,7 +85,11 @@
   font-weight: bold;
   font-size: small;
 }
-
+.submit-login:disabled {
+  background-color: #cccccc;
+  color: black;
+  cursor: not-allowed;
+}
 
 /*Teacher dashboard*/
 

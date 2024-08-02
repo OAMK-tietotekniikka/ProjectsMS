@@ -140,7 +140,11 @@ const authenticateStudent = (req, res) => __awaiter(void 0, void 0, void 0, func
             // Directly comparing the plaintext passwords
             if (password === student.password) {
                 // Generate JWT token
-                const token = jsonwebtoken_1.default.sign({ student_id: student.student_id, email: student.email }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
+                const token = jsonwebtoken_1.default.sign({
+                    student_id: student.student_id,
+                    email: student.email,
+                    role: 'student'
+                }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
                 return res.status(code_enum_1.Code.OK)
                     .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student authenticated', { token, studentId: student.student_id }));
             }

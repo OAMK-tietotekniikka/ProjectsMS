@@ -10,15 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
 import { getCompanies, addNewCompany, getFavoCompanies, addNewFavoCompany, deleteFavoCompanies } from "./apiRequests/companiesApiRequests";
+import { useUserContext } from "./userContext";
 ;
 const CompaniesContext = React.createContext({});
 const CompaniesContextProvider = (props) => {
     const [companies, setCompanies] = useState([]);
     const [teacherFavoCompanies, setTeacherFavoCompanies] = useState([]);
+    const { token, teacherId } = useUserContext();
+    let authHeader = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
     useEffect(() => {
         const fetchCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const companiesList = yield getCompanies();
+                const companiesList = yield getCompanies(authHeader);
                 setCompanies(companiesList.data);
             }
             catch (error) {
@@ -26,13 +32,11 @@ const CompaniesContextProvider = (props) => {
             }
         });
         fetchCompanies();
-    }, []);
+    }, [token]);
     useEffect(() => {
         const fetchFavoCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                // id is hardcoded now; when sign in works, use the signed in teacher id
-                //const id = Number(localStorage.getItem("teacher_id"));
-                const companies = yield getFavoCompanies(1);
+                const companies = yield getFavoCompanies(teacherId, authHeader);
                 setTeacherFavoCompanies(companies.data);
             }
             catch (error) {
@@ -40,12 +44,10 @@ const CompaniesContextProvider = (props) => {
             }
         });
         fetchFavoCompanies();
-    }, []);
+    }, [token]);
     const addCompany = (companyName) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(`From addCompany, companyName:`, companyName);
         try {
-            const response = yield addNewCompany(companyName);
-            console.log(`From addCompany, response:`, response);
+            const response = yield addNewCompany(companyName, authHeader);
             setCompanies([...companies, response]);
             return response.company_id;
         }
@@ -56,13 +58,12 @@ const CompaniesContextProvider = (props) => {
     const addFavoCompany = (companiesList, teacherId) => __awaiter(void 0, void 0, void 0, function* () {
         //first delete all the companies from the teacher's favourite list
         try {
-            const response = yield deleteFavoCompanies(teacherId);
+            const response = yield deleteFavoCompanies(teacherId, authHeader);
             if (response.statusCode === 200) {
-                console.log('All companies deleted successfully:', response);
                 //then add the new companies to the teacher's favourite list
                 const addPromises = companiesList.map((company) => __awaiter(void 0, void 0, void 0, function* () {
                     try {
-                        const response = yield addNewFavoCompany({ company_id: company.company_id, teacher_id: teacherId });
+                        const response = yield addNewFavoCompany({ company_id: company.company_id, teacher_id: teacherId }, authHeader);
                         return response;
                     }
                     catch (error) {
@@ -72,7 +73,6 @@ const CompaniesContextProvider = (props) => {
                 }));
                 //wait for all add operations to complete
                 yield Promise.all(addPromises);
-                console.log('New companies added successfully');
             }
         }
         catch (error) {

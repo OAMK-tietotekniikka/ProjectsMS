@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 const baseUrl = import.meta.env.VITE_API_URL;
 // Projects API requests
-export const addProject = (formData) => __awaiter(void 0, void 0, void 0, function* () {
+export const addProject = (formData, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        const response = yield axios.post(`${baseUrl}/projects`, formData);
+        const response = yield axios.post(`${baseUrl}/projects`, formData, authHeader);
         return response.data;
     }
     catch (error) {
@@ -26,10 +26,10 @@ export const addProject = (formData) => __awaiter(void 0, void 0, void 0, functi
         }
     }
 });
-export const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getAllProjects = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _c, _d;
     try {
-        const response = yield axios.get(`${baseUrl}/projects`);
+        const response = yield axios.get(`${baseUrl}/projects`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -42,10 +42,10 @@ export const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* 
         }
     }
 });
-export const addStudentProject = (studentId, projectId) => __awaiter(void 0, void 0, void 0, function* () {
+export const addStudentProject = (studentId, projectId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        const response = yield axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId });
+        const response = yield axios.post(`${baseUrl}/projects/student`, { student_id: studentId, project_id: projectId }, authHeader);
         return response.data;
     }
     catch (error) {
@@ -58,10 +58,10 @@ export const addStudentProject = (studentId, projectId) => __awaiter(void 0, voi
         }
     }
 });
-export const getAllStudentProjects = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getAllStudentProjects = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.get(`${baseUrl}/projects/student`);
+        const response = yield axios.get(`${baseUrl}/projects/student`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -74,10 +74,10 @@ export const getAllStudentProjects = () => __awaiter(void 0, void 0, void 0, fun
         }
     }
 });
-export const updateProject = (projectData, projectId) => __awaiter(void 0, void 0, void 0, function* () {
+export const updateProject = (projectData, projectId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.put(`${baseUrl}/projects/${projectId}`, projectData);
+        const response = yield axios.put(`${baseUrl}/projects/${projectId}`, projectData, authHeader);
         if (response.data.statusCode === 200) {
             alert('Project data updated successfully.');
             return response.data;
@@ -94,10 +94,10 @@ export const updateProject = (projectData, projectId) => __awaiter(void 0, void 
     }
 });
 // Project notes API requests
-export const getNotes = (projectId) => __awaiter(void 0, void 0, void 0, function* () {
+export const getNotes = (projectId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _l, _m;
     try {
-        const response = yield axios.get(`${baseUrl}/projects/${projectId}/notes`);
+        const response = yield axios.get(`${baseUrl}/projects/${projectId}/notes`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -105,10 +105,10 @@ export const getNotes = (projectId) => __awaiter(void 0, void 0, void 0, functio
         return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
     }
 });
-export const createNote = (projectId, note) => __awaiter(void 0, void 0, void 0, function* () {
+export const createNote = (projectId, note, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _o, _p;
     try {
-        const response = yield axios.post(`${baseUrl}/projects/${projectId}/addNote`, note);
+        const response = yield axios.post(`${baseUrl}/projects/${projectId}/addNote`, note, authHeader);
         if (response.data.statusCode === 201) {
             alert('New note created successfully.');
             return response.data;

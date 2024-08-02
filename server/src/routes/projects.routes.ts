@@ -9,27 +9,28 @@ import {
   addProjectNote,
   getProjectNotes
 } from "../controllers/projects.controller";
+import { authenticated, authorizeRoles } from '../passportMiddleware';
 
 
 const projectsRouter = Router();
 
 projectsRouter.route('/')
-  .get(getProjects)
-  .post(createProject);
+  .get(authenticated, authorizeRoles('teacher', 'student'), getProjects)
+  .post(authenticated, authorizeRoles('student'), createProject);
 
 projectsRouter.route('/:project_id')
-  .put(updateProject)
-  .delete(deleteProject);
+  .put(authenticated, authorizeRoles('teacher', 'student'), updateProject)
+  .delete(authenticated, authorizeRoles('teacher', 'student'), deleteProject);
 
 projectsRouter.route('/:project_id/addNote')
-  .post(addProjectNote);
+  .post(authenticated, authorizeRoles('teacher', 'student'), addProjectNote);
 
 projectsRouter.route('/student')
-  .get(getStudentProjects)
-  .post(createStudentProject);
+  .get(authenticated, authorizeRoles('teacher', 'student'), getStudentProjects)
+  .post(authenticated, authorizeRoles('teacher', 'student'), createStudentProject);
 
 projectsRouter.route('/:project_id/notes')
-  .get(getProjectNotes)
+  .get(authenticated, authorizeRoles('teacher', 'student'), getProjectNotes)
 
 export default projectsRouter;
 

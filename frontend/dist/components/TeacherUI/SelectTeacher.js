@@ -13,6 +13,11 @@ import i18n from 'i18next';
 export const selectTeacher = (companyName, startDate, resources) => __awaiter(void 0, void 0, void 0, function* () {
     // use startDate to get the study year
     const studyYear = getStudyYear(startDate);
+    const token = localStorage.getItem('token');
+    let authHeader = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
     // get the resources for the study year
     const resourcesForYear = resources.filter((resource) => resource.study_year === studyYear && resource.used_resources < resource.total_resources);
     //sort resources ascending by used_resources
@@ -22,7 +27,7 @@ export const selectTeacher = (companyName, startDate, resources) => __awaiter(vo
         alert(i18n.t('noResources', { studyYear }));
         return null;
     }
-    const response = yield getTeachersByCompany(companyName);
+    const response = yield getTeachersByCompany(companyName, authHeader);
     if (response.statusCode === 200) {
         const teachersWithFavoComp = response.data;
         // get the teacher with the least used_resources using the resourcesForYear

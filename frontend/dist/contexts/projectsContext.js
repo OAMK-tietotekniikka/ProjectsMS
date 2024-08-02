@@ -10,28 +10,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect, useCallback } from "react";
 import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, getNotes, createNote } from "./apiRequests/projectsApiRequests";
+import { useUserContext } from "./userContext";
 ;
 const ProjectsContext = React.createContext({});
 const ProjectsContextProvider = (props) => {
     const [projects, setProjects] = useState([]);
     const [studentProjects, setStudentProjects] = useState([]);
     const [projectNotes, setProjectNotes] = useState([]);
+    const { token } = useUserContext();
+    let authHeader = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
     const fetchProjects = useCallback(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const projectsList = yield getAllProjects();
+            const projectsList = yield getAllProjects(authHeader);
             setProjects(projectsList.data);
         }
         catch (error) {
             console.error("Failed to fetch data:", error);
         }
-    }), []);
+    }), [token]);
     useEffect(() => {
-        fetchProjects();
-    }, [fetchProjects]);
+        if (token) {
+            fetchProjects();
+        }
+    }, [fetchProjects, token]);
     useEffect(() => {
         const fetchStudentProjects = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const projectsList = yield getAllStudentProjects();
+                const projectsList = yield getAllStudentProjects(authHeader);
                 setStudentProjects(projectsList.data);
             }
             catch (error) {
@@ -39,14 +47,14 @@ const ProjectsContextProvider = (props) => {
             }
         });
         fetchStudentProjects();
-    }, []);
+    }, [token]);
     const addNewProject = (formData, studentId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield addProject(formData);
+            const response = yield addProject(formData, authHeader);
             setProjects([...projects, response.data]);
             if (response.statusCode === 201) {
                 try {
-                    const studentProj = yield addStudentProject(studentId, response.data.project_id);
+                    const studentProj = yield addStudentProject(studentId, response.data.project_id, authHeader);
                     setStudentProjects([...studentProjects, studentProj.data]);
                 }
                 catch (error) {
@@ -61,7 +69,7 @@ const ProjectsContextProvider = (props) => {
     });
     const modifyProject = (projecct, projectId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield updateProject(projecct, projectId);
+            const response = yield updateProject(projecct, projectId, authHeader);
             setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId).concat(response.data));
             yield fetchProjects();
             return response;
@@ -72,7 +80,7 @@ const ProjectsContextProvider = (props) => {
     });
     const getProjectNotes = (projectId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield getNotes(projectId);
+            const response = yield getNotes(projectId, authHeader);
             if (response.statusCode === 200) {
                 setProjectNotes(response.data);
                 return response.data;
@@ -87,7 +95,7 @@ const ProjectsContextProvider = (props) => {
     });
     const addProjectNote = (projectId, note) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield createNote(projectId, note);
+            const response = yield createNote(projectId, note, authHeader);
             setProjectNotes([...projectNotes, response.data]);
             return response;
         }

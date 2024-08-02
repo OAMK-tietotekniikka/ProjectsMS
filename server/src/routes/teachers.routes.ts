@@ -1,20 +1,22 @@
 import { Router } from "express";   
 import { getTeachers, createTeacher, getTeacher, updateTeacher, getTeachersByCompany, authenticateTeacher } from "../controllers/teachers.controller";
+import { authenticated, authorizeRoles } from '../passportMiddleware';
+
 
 const teachersRouter = Router();
 
 teachersRouter.route('/')
-    .get(getTeachers)
-    .post(createTeacher);
+    .get(authenticated, authorizeRoles('teacher', 'student'), getTeachers)
+    .post(authenticated, authorizeRoles('teacher'), createTeacher);
 
 teachersRouter.route('/login')
     .post(authenticateTeacher);
 
 teachersRouter.route('/:teacher_id')
-    .get(getTeacher)
+    .get(authenticated, authorizeRoles('teacher'), getTeacher)
     .put(updateTeacher)
 
 teachersRouter.route('/company/:company_name')
-    .get(getTeachersByCompany);
+    .get(authenticated, authorizeRoles('teacher', 'student'), getTeachersByCompany);
 
 export default teachersRouter;

@@ -59,8 +59,6 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
 
     const handleNameSelection = () => {
         const filteredData = data.filter((data: any) => (data.name).toLowerCase() === name.toLowerCase());
-        console.log(filteredData);
-        console.log(data);
         if (filteredData.length === 0)  {
             setSelectedData([]);
             alert("Name not found");

@@ -143,7 +143,12 @@ const authenticateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, func
             // Directly comparing the plaintext passwords
             if (password === teacher.password) {
                 // Generate JWT token
-                const token = jsonwebtoken_1.default.sign({ teacher_id: teacher.teacher_id, email: teacher.email }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
+                const token = jsonwebtoken_1.default.sign({
+                    teacher_id: teacher.teacher_id,
+                    email: teacher.email,
+                    role: 'teacher'
+                }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
+                console.log(`TeacterId: ${teacher.teacher_id} authenticated successfully.`);
                 return res.status(code_enum_1.Code.OK)
                     .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher authenticated', { token, teacherId: teacher.teacher_id }));
             }

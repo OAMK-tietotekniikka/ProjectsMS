@@ -15,8 +15,8 @@ const UserContext = React.createContext({});
 const UserContextProvider = (props) => {
     const [user, setUser] = useState(localStorage.getItem("user") || "");
     const [token, setToken] = useState(localStorage.getItem("token") || "");
-    const [studentId, setStudentId] = useState(0);
-    const [teacherId, setTeacherId] = useState(0);
+    const [studentId, setStudentId] = useState(parseInt(localStorage.getItem("stidentId") || "0"));
+    const [teacherId, setTeacherId] = useState(parseInt(localStorage.getItem("teacherId") || "0"));
     const navigate = useNavigate();
     useEffect(() => {
         if (user) {
@@ -28,6 +28,16 @@ const UserContextProvider = (props) => {
             localStorage.setItem("token", token);
         }
     }, [token]);
+    useEffect(() => {
+        if (studentId) {
+            localStorage.setItem("studentId", studentId.toString());
+        }
+    }, [studentId]);
+    useEffect(() => {
+        if (teacherId) {
+            localStorage.setItem("teacherId", teacherId.toString());
+        }
+    }, [teacherId]);
     const login = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
         if (user === 'teacher') {
             try {
@@ -54,7 +64,7 @@ const UserContextProvider = (props) => {
                     console.error("Failed to login:", response);
                     return null;
                 }
-                setToken(response.token);
+                setToken(response.data.token);
                 setStudentId(response.data.studentId);
                 localStorage.setItem("token", response.data.token);
                 return "ok";
@@ -71,6 +81,8 @@ const UserContextProvider = (props) => {
         setTeacherId(0);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("teacherId");
         localStorage.removeItem("signedInStudent");
         localStorage.removeItem("signedInTeacher");
         navigate("/");

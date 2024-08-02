@@ -25,41 +25,52 @@ const TeachersContextProvider = (props: any) => {
         const savedTeacher = localStorage.getItem('signedInTeacher');
         return savedTeacher ? JSON.parse(savedTeacher) : null;
     });
-    const { teacherId } = useUserContext();
+    const { teacherId, token } = useUserContext();
+
+    let authHeader: any = {};
+    if (token) {
+        authHeader = { headers: { Authorization: `Bearer ${token}` } };
+    }
 
     useEffect(() => {
         const fetchTeachers = async () => {
             try {
-                const teachersList = await getTeachers();
+                const teachersList = await getTeachers(authHeader);
                 setTeachers(teachersList.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
             }
         };
-        fetchTeachers();
-
-    }, []);
+        if (token) {
+            fetchTeachers();
+        } else {
+            setTeachers([]);
+        }
+    }, [token]);
 
     useEffect(() => {
         const fetchResources = async () => {
             try {
-                const reourceList = await getResources();
+                const reourceList = await getResources(authHeader);
                 setResources(reourceList.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
             }
         };
-        fetchResources();
-
-    }, []);
+        if (token) {
+            fetchResources();
+        } else {
+            setResources([]);
+        }
+    }, [token]);
 
     useEffect(() => {
-        if (teachers.length === 0 || teacherId === 0) return;
-        const teacher = teachers.find(t => t.teacher_id === teacherId);
+        if (teachers?.length === 0 || teacherId === 0) return;
+        const teacher = teachers?.find(t => t.teacher_id === teacherId);
         if (teacher) {
             setSignedInTeacher(teacher);
         }
-    }, [teachers, teacherId]);
+    }, [teachers, teacherId, token]);
 
     const setSignedInTeacher = (teacher: Teacher | null) => {
         setSignedInTeacherState(teacher);
@@ -72,7 +83,7 @@ const TeachersContextProvider = (props: any) => {
 
     const updateTeacherResource = async (id: number, resource: Resource) => {
         try {
-            const response = await updateResource(id, resource);
+            const response = await updateResource(id, resource, authHeader);
             setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
             return response.data;
         } catch (error) {
@@ -82,7 +93,7 @@ const TeachersContextProvider = (props: any) => {
 
     const addTeacherResource = async (resource: NewResource) => {
         try {
-            const response = await createResource(resource);
+            const response = await createResource(resource, authHeader);
             setResources(prevResources => [...prevResources, response.data]);
             return response.data;
         } catch (error) {

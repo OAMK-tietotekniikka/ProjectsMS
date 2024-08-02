@@ -1,10 +1,11 @@
 import { Router } from "express";   
 import { createStudent, getStudents,getStudent,updateStudent,deleteStudent,authenticateStudent } from "../controllers/students.controller";
+import { authenticated, authorizeRoles } from '../passportMiddleware';
 
 const studentsRouter = Router();
 
 studentsRouter.route('/')
-    .get(getStudents)
+    .get(authenticated, authorizeRoles('teacher', 'student'), getStudents)
     .post(createStudent);
 
 studentsRouter.route('/login')

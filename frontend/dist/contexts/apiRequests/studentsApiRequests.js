@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 const baseUrl = import.meta.env.VITE_API_URL;
 // Students API requests
-export const getStudents = () => __awaiter(void 0, void 0, void 0, function* () {
+export const getStudents = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        const response = yield axios.get(`${baseUrl}/students`);
+        const response = yield axios.get(`${baseUrl}/students`, authHeader);
         return response.data;
     }
     catch (error) {

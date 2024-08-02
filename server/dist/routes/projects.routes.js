@@ -2,18 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const projects_controller_1 = require("../controllers/projects.controller");
+const passportMiddleware_1 = require("../passportMiddleware");
 const projectsRouter = (0, express_1.Router)();
 projectsRouter.route('/')
-    .get(projects_controller_1.getProjects)
-    .post(projects_controller_1.createProject);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getProjects)
+    .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('student'), projects_controller_1.createProject);
 projectsRouter.route('/:project_id')
-    .put(projects_controller_1.updateProject)
-    .delete(projects_controller_1.deleteProject);
+    .put(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.updateProject)
+    .delete(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.deleteProject);
 projectsRouter.route('/:project_id/addNote')
-    .post(projects_controller_1.addProjectNote);
+    .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.addProjectNote);
 projectsRouter.route('/student')
-    .get(projects_controller_1.getStudentProjects)
-    .post(projects_controller_1.createStudentProject);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getStudentProjects)
+    .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.createStudentProject);
 projectsRouter.route('/:project_id/notes')
-    .get(projects_controller_1.getProjectNotes);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getProjectNotes);
 exports.default = projectsRouter;
