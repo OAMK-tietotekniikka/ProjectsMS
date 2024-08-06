@@ -79,6 +79,23 @@ export const updateProject = async (projectData: ProjectFormData, projectId: num
     }
 };
 
+export const deleteProjectById = async (projectId: number, authHeader: any) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/projects/${projectId}`, authHeader);
+        if (response.data.statusCode === 200) {
+            alert('Project deleted successfully.');
+            return response.data;
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to delete data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+}
+
 // Project notes API requests
 
 export const getNotes = async (projectId: number, authHeader: any) => {

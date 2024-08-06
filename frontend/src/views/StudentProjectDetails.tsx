@@ -6,6 +6,7 @@ import DocumentsListing from "../components/StudentUI/DocumentsListing";
 import NotesListing from "../components/StudentUI/NotesListing";
 import ChangeProjectStatus from "../components/StudentUI/ChangeProjectStatus";
 import { useProjectsContext } from "../contexts/projectsContext";
+import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
 
 
 const StudentProjectDetails = () => {
@@ -16,7 +17,7 @@ const StudentProjectDetails = () => {
     const projectId = parseInt(id);
     const [studentName, setStudentName] = useState<string>("");
     const navigate = useNavigate();
-
+    const {deleteProject,projects,setProjects} = useProjectsContext();
     const handleChange = (value: string) => {
         if (value !== '') {
             setStudentName(value);
@@ -28,6 +29,16 @@ const StudentProjectDetails = () => {
         console.log(proj.company_id);
         // Functionality to add student to project will be added here
     };
+
+    const handleDeleteProject = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+        if (isConfirmed) {
+            await deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+            setProjects(projects.filter(project => project.project_id !== projectId));
+            navigate('/student');
+        }
+    };
+
 
     return (
         <Container className="student-main-container">
@@ -73,10 +84,16 @@ const StudentProjectDetails = () => {
 
                     </Row>
                     <Button
-                        className="student-view-button"
+                        className="student-view-button margin-right"
                         onClick={() => navigate('/form', { state: { proj } })}
                     >
                         {t('modifyData')}
+                    </Button>
+                    <Button
+                        className="student-view-button"
+                        onClick={() => handleDeleteProject()}
+                    >
+                        {t('deleteProj')}
                     </Button>
                 </Col>
                 <Col xs="12" lg="5" style={{ marginTop: "15%" }}>

@@ -363,6 +363,9 @@
   background-color: #d3d3d3;
   cursor: not-allowed;
 }
+.margin-right {
+  margin-right: 2%;
+}
 
 /*AddNewProject and form*/
 .main-heading {

@@ -5,6 +5,7 @@ import {
     getAllStudentProjects,
     addStudentProject,
     updateProject,
+    deleteProjectById,
     getNotes,
     createNote
 } from "./apiRequests/projectsApiRequests";
@@ -25,6 +26,7 @@ interface ProjectsContextType {
     getProjectNotes: (projectId: number) => Promise<Note[]>;
     addProjectNote: (projectId: number, note: NewNote) => Promise<Note>;
     fetchProjects: () => Promise<void>;
+    deleteProject: (projectId: number, authHeader: any) => Promise<any>;
 };
 
 const ProjectsContext = React.createContext<ProjectsContextType>({} as ProjectsContextType);
@@ -96,6 +98,16 @@ const ProjectsContextProvider = (props: any) => {
         }
     };
 
+    const deleteProject = async (projectId: number, authHeader: any): Promise<any> => {
+        try {
+            const response = await deleteProjectById(projectId, authHeader);
+            setProjects((prevProjects) => prevProjects.filter((project) => project.project_id !== projectId));
+            return response;
+        } catch (error) {
+            console.error("Failed to delete Project:", error);
+        }
+    };
+
     const getProjectNotes = async (projectId: number) => {
         try {
             const response = await getNotes(projectId, authHeader);
@@ -129,7 +141,8 @@ const ProjectsContextProvider = (props: any) => {
         projectNotes,
         getProjectNotes,
         addProjectNote,
-        fetchProjects
+        fetchProjects,
+        deleteProject
     };
 
     return (
