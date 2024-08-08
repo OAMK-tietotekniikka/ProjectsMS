@@ -84,7 +84,7 @@ export const deleteProject = async (req: Request, res: Response): Promise<Respon
         connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.project_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
-            const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT, [req.params.project_id]);
+            const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT_BY_ID, [req.params.project_id]);
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Project deleted successfully'));
         } else {

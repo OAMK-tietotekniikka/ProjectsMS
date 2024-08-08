@@ -4,6 +4,8 @@
   "login": "Sign in",
   "logout": "Sign out",
   "createProj": "Create new project",
+  "deleteProj": "Delete project",
+  "deleteProjConfirm": "Are you sure you want to delete the project?",
   "projInstruction": "Before you start, please make sure to review the project guidelines",
   "projName": "Project name",
   "projDesc": "Project description",

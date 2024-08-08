@@ -4,6 +4,8 @@
   "login": "Kirjaudu",
   "logout": "Kirjaudu ulos",
   "createProj": "Luo uusi projekti",
+  "deleteProj": "Poista projekti",
+  "deleteProjConfirm": "Haluatko varmasti poistaa projektin?",
   "projInstruction": "Lue huolella projekteihin liittyvä ohjeistus ennen kuin aloitat",
   "projName": "Projektin nimi",
   "projDesc": "Projektin kuvaus",
