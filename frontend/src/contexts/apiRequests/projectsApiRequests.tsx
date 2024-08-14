@@ -121,5 +121,18 @@ export const createNote = async (projectId: number, note: NewNote, authHeader: a
     }
 };
 
+export const deleteProjectNoteById = async (projectId: number, noteId: number, authHeader: any) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/projects/${projectId}/notes/${noteId}`, authHeader);
+        if (response.data.statusCode === 200) {
+            alert('Note deleted successfully.');
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Failed to delete note:', error.response?.data);
+        return error.response?.data;
+    }
+}
+
 
 

@@ -7,7 +7,8 @@ import {
   getStudentProjects,
   createStudentProject,
   addProjectNote,
-  getProjectNotes
+  getProjectNotes,
+  deleteProjectNote
 } from "../controllers/projects.controller";
 import { authenticated, authorizeRoles } from '../passportMiddleware';
 
@@ -31,6 +32,7 @@ projectsRouter.route('/student')
 
 projectsRouter.route('/:project_id/notes')
   .get(authenticated, authorizeRoles('teacher', 'student'), getProjectNotes)
+  .delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
 
 export default projectsRouter;
 

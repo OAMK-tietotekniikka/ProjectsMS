@@ -93,20 +93,39 @@ export const updateProject = (projectData, projectId, authHeader) => __awaiter(v
         }
     }
 });
+export const deleteProjectById = (projectId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _l, _m;
+    try {
+        const response = yield axios.delete(`${baseUrl}/projects/${projectId}`, authHeader);
+        if (response.data.statusCode === 200) {
+            alert('Project deleted successfully.');
+            return response.data;
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to delete data:', (_l = error.response) === null || _l === void 0 ? void 0 : _l.data);
+            return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
 // Project notes API requests
 export const getNotes = (projectId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
-    var _l, _m;
+    var _o, _p;
     try {
         const response = yield axios.get(`${baseUrl}/projects/${projectId}/notes`, authHeader);
         return response.data;
     }
     catch (error) {
-        console.error('Failed to write data:', (_l = error.response) === null || _l === void 0 ? void 0 : _l.data);
-        return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
+        console.error('Failed to write data:', (_o = error.response) === null || _o === void 0 ? void 0 : _o.data);
+        return (_p = error.response) === null || _p === void 0 ? void 0 : _p.data;
     }
 });
 export const createNote = (projectId, note, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
-    var _o, _p;
+    var _q, _r;
     try {
         const response = yield axios.post(`${baseUrl}/projects/${projectId}/addNote`, note, authHeader);
         if (response.data.statusCode === 201) {
@@ -115,7 +134,7 @@ export const createNote = (projectId, note, authHeader) => __awaiter(void 0, voi
         }
     }
     catch (error) {
-        console.error('Failed to write data:', (_o = error.response) === null || _o === void 0 ? void 0 : _o.data);
-        return (_p = error.response) === null || _p === void 0 ? void 0 : _p.data;
+        console.error('Failed to write data:', (_q = error.response) === null || _q === void 0 ? void 0 : _q.data);
+        return (_r = error.response) === null || _r === void 0 ? void 0 : _r.data;
     }
 });
