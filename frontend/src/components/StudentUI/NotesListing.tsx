@@ -11,7 +11,7 @@ interface NotesListingProps {
 
 const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
     const { t } = useTranslation();
-    const { getProjectNotes, addProjectNote, projectNotes, projects } = useProjectsContext();
+    const { getProjectNotes, addProjectNote,deleteProjectNote, projectNotes, projects } = useProjectsContext();
     const [note, setNote] = useState<string>("");
     const [notes, setNotes] = useState([]);
 
@@ -48,6 +48,11 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
         setNote("");
     };
 
+   const handleDeleteNote = (noteId: number) => {
+        deleteProjectNote(projectId, noteId);
+        setNotes(notes.filter((note: any) => note.note_id !== noteId));
+    }
+
     return (
         <Row className="notes-listing">
             <Col>
@@ -59,6 +64,13 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
                         </div>
                         <div>{t('by')}: {note.created_by}</div>
                         <div>{String(note.created_at).split('T')[0]}</div>
+                        <Button
+                            className="delete-note-button"
+                            variant="danger"
+                            onClick={() => handleDeleteNote(note.note_id)}
+                        >
+                            {t('delete')}
+                        </Button>
                     </div>
                 ))
                     : <div className="note-item">{t('noNotes')}</div>}

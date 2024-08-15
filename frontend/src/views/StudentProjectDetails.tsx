@@ -7,6 +7,7 @@ import NotesListing from "../components/StudentUI/NotesListing";
 import ChangeProjectStatus from "../components/StudentUI/ChangeProjectStatus";
 import { useProjectsContext } from "../contexts/projectsContext";
 import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
+//import { deleteProjectNoteById } from "../contexts/apiRequests/projectsApiRequests";
 
 
 const StudentProjectDetails = () => {
