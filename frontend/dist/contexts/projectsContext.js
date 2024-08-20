@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect, useCallback } from "react";
-import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, deleteProjectById, getNotes, createNote } from "./apiRequests/projectsApiRequests";
+import { getAllProjects, addProject, getAllStudentProjects, addStudentProject, updateProject, deleteProjectById, getNotes, createNote, deleteProjectNoteById } from "./apiRequests/projectsApiRequests";
 import { useUserContext } from "./userContext";
 ;
 const ProjectsContext = React.createContext({});
@@ -113,6 +113,16 @@ const ProjectsContextProvider = (props) => {
             console.error("Failed to add Project Note:", error);
         }
     });
+    const deleteProjectNote = (projectId, noteId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield deleteProjectNoteById(projectId, noteId, authHeader);
+            setProjectNotes((prevNotes) => prevNotes.filter((note) => note.note_id !== noteId));
+            return response;
+        }
+        catch (error) {
+            console.error("Failed to delete Project Note:", error);
+        }
+    });
     let value = {
         projects,
         setProjects,
@@ -123,7 +133,8 @@ const ProjectsContextProvider = (props) => {
         getProjectNotes,
         addProjectNote,
         fetchProjects,
-        deleteProject
+        deleteProject,
+        deleteProjectNote
     };
     return (_jsx(ProjectsContext.Provider, { value: value, children: props.children }));
 };

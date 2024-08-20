@@ -78,7 +78,9 @@ const TeachersContextProvider = (props) => {
     const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateResource(id, resource, authHeader);
-            setResources(prevResources => prevResources.map(r => r.resource_id === id ? response.data : r));
+            console.log(response.data);
+            const updatedResource = Object.assign(Object.assign({}, response.data), { resource_id: id, created_at: new Date() });
+            setResources(prevResources => prevResources.filter(r => r.resource_id !== id).concat(updatedResource));
             return response.data;
         }
         catch (error) {

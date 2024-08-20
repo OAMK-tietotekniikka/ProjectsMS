@@ -68,6 +68,6 @@ const AddNewProject = () => {
             alert(t('projNotCreated'));
         }
     });
-    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsx(Col, { xs: 10, md: 8, lg: 6, children: _jsx(ProjectForm, { onSubmit: handleFormSubmit }) }) }) }));
+    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsx(Col, { xs: 11, md: 8, lg: 7, children: _jsx(ProjectForm, { onSubmit: handleFormSubmit }) }) }) }));
 };
 export default AddNewProject;

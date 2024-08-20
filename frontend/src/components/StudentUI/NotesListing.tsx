@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useProjectsContext } from "../../contexts/projectsContext";
+import { useUserContext } from "../../contexts/userContext";
 import noteImg from "../../assets/note.svg";
 
 
@@ -11,9 +12,10 @@ interface NotesListingProps {
 
 const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
     const { t } = useTranslation();
-    const { getProjectNotes, addProjectNote,deleteProjectNote, projectNotes, projects } = useProjectsContext();
+    const { getProjectNotes, addProjectNote, deleteProjectNote, projectNotes, projects } = useProjectsContext();
     const [note, setNote] = useState<string>("");
     const [notes, setNotes] = useState([]);
+    const { user } = useUserContext();
 
     const currentProject = projects.find((project) => project.project_id === projectId);
 
@@ -29,26 +31,28 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
         setNotes(projectNotes);
     }, [projectNotes]);
 
-    const handleChange = (value: string) => {
-        if (value !== '') {
-            setNote(value);
-        }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const value = e.target.value;
+        setNote(value);
     };
 
     const handleNewNote = () => {
-        const getStudent = JSON.parse(localStorage.getItem('signedInStudent') || '{}');
-        const studentName = `${getStudent.first_name} ${getStudent.last_name}`;
+        const getUser = user === "student" ?
+            JSON.parse(localStorage.getItem('signedInStudent') || '{}')
+            : JSON.parse(localStorage.getItem('signedInTeacher') || '{}')
+
+        const userName = `${getUser.first_name} ${getUser.last_name}`;
 
         const newNote = {
             note: note,
-            document_path: "",
-            created_by: studentName,
+            document_path: "", // For now, add new note without the document path. When the actual document path is added, it will be added here.
+            created_by: userName,
         };
         addProjectNote(projectId, newNote);
         setNote("");
     };
 
-   const handleDeleteNote = (noteId: number) => {
+    const handleDeleteNote = (noteId: number) => {
         deleteProjectNote(projectId, noteId);
         setNotes(notes.filter((note: any) => note.note_id !== noteId));
     }
@@ -78,13 +82,15 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
             {currentProject?.project_status !== "completed" ?
                 <Col className="note-row" style={{ margin: "10px 0" }}>
                     <Form>
-                        <Form.Control
-                            type="text"
-                            placeholder={t('enterNote')}
-                            style={{ width: "300px", fontSize: "13px" }}
-                            onChange={(e) => handleChange(e.target.value)}
-                            value={note}
-                        />
+                        <Form.Label style={{ fontWeight: "bold" }}>{t('addNewNote')}</Form.Label>
+                        <Form.Group controlId="new_note">
+                            <Form.Control
+                                type="text"
+                                style={{ width: "300px", fontSize: "13px" }}
+                                onChange={handleChange}
+                                value={note}
+                            />
+                        </Form.Group>
                     </Form>
                     <Button
                         className="student-view-button"

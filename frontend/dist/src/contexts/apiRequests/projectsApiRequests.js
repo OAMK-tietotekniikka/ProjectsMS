@@ -138,3 +138,17 @@ export const createNote = (projectId, note, authHeader) => __awaiter(void 0, voi
         return (_r = error.response) === null || _r === void 0 ? void 0 : _r.data;
     }
 });
+export const deleteProjectNoteById = (projectId, noteId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _s, _t;
+    try {
+        const response = yield axios.delete(`${baseUrl}/projects/${projectId}/notes/${noteId}`, authHeader);
+        if (response.data.statusCode === 200) {
+            alert('Note deleted successfully.');
+            return response.data;
+        }
+    }
+    catch (error) {
+        console.error('Failed to delete note:', (_s = error.response) === null || _s === void 0 ? void 0 : _s.data);
+        return (_t = error.response) === null || _t === void 0 ? void 0 : _t.data;
+    }
+});

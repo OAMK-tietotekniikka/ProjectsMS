@@ -27,9 +27,9 @@ function App() {
               <Route path="/" element={<LandingPage />} />
               {user === "teacher" && <Route path="/teacher" element={<TeacherDashboard />} />}
               {user === "teacher" && <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />}
-              {user === "student" && <Route path="/form" element={<AddNewProject />} />}
+              <Route path="/form" element={<AddNewProject />} />
               {user === "student" && <Route path="/student" element={<StudentDashboard />} />}
-              {user === "student" && <Route path="/studentProject/:id" element={<StudentProjectDetails />} />}
+              <Route path="/studentProject/:id" element={<StudentProjectDetails />} />
               {user === "teacher" && <Route path="/teachers" element={<Teachers />} />}
             </Routes>
           </div>

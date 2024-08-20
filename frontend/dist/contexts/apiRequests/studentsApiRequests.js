@@ -26,3 +26,19 @@ export const getStudents = (authHeader) => __awaiter(void 0, void 0, void 0, fun
         }
     }
 });
+export const updateStudent = (student, studentId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c, _d;
+    try {
+        const response = yield axios.put(`${baseUrl}/students/${studentId}`, student, authHeader);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_c = error.response) === null || _c === void 0 ? void 0 : _c.data);
+            return (_d = error.response) === null || _d === void 0 ? void 0 : _d.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});

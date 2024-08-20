@@ -1,7 +1,7 @@
 import { getTeachersByCompany } from "../../contexts/apiRequests/teachersApiRequests";
 import { Resource } from "../../interface/resource";
 import { getStudyYear } from "../GetStudyYear";
-import i18n from 'i18next';
+
 
 export const selectTeacher = async (companyName: string, startDate: Date, resources: Resource[]): Promise<Resource> => {
     // use startDate to get the study year
@@ -20,7 +20,6 @@ export const selectTeacher = async (companyName: string, startDate: Date, resour
 
     if (resourcesForYear.length === 0) {
         console.log('No resources available for the year:', studyYear)
-        alert(i18n.t('noResources', {studyYear}))
         return null;
     }
     

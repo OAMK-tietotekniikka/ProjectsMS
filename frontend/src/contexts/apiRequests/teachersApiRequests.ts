@@ -49,7 +49,7 @@ export const getResources = async (authHeader: any) => {
     }
 };
 
-export const updateResource = async (resource_id: number, resource: Resource, authHeader: any) => {
+export const updateResource = async (resource_id: number, resource: NewResource, authHeader: any) => {
     try {
         const response = await axios.put(`${baseUrl}/resources/${resource_id}`, resource, authHeader);
         return response.data;

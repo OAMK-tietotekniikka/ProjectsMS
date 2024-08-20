@@ -12,10 +12,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/StudentUI/ProjectForm';
 import { useTranslation } from 'react-i18next';
-import { sendEmailNotification } from '../contexts/apiRequests/userApiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
 import { useProjectsContext } from '../contexts/projectsContext';
 import { useStudentsContext } from '../contexts/studentsContext';
+import { sendEmail } from '../components/SendEmail';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 const AddNewProject = () => {
@@ -29,14 +29,7 @@ const AddNewProject = () => {
         formData.company_id = companyId;
         formData.teacher_id = teacherId;
         const formattedStartDate = new Date(formData.start_date).toISOString().split('T')[0];
-        const student = 'Student Name'; // actual student name can be obtained from the login data??
-        const subject = 'A new Company Oriented Project supervision.';
-        const text = `You have been assigned as a supervisor to a new Company Oriented Project with the following details:\n
-            Student Name: ${student}
-            Project Name: ${formData.project_name}
-            Company: ${companyName}
-            Start Date: ${formattedStartDate}\n
-            Please login to the projects management system to view the project details.`;
+        const student = signedInStudent ? signedInStudent.first_name + ' ' + signedInStudent.last_name : 'Student';
         try {
             if (!signedInStudent) {
                 alert(t('studentNotLoggedIn'));
@@ -47,10 +40,10 @@ const AddNewProject = () => {
             if (response.statusCode === 201) {
                 const selectedTeacher = teachers.find((teacher) => teacher.teacher_id === teacherId);
                 if (selectedTeacher) {
-                    const emailResponse = yield sendEmailNotification(selectedTeacher.email, // when testing, replace with some actual hardcoded email address
-                    subject, text);
-                    if (emailResponse.status === 200) {
-                        alert(t('emailSent'));
+                    const emailResponse = yield sendEmail(selectedTeacher.email, // when testing/developing, replace with some actual hardcoded email address
+                    student, formData.project_name, companyName, formattedStartDate);
+                    if (emailResponse) {
+                        console.log('Email sent successfully');
                     }
                     else {
                         alert(t('emailNotSent'));
@@ -68,6 +61,6 @@ const AddNewProject = () => {
             alert(t('projNotCreated'));
         }
     });
-    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsx(Col, { xs: 10, md: 8, lg: 6, children: _jsx(ProjectForm, { onSubmit: handleFormSubmit }) }) }) }));
+    return (_jsx(Container, { children: _jsx(Row, { className: "justify-content-center", children: _jsx(Col, { xs: 11, md: 8, lg: 7, children: _jsx(ProjectForm, { onSubmit: handleFormSubmit }) }) }) }));
 };
 export default AddNewProject;

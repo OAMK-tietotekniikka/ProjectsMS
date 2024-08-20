@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { getTeachersByCompany } from "../../contexts/apiRequests/teachersApiRequests";
 import { getStudyYear } from "../GetStudyYear";
-import i18n from 'i18next';
 export const selectTeacher = (companyName, startDate, resources) => __awaiter(void 0, void 0, void 0, function* () {
     // use startDate to get the study year
     const studyYear = getStudyYear(startDate);
@@ -24,7 +23,6 @@ export const selectTeacher = (companyName, startDate, resources) => __awaiter(vo
     resourcesForYear.sort((a, b) => a.used_resources - b.used_resources);
     if (resourcesForYear.length === 0) {
         console.log('No resources available for the year:', studyYear);
-        alert(i18n.t('noResources', { studyYear }));
         return null;
     }
     const response = yield getTeachersByCompany(companyName, authHeader);

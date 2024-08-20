@@ -2,6 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useProjectsContext } from '../../contexts/projectsContext';
 import { useCompaniesContext } from '../../contexts/companiesContext';
 import { useStudentsContext } from '../../contexts/studentsContext';
@@ -14,6 +15,7 @@ const PastProjectsList = ({ teacherId }) => {
     const { students } = useStudentsContext();
     const [selectedData, setSelectedData] = useState([]);
     const selectionOptions = ['selectAll', 'selectByClass', 'selectByYear', 'selectByName'];
+    const navigate = useNavigate();
     const projectsForSignedInTeacher = (projects === null || projects === void 0 ? void 0 : projects.filter(project => project.teacher_id === teacherId && (project.project_status === 'completed'))) || [];
     // add company_name to items in projectsForSignedInTeacher array using company_id and companies array
     const projectsWithCompanyNames = projectsForSignedInTeacher.map((project) => {
@@ -46,10 +48,6 @@ const PastProjectsList = ({ teacherId }) => {
         groups[studyYear].push(item);
         return groups;
     }, {});
-    const handleRowClick = (project) => {
-        console.log('Project selected:', project);
-        // add code to navigate to project details page
-    };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: projectsWithStudyYears, options: selectionOptions, toggle: 'selectStudents', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsx("th", { children: t('studyGroup') }), _jsx("th", { children: t('started') }), _jsx("th", { children: t('ended') }), _jsx("th", { children: t('company') }), _jsx("th", { children: t('projectNo') })] }) }), _jsx("tbody", { children: Object.keys(groupedData).map((studyYear) => (_jsxs(React.Fragment, { children: [_jsx("tr", { children: _jsx("td", { style: { fontWeight: 'bold' }, children: studyYear }) }), groupedData[studyYear].map((proj) => (_jsxs("tr", { style: { fontSize: "13px" }, onClick: () => handleRowClick(proj), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: proj.name }), _jsx("div", { children: proj.student_email })] }), _jsx("td", { children: proj.class_code.toUpperCase() }), _jsx("td", { children: String(proj.start_date).split('T')[0] }), _jsx("td", { children: String(proj.end_date).split('T')[0] }), _jsx("td", { children: proj.company_name }), _jsx("td", { children: proj.project_number })] }, proj.project_id)))] }, studyYear))) })] }) })] }));
+    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: projectsWithStudyYears, options: selectionOptions, toggle: 'selectStudents', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsx("th", { children: t('studyGroup') }), _jsx("th", { children: t('started') }), _jsx("th", { children: t('ended') }), _jsx("th", { children: t('company') }), _jsx("th", { children: t('projectNo') })] }) }), _jsx("tbody", { children: Object.keys(groupedData).map((studyYear) => (_jsxs(React.Fragment, { children: [_jsx("tr", { children: _jsx("td", { style: { fontWeight: 'bold' }, children: studyYear }) }), groupedData[studyYear].map((proj) => (_jsxs("tr", { style: { fontSize: "13px" }, onClick: () => navigate(`/studentProject/${proj.project_id}`, { state: { proj } }), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: proj.name }), _jsx("div", { children: proj.student_email })] }), _jsx("td", { children: proj.class_code.toUpperCase() }), _jsx("td", { children: String(proj.start_date).split('T')[0] }), _jsx("td", { children: String(proj.end_date).split('T')[0] }), _jsx("td", { children: proj.company_name }), _jsx("td", { children: proj.project_number })] }, proj.project_id)))] }, studyYear))) })] }) })] }));
 };
 export default PastProjectsList;

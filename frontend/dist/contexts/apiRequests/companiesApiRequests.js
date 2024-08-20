@@ -31,10 +31,10 @@ export const addNewCompany = (company_name, authHeader) => __awaiter(void 0, voi
     try {
         const response = yield axios.post(`${baseUrl}/companies`, { company_name }, authHeader);
         if (response.data.statusCode === 201) {
-            alert('New Company added successfully.');
             return response.data.data;
         }
         else {
+            alert('There was an error when adding new company.');
             console.error('Unexpected status code:', response.data.statusCode);
             return null;
         }

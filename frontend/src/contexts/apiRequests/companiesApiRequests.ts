@@ -23,9 +23,9 @@ export const addNewCompany = async (company_name: string, authHeader: any) => {
     try {
         const response = await axios.post(`${baseUrl}/companies`, { company_name }, authHeader);
         if (response.data.statusCode === 201) {
-            alert('New Company added successfully.');
             return response.data.data;
         } else {
+            alert('There was an error when adding new company.');
             console.error('Unexpected status code:', response.data.statusCode);
             return null;
         }

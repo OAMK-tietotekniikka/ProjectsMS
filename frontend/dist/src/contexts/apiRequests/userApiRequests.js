@@ -31,7 +31,6 @@ export const studentLogin = (loginData) => __awaiter(void 0, void 0, void 0, fun
     try {
         const response = yield axios.post(`${baseUrl}/students/login`, loginData);
         if (response.data.message === "Student authenticated") {
-            alert('Login successful');
             return response.data;
         }
         else {
@@ -47,7 +46,6 @@ export const teacherLogin = (loginData) => __awaiter(void 0, void 0, void 0, fun
     try {
         const response = yield axios.post(`${baseUrl}/teachers/login`, loginData);
         if (response.data.message === "Teacher authenticated") {
-            alert('Login successful');
             return response.data;
         }
         else {

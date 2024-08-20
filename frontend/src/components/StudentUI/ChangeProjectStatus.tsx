@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useProjectsContext } from '../../contexts/projectsContext';
+import { useUserContext } from '../../contexts/userContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 
@@ -18,9 +19,10 @@ const ChangeProjectStatus: React.FC<ChangeProjectStatusProps> = ({ projectData }
     const [projectStatus, setProjectStatus] = useState<string>(projectData?.project_status || '');
     const [initialStatus, setInitialStatus] = useState<string>(projectData?.project_status || '');
     const currentDate = new Date();
+    const { user } = useUserContext();
 
     useEffect(() => {
-        fetchProjects();  
+        fetchProjects();
     }, [fetchProjects]);
 
     const handleStatusChange = (status: string) => {
@@ -28,10 +30,10 @@ const ChangeProjectStatus: React.FC<ChangeProjectStatusProps> = ({ projectData }
     };
 
     const handleSave = () => {
-    
+
         const updatedProject = {
             project_name: projectData?.project_name,
-            project_desc: projectData?.project_description,
+            project_desc: projectData?.project_desc,
             teacher_id: projectData?.teacher_id,
             company_id: projectData?.company_id,
             project_status: projectStatus,
@@ -40,8 +42,7 @@ const ChangeProjectStatus: React.FC<ChangeProjectStatusProps> = ({ projectData }
             end_date: projectStatus === "completed" ? currentDate : projectData?.end_date,
         };
         modifyProject(updatedProject, projectData.project_id);
-        navigate('/student');
-
+        user === "teacher" ? navigate('/teacher') : navigate('/student');
     };
 
     const isStatusChanged = projectStatus !== initialStatus;
@@ -66,13 +67,15 @@ const ChangeProjectStatus: React.FC<ChangeProjectStatusProps> = ({ projectData }
                                 checked={projectStatus === 'ongoing'}
                                 onChange={() => handleStatusChange('ongoing')}
                             />
-                            <Form.Check
-                                className='form-check'
-                                type='radio'
-                                label={<span><strong>{t('completed')}</strong> <span className='radio-span'> ({t('completedRadio')})</span></span>}
-                                checked={projectStatus === 'completed'}
-                                onChange={() => handleStatusChange('completed')}
-                            />
+                            {user === "teacher" &&
+                                <Form.Check
+                                    className='form-check'
+                                    type='radio'
+                                    label={<span><strong>{t('completed')}</strong> <span className='radio-span'> ({t('completedRadio')})</span></span>}
+                                    checked={projectStatus === 'completed'}
+                                    onChange={() => handleStatusChange('completed')}
+                                />
+                            }
                         </div>
                     </Form>
                     <Button

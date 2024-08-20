@@ -41,7 +41,7 @@ const PastProjectsList: React.FC<PastProjectsListProps> = ({ teacherId }) => {
             project_number: studentProject?.project_number || 'Unknown Project Number',
             name: studentName,
             student_email: student?.email || 'Unknown Email',
-            class_code: student?.class_code || 'Unknown Class Code'
+            class_code: student?.class_code || 'Unknown Class Code',
         };
     });
 
@@ -103,7 +103,7 @@ const PastProjectsList: React.FC<PastProjectsListProps> = ({ teacherId }) => {
                                         {studyYear}
                                     </td>
                                 </tr>
-                                {groupedData[studyYear].map((proj) => (
+                                {groupedData[studyYear].map((proj: any) => (
                                     <tr key={proj.project_id} style={{ fontSize: "13px" }} onClick={() => handleRowClick(proj)}>
                                         <td className="align-middle" style={{ display: "flex", flexDirection: "column" }}>
                                             <div style={{ fontWeight: "bold" }}>
