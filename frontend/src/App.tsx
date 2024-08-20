@@ -22,15 +22,15 @@ function App() {
         <div style={{ display: 'flex', flexDirection: "column" }}> {/* Use a flex container to layout sidebar and main content */}
           {(user !== "") ? <SidebarComponent /> : null} {/* Step 2: Include SidebarComponent */}
           <hr style={{margin: "0px"}}/>
-          <div> {/* Ensure main content takes the remaining space */}
+          <div>
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/teacher" element={<TeacherDashboard />} />
-              <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />
-              <Route path="/student" element={<StudentDashboard />} />
-              <Route path="/studentProject/:id" element={<StudentProjectDetails />} />
+              {user === "teacher" && <Route path="/teacher" element={<TeacherDashboard />} />}
+              {user === "teacher" && <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />}
               <Route path="/form" element={<AddNewProject />} />
-              <Route path="/teachers" element={<Teachers />} />
+              {user === "student" && <Route path="/student" element={<StudentDashboard />} />}
+              <Route path="/studentProject/:id" element={<StudentProjectDetails />} />
+              {user === "teacher" && <Route path="/teachers" element={<Teachers />} />}
             </Routes>
           </div>
         </div>

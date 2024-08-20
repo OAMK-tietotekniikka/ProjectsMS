@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProjectNotes = exports.addProjectNote = exports.createStudentProject = exports.getStudentProjects = exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjects = void 0;
+exports.deleteProjectNote = exports.getProjectNotes = exports.addProjectNote = exports.createStudentProject = exports.getStudentProjects = exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjects = void 0;
 const mysql_config_1 = __importDefault(require("../config/mysql.config"));
 const projects_query_1 = require("../query/projects.query");
 const code_enum_1 = require("../enum/code.enum");
@@ -99,7 +99,7 @@ const deleteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         connection = yield mysql_config_1.default.getConnection();
         const result = yield mysql_config_1.default.query(projects_query_1.QUERY.SELECT_PROJECT, [req.params.project_id]);
         if (result[0].length > 0) {
-            const result = yield mysql_config_1.default.query(projects_query_1.QUERY.DELETE_PROJECT, [req.params.project_id]);
+            const result = yield mysql_config_1.default.query(projects_query_1.QUERY.DELETE_PROJECT_BY_ID, [req.params.project_id]);
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Project deleted successfully'));
         }
@@ -215,3 +215,23 @@ const getProjectNotes = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getProjectNotes = getProjectNotes;
+const deleteProjectNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
+    let connection;
+    try {
+        connection = yield mysql_config_1.default.getConnection();
+        const result = yield mysql_config_1.default.query(projects_query_1.QUERY.DELETE_PROJECT_NOTE, [req.params.note_id]);
+        return res.status(code_enum_1.Code.OK)
+            .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Note deleted successfully'));
+    }
+    catch (error) {
+        console.error(`[${new Date().toLocaleString()}] ${error}`);
+        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while deleting note'));
+    }
+    finally {
+        if (connection)
+            connection.release();
+    }
+});
+exports.deleteProjectNote = deleteProjectNote;

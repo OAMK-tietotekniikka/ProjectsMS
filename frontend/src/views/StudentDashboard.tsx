@@ -19,20 +19,21 @@ const StudentDashboard: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchProjects();  
+        fetchProjects();
     }, [fetchProjects]);
-    
+
     const studentId = signedInStudent?.student_id || null;
     const studentProjectsList = studentProjects?.filter(project => project.student_id === studentId) || [];
-      
+
     const studentProjectsWithData = studentProjectsList?.map(project => {
         const projectData = projects?.find(proj => proj.project_id === project.project_id);
+        const foundTeacher = teachers?.find(teacher => teacher.teacher_id === projectData?.teacher_id);
         return {
             ...project,
             project_name: projectData?.project_name || "No project name",
-            project_description: projectData?.project_desc || "No project description",
+            project_desc: projectData?.project_desc || "No project description",
             project_status: projectData?.project_status || "No project status",
-            teacher_name: teachers?.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === projectData?.teacher_id)?.last_name || "No teacher name",
+            teacher_name: foundTeacher ? `${foundTeacher.first_name} ${foundTeacher.last_name}` : "no teacher",
             teacher_id: projectData?.teacher_id || "No teacher id",
             company_id: projectData?.company_id || "No company id",
             company_name: companies?.find(company => company.company_id === projectData?.company_id)?.company_name || "No company name",
@@ -45,8 +46,8 @@ const StudentDashboard: React.FC = () => {
 
     return (
         <Container className='student-main-container'>
-            <Row className="student-main-row">
-                <Col xs="12" lg="8">
+            <Col xs="12" lg="9">
+                <Row >
                     {signedInStudent ?
                         <div>
                             <h4>{signedInStudent.first_name} {signedInStudent.last_name}</h4>
@@ -57,8 +58,8 @@ const StudentDashboard: React.FC = () => {
 
                     {studentProjectsList.length > 0 ?
                         <>
-                            <div style={{ marginTop: "4%" }}>{t('projListBelow')}</div>
-                            <hr />
+                            <div style={{ margin: "4% 0%" }}>{t('projListBelow')}</div>
+                            <hr style={{margin: "0"}}/>
                             <Row>
                                 <Col className="heading-row"></Col>
                                 <Col className="heading-row">{t('company')}</Col>
@@ -67,22 +68,25 @@ const StudentDashboard: React.FC = () => {
                             </Row>
 
                             {studentProjectsWithData.map(proj => (
-                                <Row className="data-row" key={proj.project_id} onClick={() => navigate(`/studentProject/${proj.project_id}`, { state: { proj } })}>
-                                    <Col className="data-item" style={{color: "#5e5e5e", fontWeight: "bold"}}>{t('projectNo')} {proj.project_number}</Col>
+                                <Row
+                                    className="data-row"
+                                    key={proj.project_id}
+                                    onClick={() => navigate(`/studentProject/${proj.project_id}`, { state: { proj } })}
+                                >
+                                    <Col className="data-item" style={{ color: "#5e5e5e", fontWeight: "bold" }}>{t('projectNo')} {proj.project_number}</Col>
                                     <Col className="data-item">{proj.company_name}</Col>
                                     <Col className="data-item">{String(proj.start_date).split('T')[0]}</Col>
                                     <Col className="data-item">{String(proj.end_date).split('-')[0] === "1970" ? "not set" : String(proj.end_date).split('T')[0]}</Col>
-                                    
                                 </Row>
                             ))}
                         </>
                         : <div className="second-heading" >{t('noProjects')}</div>}
-                <hr />
-                </Col>
-                <Col xs="12" lg="4" style={{ marginTop: "25%" }}>
+                    <hr style={{ marginTop: "10px", marginBottom: "0px" }}/>
+                </Row>
+                <Row>
                     <Button href="/form" className='student-view-button'>{t('createProj')}</Button>
-                </Col>
-            </Row>
+                </Row>
+            </Col>
         </Container>
     );
 };

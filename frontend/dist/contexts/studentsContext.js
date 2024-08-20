@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getStudents } from "./apiRequests/studentsApiRequests";
+import { getStudents, updateStudent } from "./apiRequests/studentsApiRequests";
 import { useUserContext } from "./userContext";
 ;
 const StudentsContext = React.createContext({});
@@ -58,10 +58,22 @@ const StudentsContextProvider = (props) => {
             localStorage.removeItem('signedInStudent');
         }
     };
+    const modifyStudent = (student, studentId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield updateStudent(student, studentId, authHeader);
+            if (response.statusCode === 200) {
+                setStudents((prevStudents) => prevStudents.filter(s => s.student_id !== studentId).concat(response.data));
+            }
+        }
+        catch (error) {
+            console.error("Failed to update student:", error);
+        }
+    });
     let value = {
         students,
         signedInStudent,
-        setSignedInStudent
+        setSignedInStudent,
+        modifyStudent
     };
     return (_jsx(StudentsContext.Provider, { value: value, children: props.children }));
 };

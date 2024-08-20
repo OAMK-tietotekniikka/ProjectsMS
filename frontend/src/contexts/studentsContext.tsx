@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getStudents } from "./apiRequests/studentsApiRequests";
-import { Student } from "../interface/student";
+import { getStudents, updateStudent } from "./apiRequests/studentsApiRequests";
+import { Student, UpdatedStudent } from "../interface/student";
 import { useUserContext } from "./userContext";
 
 
@@ -8,6 +8,7 @@ interface StudentsContextType {
     students: Student[];
     signedInStudent: Student;
     setSignedInStudent: (student: Student | null) => void;
+    modifyStudent: (student: UpdatedStudent, studentId: number) => void;
 };
 
 const StudentsContext = React.createContext<StudentsContextType>({} as StudentsContextType);
@@ -59,10 +60,24 @@ const StudentsContextProvider = (props: any) => {
         }
     };
 
+    const modifyStudent = async (student: UpdatedStudent, studentId: number) => {
+        try {
+            const response = await updateStudent(student, studentId, authHeader);
+            if (response.statusCode === 200) {
+                setStudents((prevStudents) => prevStudents.filter(s => s.student_id !== studentId).concat(response.data));
+            }
+        }
+        catch (error) {
+            console.error("Failed to update student:", error
+            );
+        }
+    };
+
     let value = { 
         students,
         signedInStudent,
-        setSignedInStudent
+        setSignedInStudent,
+        modifyStudent
     };
 
     return (

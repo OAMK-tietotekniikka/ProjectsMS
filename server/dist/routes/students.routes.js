@@ -11,6 +11,6 @@ studentsRouter.route('/login')
     .post(students_controller_1.authenticateStudent);
 studentsRouter.route('/:student_id')
     .get(students_controller_1.getStudent)
-    .put(students_controller_1.updateStudent)
+    .put(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), students_controller_1.updateStudent)
     .delete(students_controller_1.deleteStudent);
 exports.default = studentsRouter;

@@ -1,22 +1,21 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import Backend from 'i18next-http-backend';
-import httpApi from "i18next-http-backend";
+import enTranslations from "./locales/en/default.json";
+import fiTranslations from "./locales/fi/default.json";
 
 const savedLanguage = localStorage.getItem('language') || 'en';
 
 i18n
-    .use(httpApi)
-    .use(Backend)
     .use(initReactI18next)
     .init({
-        lng: savedLanguage, // default language
+        lng: savedLanguage,
         fallbackLng: 'en',
         interpolation: {
-            escapeValue: false, // React already does escaping
+            escapeValue: false,
         },
-        backend: {
-            loadPath: 'locales/{{lng}}/default.json', // path to translation files
+        resources: {
+            en: { translation: enTranslations },
+            fi: { translation: fiTranslations },
         },
         react: {
             useSuspense: false,

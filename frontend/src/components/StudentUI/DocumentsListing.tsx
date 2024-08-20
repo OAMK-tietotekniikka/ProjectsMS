@@ -16,6 +16,7 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
     const [note, setNote] = useState<string>("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const user = localStorage.getItem("user")
 
     const handleClose = () => setShowModal(false);
 
@@ -82,13 +83,15 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
                         : <div className="note-item">{t('noDocs')}</div>}
                 </Col>
                 <Col className="note-row" style={{ margin: "10px 0" }}>
-                    <Button
-                        className="student-view-button"
-                        type='button'
-                        onClick={() => setShowModal(true)}
-                    >
-                        {t('addDoc')}
-                    </Button>
+                    {user === "student" &&
+                        <Button
+                            className="student-view-button"
+                            type='button'
+                            onClick={() => setShowModal(true)}
+                        >
+                            {t('addDoc')}
+                        </Button>
+                    }
                 </Col>
             </Row>
 

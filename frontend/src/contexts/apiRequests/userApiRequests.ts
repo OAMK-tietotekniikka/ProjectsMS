@@ -26,7 +26,6 @@ export const studentLogin = async (loginData: UserLogin) => {
     try {
         const response = await axios.post(`${baseUrl}/students/login`, loginData);
         if (response.data.message === "Student authenticated") {
-            alert('Login successful');
             return response.data;
         } else {
             console.error('Unexpected response:', response.data);
@@ -41,7 +40,6 @@ export const teacherLogin = async (loginData: UserLogin) => {
     try {
         const response = await axios.post(`${baseUrl}/teachers/login`, loginData);
         if (response.data.message === "Teacher authenticated") {
-            alert('Login successful');
             return response.data;
         } else {
             

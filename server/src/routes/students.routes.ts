@@ -13,7 +13,7 @@ studentsRouter.route('/login')
 
 studentsRouter.route('/:student_id')
     .get(getStudent)
-    .put(updateStudent)
+    .put(authenticated, authorizeRoles('teacher', 'student'), updateStudent)
     .delete(deleteStudent);
 
 

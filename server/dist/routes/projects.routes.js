@@ -16,5 +16,6 @@ projectsRouter.route('/student')
     .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getStudentProjects)
     .post(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.createStudentProject);
 projectsRouter.route('/:project_id/notes')
-    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getProjectNotes);
+    .get(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.getProjectNotes)
+    .delete(passportMiddleware_1.authenticated, (0, passportMiddleware_1.authorizeRoles)('teacher', 'student'), projects_controller_1.deleteProjectNote);
 exports.default = projectsRouter;

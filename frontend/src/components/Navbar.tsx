@@ -16,7 +16,7 @@ const NavbarComponent = () => {
     return (
         <Navbar className="navbar bg-body-tertiary">
             <Container className="nav-mainbar">
-                <Navbar.Brand>{t('appName')}</Navbar.Brand>
+                <Navbar.Brand className='nav-brand'>{t('appName')}</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                     <div className='nav-home'>

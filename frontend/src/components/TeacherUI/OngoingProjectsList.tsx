@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Table, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { Project } from '../../interface/project';
 import { ProjectFormData } from '../../interface/formData';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ import { useStudentsContext } from '../../contexts/studentsContext';
 import checkboxImage from '../../assets/checkbox.svg';
 import squareImage from '../../assets/square.svg';
 import SelectionDropdown from './SelectionDropdown';
+import { useTeachersContext } from '../../contexts/teachersContext';
 
 
 interface OngoingProjectsListProps {
@@ -21,12 +23,14 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
     const { projects, studentProjects, modifyProject } = useProjectsContext();
     const { companies } = useCompaniesContext();
     const { students } = useStudentsContext();
+    const { teachers } = useTeachersContext();
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
     const [selectedData, setSelectedData] = useState<any[]>([]);
     const selectionOptions = ['selectAll', 'selectByClass', 'selectByName'];
     const [modifiedProjectData, setModifiedProjectData] = useState<ProjectFormData | null>(null);
     const [show, setShow] = useState(false);
     const [studentName, setStudentName] = useState('');
+    const navigate = useNavigate();
 
     const handleClose = () => setShow(false);
 
@@ -48,15 +52,16 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
             project_number: studentProject?.project_number || 'Unknown Project Number',
             name: studentName,
             student_email: student?.email || 'Unknown Email',
-            class_code: student?.class_code || 'Unknown Class Code'
+            class_code: student?.class_code || 'Unknown Class Code',
+            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.first_name + ' ' + students.find(stud => stud.student_id === student.student_id)?.last_name) || "No students involved",
+            teacher_name: teachers?.find(teacher => teacher.teacher_id === project.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === project.teacher_id)?.last_name || "No teacher name",
         };
     });
-
     const dataToDisplay = selectedData?.length > 0 ? selectedData : projectsWithStudents || [];
 
     const handleChecked = (project: any) => {
         const currentDate = new Date();
-        
+
         const newProjectData = {
             project_name: project.project_name,
             project_desc: project.project_desc,
@@ -72,11 +77,6 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
         setShow(true);
         //
         setSelectedProjectId(project.project_id);
-    };
-
-    const handleRowClick = (project: Project) => {
-        console.log('Project selected:', project);
-        // add code to navigate to project details page
     };
 
     const handleConfirm = () => {
@@ -113,7 +113,11 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
                     </thead>
                     <tbody>
                         {dataToDisplay.map((proj) => (
-                            <tr key={proj.project_id} style={{ fontSize: "13px" }} onClick={() => handleRowClick(proj)}>
+                            <tr
+                                key={proj.project_id}
+                                style={{ fontSize: "13px" }}
+                                onClick={() => navigate(`/studentProject/${proj.project_id}`, { state: { proj } })}
+                            >
                                 <td className="align-middle" style={{ display: "flex", flexDirection: "column" }}>
                                     <div style={{ fontWeight: "bold" }}>
                                         {proj.name}
@@ -141,7 +145,7 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
                 </Table>
             </div>
 
-            <Modal show={show} onHide={() => {handleClose(); setSelectedProjectId(null)}} animation={false}>
+            <Modal show={show} onHide={() => { handleClose(); setSelectedProjectId(null) }} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('projCloseModalTitle')}</Modal.Title>
                 </Modal.Header>
@@ -155,10 +159,10 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => {handleClose(); setSelectedProjectId(null)}}>
+                    <Button variant="secondary" onClick={() => { handleClose(); setSelectedProjectId(null) }}>
                         {t('goBack')}
                     </Button>
-                    <Button style={{backgroundColor: "#F7921E"}} onClick={() => handleConfirm()}>
+                    <Button style={{ backgroundColor: "#F7921E" }} onClick={() => handleConfirm()}>
                         {t('yesSave')}
                     </Button>
                 </Modal.Footer>

@@ -7,6 +7,24 @@
   margin-left: 0;
   margin-right: 0;
 }
+.nav-brand {
+  font-weight: bold;
+  margin-right: 10%;
+}
+@media (max-width: 768px) {
+  .nav-mainbar {
+    padding-left: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  .nav-mainbar .nav-link {
+    font-size: small;
+  }
+  .nav-brand {
+    font-size: small;
+  } 
+
+}
 .nav-language {
   display: flex;
   flex-direction: row;
@@ -20,6 +38,35 @@
 }
 
 /* sidebar */
+.sidebar-links {
+  display: flex;
+  padding: 1% 16%;
+  flex-direction: column;
+}
+.hamburger-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1% 10%;
+}
+
+/* Large screens: Row layout */
+@media (min-width: 768px) {
+  .sidebar-links {
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+  }
+
+  .sidebar-links .nav-link {
+      margin: 0 10px; 
+  }
+}
+
+/* Adjust the styling for the Offcanvas */
+.offcanvas.sidebar-links {
+  flex-direction: column;
+}
 .sidebar-links img {
   margin-right: 15px;
   width: 20px;
@@ -100,6 +147,12 @@
   text-align: start;
   width: 100%;
   padding: 3% 5% 5% 15%;
+}
+@media (max-width: 768px) {
+  .teacher-main-container {
+    flex-direction: column;
+    padding: 5% 10%;
+  }
 }
 
 .item-group {
@@ -205,6 +258,17 @@
   font-weight: bold;
   color: black;
 }
+.dropdown-item {
+  width: 300px;
+}
+.dropdown-item-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 2% 0;
+}
 .addCompany-button {
   background-color: #F7921E;
   color: white;
@@ -222,8 +286,8 @@
   border: none;
   padding-bottom: 0;
   font-size: 14px;
-
 }
+
 
 /* Teacher ongoing projects*/
 
@@ -285,16 +349,20 @@
   width: 100%;
   padding: 3% 5% 5% 10%;
 }
-.student-main-row {
+@media (max-width: 768px) {
+  .student-main-container {
+    flex-direction: column;
+    padding: 5% 10%;
+  }
+}
+.student-main-container {
   display: flex;
-  justify-content: start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  text-align: start;
-  width: 100%;
 }
 .student-main-container .row {
   justify-content: start;
-  align-items: start;
   text-align: start;
   width: 100%;
   padding: 1% 0 0 0;
@@ -305,13 +373,14 @@
 .heading-row {
   font-weight: bold;
   font-size: small;
-  padding: 2%;
+  padding: 1% 0 2% 5%;
 }
 .data-item {
   font-size: small;
   margin: 0;
-  padding: 1% 0 1% 2%;
+  padding: 1% 0 2% 5%;
 }
+
 .data-row:hover {
   background-color: #ececec;
 }
@@ -322,7 +391,10 @@
   align-items: start;
   margin: 0;
   font-size: small;
-  
+}
+.grey-text {
+  color: #5e5e5e;
+  font-weight: bold;
 }
 .notes-listing {
   display: flex;
@@ -342,6 +414,7 @@
   height: 18px;
   margin-right: 2%;
 }
+
 .hr-style {
   border: none;
   height: 1px;
@@ -391,6 +464,7 @@
 .submit-button {
   background-color: #1A80E5;
   color: white;
+  font-weight: bold;
   margin: 4% 0;
   border: none;
   cursor: pointer;
@@ -401,6 +475,25 @@
   background-color: #cccccc;
   color: black;
   cursor: not-allowed;
+}
+.modify-project-row .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 101%;
+  padding: 1% 0;
+  margin-bottom: 10px
+}
+.modify-project-button {
+  background-color: #1A80E5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 12px;
+  padding: 6px 6px;
 }
 
 /*Modify state radio buttons*/
@@ -446,7 +539,9 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-bottom: 5px 
+  margin-bottom: 5px;
+  color: #5e5e5e;
+  
 }
 @media (max-width: 768px) {
   .radio-span {
@@ -457,4 +552,8 @@
     margin-left: 0px;
     padding-left: 0px
   }
+  .main-heading {
+    text-align: left;
+  }
+
 }

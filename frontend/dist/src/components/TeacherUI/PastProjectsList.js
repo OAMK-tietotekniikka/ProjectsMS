@@ -1,11 +1,11 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useProjectsContext } from '../contexts/projectsContext';
-import { useCompaniesContext } from '../contexts/companiesContext';
-import { useStudentsContext } from '../contexts/studentsContext';
-import { getStudyYear } from './GetStudyYear';
+import { useProjectsContext } from '../../contexts/projectsContext';
+import { useCompaniesContext } from '../../contexts/companiesContext';
+import { useStudentsContext } from '../../contexts/studentsContext';
+import { getStudyYear } from '../GetStudyYear';
 import SelectionDropdown from './SelectionDropdown';
 const PastProjectsList = ({ teacherId }) => {
     const { t } = useTranslation();
@@ -29,15 +29,27 @@ const PastProjectsList = ({ teacherId }) => {
         return Object.assign(Object.assign({}, project), { project_number: (studentProject === null || studentProject === void 0 ? void 0 : studentProject.project_number) || 'Unknown Project Number', name: studentName, student_email: (student === null || student === void 0 ? void 0 : student.email) || 'Unknown Email', class_code: (student === null || student === void 0 ? void 0 : student.class_code) || 'Unknown Class Code' });
     });
     const projectsWithStudyYears = projectsWithStudents.map((project) => {
-        const date = new Date(project.start_date);
+        const date = new Date(project.end_date);
         const studyYear = getStudyYear(date);
         return Object.assign(Object.assign({}, project), { study_year: studyYear });
     });
+    //sort by project end_date
+    projectsWithStudyYears.sort((a, b) => {
+        return new Date(b.end_date).getTime() - new Date(a.end_date).getTime();
+    });
     const dataToDisplay = (selectedData === null || selectedData === void 0 ? void 0 : selectedData.length) > 0 ? selectedData : projectsWithStudyYears || [];
+    const groupedData = dataToDisplay.reduce((groups, item) => {
+        const studyYear = item.study_year;
+        if (!groups[studyYear]) {
+            groups[studyYear] = [];
+        }
+        groups[studyYear].push(item);
+        return groups;
+    }, {});
     const handleRowClick = (project) => {
         console.log('Project selected:', project);
         // add code to navigate to project details page
     };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: projectsWithStudyYears, options: selectionOptions, toggle: 'selectStudents', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsx("th", { children: t('started') }), _jsx("th", { children: t('ended') }), _jsx("th", { children: t('companyName') }), _jsx("th", { children: t('projectNo') })] }) }), _jsx("tbody", { children: dataToDisplay.map((proj) => (_jsxs("tr", { style: { fontSize: "13px" }, onClick: () => handleRowClick(proj), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: proj.name }), _jsx("div", { children: proj.student_email }), _jsx("div", { children: (proj.class_code).toUpperCase() })] }), _jsx("td", { children: String(proj.start_date).split('T')[0] }), _jsx("td", { children: String(proj.end_date).split('T')[0] }), _jsx("td", { children: proj.company_name }), _jsx("td", { children: proj.project_number })] }, proj.project_id))) })] }) })] }));
+    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: projectsWithStudyYears, options: selectionOptions, toggle: 'selectStudents', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsx("th", { children: t('studyGroup') }), _jsx("th", { children: t('started') }), _jsx("th", { children: t('ended') }), _jsx("th", { children: t('company') }), _jsx("th", { children: t('projectNo') })] }) }), _jsx("tbody", { children: Object.keys(groupedData).map((studyYear) => (_jsxs(React.Fragment, { children: [_jsx("tr", { children: _jsx("td", { style: { fontWeight: 'bold' }, children: studyYear }) }), groupedData[studyYear].map((proj) => (_jsxs("tr", { style: { fontSize: "13px" }, onClick: () => handleRowClick(proj), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: proj.name }), _jsx("div", { children: proj.student_email })] }), _jsx("td", { children: proj.class_code.toUpperCase() }), _jsx("td", { children: String(proj.start_date).split('T')[0] }), _jsx("td", { children: String(proj.end_date).split('T')[0] }), _jsx("td", { children: proj.company_name }), _jsx("td", { children: proj.project_number })] }, proj.project_id)))] }, studyYear))) })] }) })] }));
 };
 export default PastProjectsList;

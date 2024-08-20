@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Col, Row, Form, ListGroup, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useCompaniesContext } from '../../contexts/companiesContext';
+import { useTeachersContext } from '../../contexts/teachersContext';
 import { Company } from '../../interface/company';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
@@ -16,6 +17,7 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
     const { teacherFavoCompanies, setTeacherFavoCompanies, addCompany, addFavoCompany } = useCompaniesContext();
     const [newCompany, setNewCompany] = useState<string>('');
     const [favoCompanies, setFavoCompanies] = useState<Company[]>([]);
+    const { signedInTeacher } = useTeachersContext();
 
     useEffect(() => {
         if (teacherFavoCompanies) {
@@ -33,8 +35,7 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
     };
 
     const saveSelection = async () => {
-        // teacher_id below will be replaced with the actual value when the teacher login is implemented
-        const teacherId = 1;
+        const teacherId = signedInTeacher?.teacher_id;
         if (favoCompanies.length === 0) return;
         setTeacherFavoCompanies(favoCompanies);
         addFavoCompany(favoCompanies, teacherId);
