@@ -109,27 +109,21 @@ const createTables = async () => {
         await connection.execute(`INSERT INTO companies (company_name) VALUES ('Nokia')`);
         await connection.execute(`INSERT INTO companies (company_name) VALUES ('Microsoft')`);
 
-        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Lasse', 'Haverinen', 'lasse@mail.com', 'pw1')`);
-        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Jouni', 'Juntunen', 'jouni@mail.com', 'pw2')`);
-        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Meja', 'Lohiniva', 'meja@mail.com', 'pw3')`);
-
-        await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project 1', 'Description 1', 1, 1, 'ongoing', 'www.google.com', '2024-01-01', '2024-08-08')`);
-        await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project 2', 'Description 2', 2, 2, 'ongoing', 'no url', '2024-01-01', '2024-08-08')`);
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'One', 'teacher1@mail.com', 'pw1')`);
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'Two', 'teacher2@mail.com', 'pw2')`);
+        await connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'Three', 'teacher3@mail.com', 'pw3')`);
 
         await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Liisa', 'Törmäkangas', 'liisa@mail.com', 'din22sp', 'pw1')`);
-        await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('John', 'Doe', 'john@mail.com', 'din22sp', 'pw2')`);
+        await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('John', 'Doe', 'john@mail.com', 'din23sp', 'pw2')`);
         await connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Jane', 'Doe', 'jane@mail.com', 'din21sp', 'pw3')`);
 
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 10, 7, '2021-2022')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 7, '2022-2023')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 1, '2023-2024')`);
-
-        await connection.execute(`INSERT INTO project_note (project_id, note, document_path, created_by) VALUES (1, 'Note 1', 'path/to/document', 'Liisa Törmäkangas')`);
-
-        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (1, 1, 1)`);
-        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (1, 2, 2)`);
-        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (2, 1, 1)`);
-
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 5, '2023-2024')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 8, 5, '2022-2023')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 6, 4, '2023-2024')`);
+        
         await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (1, 1)`);
         await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 2)`);
         await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (3, 3)`);

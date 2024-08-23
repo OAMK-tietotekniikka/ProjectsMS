@@ -71,7 +71,7 @@ const StudentProjectDetails = () => {
                     </Row>
                     <Row>
                         <Col className="grey-text">{t('url')}</Col>
-                        <Col>{proj.project_url ? proj.project_url : t('noUrl')}</Col>
+                        <Col>{proj.project_url ? proj.project_url : t('noUrl') }</Col>
                     </Row>
                     <Row>
                         <Col className="grey-text">{t('supervisor')}</Col>
