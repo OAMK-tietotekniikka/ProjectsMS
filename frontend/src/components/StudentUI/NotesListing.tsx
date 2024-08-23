@@ -55,7 +55,7 @@ const NotesListing: React.FC<NotesListingProps> = ({ projectId }) => {
     const handleDeleteNote = (noteId: number) => {
         deleteProjectNote(projectId, noteId);
         setNotes(notes.filter((note: any) => note.note_id !== noteId));
-    }
+    };
 
     return (
         <Row className="notes-listing">

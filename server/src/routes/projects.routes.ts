@@ -32,6 +32,8 @@ projectsRouter.route('/student')
 
 projectsRouter.route('/:project_id/notes')
   .get(authenticated, authorizeRoles('teacher', 'student'), getProjectNotes)
+  //.delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
+projectsRouter.route('/:project_id/notes/:note_id')
   .delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
 
 export default projectsRouter;
