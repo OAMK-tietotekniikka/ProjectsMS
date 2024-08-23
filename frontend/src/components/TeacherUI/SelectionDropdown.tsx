@@ -52,9 +52,8 @@ const SelectionDropdown: React.FC<DropdownProps> = ({ data, options, toggle, set
     };
 
     const handleChange = (value: string) => {
-        if (value !== '') {
-            setName(value);
-        }
+        setName(value);
+
     };
 
     const handleNameSelection = () => {

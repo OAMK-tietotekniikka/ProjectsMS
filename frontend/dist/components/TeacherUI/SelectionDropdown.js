@@ -45,9 +45,7 @@ const SelectionDropdown = ({ data, options, toggle, setSelectedData }) => {
         setSelectedData(filteredData);
     };
     const handleChange = (value) => {
-        if (value !== '') {
-            setName(value);
-        }
+        setName(value);
     };
     const handleNameSelection = () => {
         const filteredData = data.filter((data) => (data.name).toLowerCase() === name.toLowerCase());

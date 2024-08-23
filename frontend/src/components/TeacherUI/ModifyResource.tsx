@@ -95,6 +95,7 @@ const ModifyResource: React.FC<ModifyResourceProps> = ({ teacherId, handleClose 
                     <Col className='res-column' xs={12} lg={3}>
                         <Button
                             className='addCompany-button'
+                            disabled={!studyYear || !totalResources}
                             onClick={(e) => handleSave(e)}
                         >
                             {t('save')}

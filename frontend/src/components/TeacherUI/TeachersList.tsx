@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useProjectsContext } from '../../contexts/projectsContext';
 import { useTeachersContext } from '../../contexts/teachersContext';
 import SelectionDropdown from './SelectionDropdown';
 import { useNavigate } from 'react-router-dom';
@@ -28,13 +27,15 @@ const TeachersList: React.FC = () => {
     // Build the teachersWithResources array
     const teachersWithResources = teachers?.map(teacher => {
         const teacherResources = resourcesByTeacherId?.[teacher.teacher_id] || [];
+        const currentYearResource = teacherResources?.find(resource => resource.study_year === currStudyYear) || {};
         const teacherName = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
-        if (teacherResources.length > 0) {
-            return teacherResources.map(resource => ({
-                ...resource,
+
+        if (currentYearResource.teacher_id) {
+            return {
+                ...currentYearResource,
                 name: teacherName,
                 email: teacher.email || 'Unknown Email'
-            }));
+            };
         } else {
             return {
                 teacher_id: teacher.teacher_id,
@@ -45,12 +46,6 @@ const TeachersList: React.FC = () => {
                 study_year: 'N/A'
             };
         }
-    }).flat();
-    
-    teachersWithResources?.sort((a, b) => {
-        const yearA = a.study_year === 'N/A' ? 0 : parseInt(a.study_year.split('-')[0], 10);
-        const yearB = b.study_year === 'N/A' ? 0 : parseInt(b.study_year.split('-')[0], 10);
-        return yearB - yearA;
     });
 
     const dataToDisplay = selectedData?.length > 0 ? selectedData : teachersWithResources || [];
@@ -81,19 +76,18 @@ const TeachersList: React.FC = () => {
                     </thead>
                     <tbody>
                         {dataToDisplay.map((teacher, index) => (
-                            teacher.study_year === currStudyYear || teacher.study_year === 'N/A' ?
-                                <tr key={index} style={{ fontSize: "13px" }} onClick={() => handleRowClick(teacher)}>
-                                    <td className="align-middle" style={{ display: "flex", flexDirection: "column" }}>
-                                        <div style={{ fontWeight: "bold" }}>
-                                            {teacher.name}
-                                        </div>
-                                        <div>
-                                            {teacher.email}
-                                        </div>
-                                    </td>
-                                    <td>{teacher.total_resources}</td>
-                                    <td>{teacher.used_resources}</td>
-                                </tr> : null
+                            <tr key={index} style={{ fontSize: "13px" }} onClick={() => handleRowClick(teacher)}>
+                                <td className="align-middle" style={{ display: "flex", flexDirection: "column" }}>
+                                    <div style={{ fontWeight: "bold" }}>
+                                        {teacher.name}
+                                    </div>
+                                    <div>
+                                        {teacher.email}
+                                    </div>
+                                </td>
+                                <td>{teacher.total_resources}</td>
+                                <td>{teacher.used_resources}</td>
+                            </tr>
                         ))}
                     </tbody>
                 </Table>

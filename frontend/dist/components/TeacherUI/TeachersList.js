@@ -25,9 +25,10 @@ const TeachersList = () => {
     const teachersWithResources = teachers === null || teachers === void 0 ? void 0 : teachers.map(teacher => {
         var _a, _b;
         const teacherResources = (resourcesByTeacherId === null || resourcesByTeacherId === void 0 ? void 0 : resourcesByTeacherId[teacher.teacher_id]) || [];
+        const currentYearResource = (teacherResources === null || teacherResources === void 0 ? void 0 : teacherResources.find(resource => resource.study_year === currStudyYear)) || {};
         const teacherName = `${(_a = teacher.first_name) !== null && _a !== void 0 ? _a : ''} ${(_b = teacher.last_name) !== null && _b !== void 0 ? _b : ''}`.trim();
-        if (teacherResources.length > 0) {
-            return teacherResources.map(resource => (Object.assign(Object.assign({}, resource), { name: teacherName, email: teacher.email || 'Unknown Email' })));
+        if (currentYearResource.teacher_id) {
+            return Object.assign(Object.assign({}, currentYearResource), { name: teacherName, email: teacher.email || 'Unknown Email' });
         }
         else {
             return {
@@ -39,18 +40,12 @@ const TeachersList = () => {
                 study_year: 'N/A'
             };
         }
-    }).flat();
-    teachersWithResources === null || teachersWithResources === void 0 ? void 0 : teachersWithResources.sort((a, b) => {
-        const yearA = a.study_year === 'N/A' ? 0 : parseInt(a.study_year.split('-')[0], 10);
-        const yearB = b.study_year === 'N/A' ? 0 : parseInt(b.study_year.split('-')[0], 10);
-        return yearB - yearA;
     });
     const dataToDisplay = (selectedData === null || selectedData === void 0 ? void 0 : selectedData.length) > 0 ? selectedData : teachersWithResources || [];
     const handleRowClick = (res) => {
         const teacherId = res.teacher_id;
         navigate(`/modifyTeacher/${teacherId}`);
     };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: teachersWithResources, options: selectionOptions, toggle: 'selectTeachers', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsxs("th", { children: [t('totRes'), " ", currStudyYear, ":"] }), _jsxs("th", { children: [t('usedRes'), " ", currStudyYear, ":"] })] }) }), _jsx("tbody", { children: dataToDisplay.map((teacher, index) => (teacher.study_year === currStudyYear || teacher.study_year === 'N/A' ?
-                                _jsxs("tr", { style: { fontSize: "13px" }, onClick: () => handleRowClick(teacher), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: teacher.name }), _jsx("div", { children: teacher.email })] }), _jsx("td", { children: teacher.total_resources }), _jsx("td", { children: teacher.used_resources })] }, index) : null)) })] }) })] }));
+    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsx(SelectionDropdown, { data: teachersWithResources, options: selectionOptions, toggle: 'selectTeachers', setSelectedData: setSelectedData }) }), _jsx("div", { className: "projects-table", children: _jsxs(Table, { hover: true, size: 'sm', className: "table-custom", children: [_jsx("thead", { children: _jsxs("tr", { style: { fontSize: "13px" }, children: [_jsx("th", {}), _jsxs("th", { children: [t('totRes'), " ", currStudyYear, ":"] }), _jsxs("th", { children: [t('usedRes'), " ", currStudyYear, ":"] })] }) }), _jsx("tbody", { children: dataToDisplay.map((teacher, index) => (_jsxs("tr", { style: { fontSize: "13px" }, onClick: () => handleRowClick(teacher), children: [_jsxs("td", { className: "align-middle", style: { display: "flex", flexDirection: "column" }, children: [_jsx("div", { style: { fontWeight: "bold" }, children: teacher.name }), _jsx("div", { children: teacher.email })] }), _jsx("td", { children: teacher.total_resources }), _jsx("td", { children: teacher.used_resources })] }, index))) })] }) })] }));
 };
 export default TeachersList;

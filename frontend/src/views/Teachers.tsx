@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { getStudyYear } from '../components/GetStudyYear';
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import TeachersList from '../components/TeacherUI/TeachersList';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +15,8 @@ const Teachers: React.FC = () => {
                 <Col xs={12} md={12} lg={11}>
                     <h4>{t('teachersMain')}</h4>
                     <TeachersList />
+                    <div className='second-heading'>{t('addTeacher')}</div>
+                    <div>this functionality needs to be added</div>
                 </Col>
             </Row>
         </Container>

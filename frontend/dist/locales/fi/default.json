@@ -30,8 +30,8 @@
     "enterPassword": "Syötä salasana",
     "addProject": "Lisää uusi projekti",
     "resourcesCurr": "Ohjauksen resurssit lukuvuodelle ",
-    "totRes": "Kokonaisresurssi:  ",
-    "usedRes": "Käytetty resurssi:  ",
+    "totRes": "Kokonaisresurssi  ",
+    "usedRes": "Käytetty resurssi  ",
     "resourcesPast": "Ohjauksen resurssit edellisille lukuvuosille",
     "addCompFavo": "Lisää yritys suosikkeihin",
     "projectsCurr": "Alkavat ja käynnissä olevat projektit",
@@ -117,5 +117,6 @@
     "noSupervisor": "ei ohjaavaa opettajaa",
     "resourcesToggle": "Opettaja  -  Kokonaisresurssi/käytetty resurssi",
     "newSupervisingTeacher": "Uusi ohjaava opettaja",
-    "notSelected": "ei valittu"
+    "notSelected": "ei valittu",
+    "addTeacher": "Lisää opettaja"
 }
