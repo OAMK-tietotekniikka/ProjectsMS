@@ -282,6 +282,11 @@
 .addCompany-button:hover {
   background-color: #dc7600;
 }
+.addCompany-button:disabled {
+  background-color: #cccccc;
+  color: black;
+  cursor: not-allowed;
+} 
 .list-item {
   border: none;
   padding-bottom: 0;

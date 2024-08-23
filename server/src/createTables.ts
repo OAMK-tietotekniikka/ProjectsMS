@@ -121,6 +121,7 @@ const createTables = async () => {
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 7, '2022-2023')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 1, '2023-2024')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 5, '2023-2024')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 3, '2024-2025')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 8, 5, '2022-2023')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 6, 4, '2023-2024')`);
         
