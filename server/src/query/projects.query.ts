@@ -11,4 +11,7 @@ export const QUERY = {
     INSERT_PROJECT_NOTE: 'INSERT INTO project_note (project_id, note, document_path, created_by) VALUES (?, ?, ?, ?)',
     SELECT_PROJECT_NOTES: 'SELECT * FROM project_note WHERE project_id = ?',
     DELETE_PROJECT_NOTE: 'DELETE FROM project_note WHERE note_id = ? AND project_id = ?',
+    DELETE_STUDENT_PROJECT: 'DELETE FROM student_project WHERE student_id = ? AND project_id = ?',
+    DELETE_STUDENT_PROJECT_BY_PROJECT_ID: 'DELETE FROM student_project WHERE project_id = ?',
+    DELETE_PROJECT_NOTES_BY_PROJECT_ID: 'DELETE FROM project_note WHERE project_id = ?',
 };

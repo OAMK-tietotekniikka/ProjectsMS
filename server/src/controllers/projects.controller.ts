@@ -87,6 +87,8 @@ export const deleteProject = async (req: Request, res: Response): Promise<Respon
         const result: ResultSet = await pool.query(QUERY.SELECT_PROJECT, [req.params.project_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT_BY_ID, [req.params.project_id]);
+            const result2: ResultSet = await pool.query(QUERY.DELETE_STUDENT_PROJECT_BY_PROJECT_ID, [req.params.project_id]);
+            const result3: ResultSet = await pool.query(QUERY.DELETE_PROJECT_NOTES_BY_PROJECT_ID, [req.params.project_id]);
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Project deleted successfully'));
         } else {
