@@ -1,4 +1,4 @@
-export const QUERY = {
+export const R_QUERY = {
     SELECT_RESOURCES: 'SELECT * FROM resources ORDER BY created_at DESC LIMIT 50',
     SELECT_RESOURCE: 'SELECT * FROM resources WHERE resource_id = ?',  
     CREATE_RESOURCE: 'INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (?, ?, ?, ?)',
