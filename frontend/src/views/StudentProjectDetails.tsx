@@ -6,7 +6,7 @@ import DocumentsListing from "../components/StudentUI/DocumentsListing";
 import NotesListing from "../components/StudentUI/NotesListing";
 import ChangeProjectStatus from "../components/StudentUI/ChangeProjectStatus";
 import { useProjectsContext } from "../contexts/projectsContext";
-import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
+//import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
 //import { deleteProjectNoteById } from "../contexts/apiRequests/projectsApiRequests";
 
 
@@ -33,14 +33,24 @@ const StudentProjectDetails = () => {
         // Functionality to add student to project will be added here
     };
 
-    const handleDeleteProject = async () => {
+    // const handleDeleteProject = async () => {
+    //     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+    //     if (isConfirmed) {
+    //         await deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+    //         setProjects(projects.filter(project => project.project_id !== projectId));
+    //         navigate('/student');
+    //     }
+    // };
+
+    const handleDeleteProject = () => {
         const isConfirmed = window.confirm("Are you sure you want to delete this project?");
         if (isConfirmed) {
-            await deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+            const authHeader = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
+            deleteProject(projectId, authHeader); // Functionality to delete project will be added here});
             setProjects(projects.filter(project => project.project_id !== projectId));
-            navigate('/student');
+            navigate('/teacher');
         }
-    };
+    }
 
 
     return (

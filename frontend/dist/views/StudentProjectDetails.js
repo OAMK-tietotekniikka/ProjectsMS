@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
@@ -16,7 +7,7 @@ import DocumentsListing from "../components/StudentUI/DocumentsListing";
 import NotesListing from "../components/StudentUI/NotesListing";
 import ChangeProjectStatus from "../components/StudentUI/ChangeProjectStatus";
 import { useProjectsContext } from "../contexts/projectsContext";
-import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
+//import { deleteProjectById } from "../contexts/apiRequests/projectsApiRequests";
 //import { deleteProjectNoteById } from "../contexts/apiRequests/projectsApiRequests";
 const StudentProjectDetails = () => {
     var _a;
@@ -39,14 +30,21 @@ const StudentProjectDetails = () => {
         console.log(proj.company_id);
         // Functionality to add student to project will be added here
     };
-    const handleDeleteProject = () => __awaiter(void 0, void 0, void 0, function* () {
+    // const handleDeleteProject = async () => {
+    //     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+    //     if (isConfirmed) {
+    //         await deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+    //         setProjects(projects.filter(project => project.project_id !== projectId));
+    //         navigate('/student');
+    //     }
+    // };
+    const handleDeleteProject = () => {
         const isConfirmed = window.confirm("Are you sure you want to delete this project?");
         if (isConfirmed) {
-            yield deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
-            setProjects(projects.filter(project => project.project_id !== projectId));
-            navigate('/student');
+            deleteProject(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+            navigate('/teacher');
         }
-    });
+    };
     return (_jsx(Container, { className: "student-main-container", children: _jsxs(Row, { className: "student-main-row", children: [_jsxs(Col, { xs: "12", lg: "7", children: [_jsxs("h4", { children: [t('projectNo'), " ", proj.project_number] }), _jsx("h6", { children: proj.project_name }), _jsxs("div", { style: { margin: "20px 0" }, children: [_jsxs("div", { style: { fontWeight: "bold" }, children: [t('projDesc'), " :"] }), _jsx("div", { children: proj.project_desc })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('status') }), _jsx(Col, { children: t(proj.project_status) })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('company') }), _jsx(Col, { children: proj.company_name })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('startDate') }), _jsx(Col, { children: String(proj.start_date).split('T')[0] })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('dueDate') }), _jsx(Col, { children: String(proj.end_date).split('-')[0] === "1970" ? t('dateNotSet') : String(proj.end_date).split('T')[0] })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('url') }), _jsx(Col, { children: proj.project_url ? proj.project_url : t('noUrl') })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('supervisor') }), _jsx(Col, { children: proj.teacher_name === "no teacher" ? t('noTeacher') : proj.teacher_name })] }), _jsxs(Row, { children: [_jsx(Col, { className: "grey-text", children: t('studInvolved') }), _jsx(Col, { style: { display: "flex", flexDirection: "column" }, children: proj.studentsInvolved.map((student, index) => (_jsx(Col, { children: student }, index))) })] }), _jsx(Button, { className: "student-view-button margin-right", onClick: () => navigate('/form', { state: { proj } }), children: t('modifyData') }), user === "teacher" ?
                             _jsx(Button, { className: "student-view-button", onClick: () => handleDeleteProject(), children: t('deleteProj') })
                             : null] }), _jsxs(Col, { xs: "12", lg: "5", style: { marginTop: "15%" }, children: [_jsxs("div", { style: { fontWeight: "bold", marginBottom: "10px" }, children: [t('changeStatus'), ":"] }), _jsx(ChangeProjectStatus, { projectData: proj })] }), _jsx("hr", { className: "hr-style" }), _jsx("div", { style: { fontWeight: "bold" }, children: t('projNotes') }), _jsx(NotesListing, { projectId: projectId }), _jsx("hr", { className: "hr-style" }), _jsx("div", { style: { fontWeight: "bold" }, children: t('projDocs') }), _jsx(DocumentsListing, { projectId: projectId }), _jsx("hr", { className: "hr-style" }), user === "student" &&
