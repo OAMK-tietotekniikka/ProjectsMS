@@ -30,29 +30,24 @@ const FavoCompDropdown = ({ data }) => {
         }
     }, [teacherFavoCompanies]);
     const addToList = (item) => {
+        const teacherId = signedInTeacher === null || signedInTeacher === void 0 ? void 0 : signedInTeacher.teacher_id;
+        let updatedFavoCompanies;
         if (favoCompanies.some(company => company.company_id === item.company_id)) {
-            setFavoCompanies(favoCompanies.filter(company => company.company_id !== item.company_id));
+            updatedFavoCompanies = favoCompanies.filter(company => company.company_id !== item.company_id);
         }
         else {
-            setFavoCompanies([...favoCompanies, item]);
+            updatedFavoCompanies = [...favoCompanies, item];
         }
+        setFavoCompanies(updatedFavoCompanies);
+        setTeacherFavoCompanies(updatedFavoCompanies);
+        addFavoCompany(updatedFavoCompanies, teacherId);
     };
-    const saveSelection = () => __awaiter(void 0, void 0, void 0, function* () {
-        const teacherId = signedInTeacher === null || signedInTeacher === void 0 ? void 0 : signedInTeacher.teacher_id;
-        if (favoCompanies.length === 0)
-            return;
-        setTeacherFavoCompanies(favoCompanies);
-        addFavoCompany(favoCompanies, teacherId);
-    });
     const handleChange = (value) => {
-        if (value !== '') {
-            setNewCompany(value);
-        }
+        setNewCompany(value);
     };
     const handleSubmit = (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
-        // teacher_id below will be replaced with the actual value when the teacher login is implemented
-        const teacherId = 1;
+        const teacherId = signedInTeacher === null || signedInTeacher === void 0 ? void 0 : signedInTeacher.teacher_id;
         try {
             const companyId = yield addCompany(newCompany);
             if (companyId > 0) {
@@ -68,6 +63,6 @@ const FavoCompDropdown = ({ data }) => {
             return 0;
         }
     });
-    return (_jsx(Container, { style: { paddingLeft: "0px", marginTop: "2%" }, children: _jsxs(Col, { children: [_jsx("div", { children: t('selectComp') }), _jsxs(Row, { className: 'dropdown-row', children: [_jsx(Col, { xs: 12, lg: 7, children: _jsxs(Dropdown, { children: [_jsx(Dropdown.Toggle, { id: "dropdown-basic", className: 'dropdown-toggle', children: t('select') }), _jsx(Dropdown.Menu, { children: (data === null || data === void 0 ? void 0 : data.map((item, index) => (_jsx(Dropdown.Item, { onClick: () => addToList(item), className: `dropdown-item ${favoCompanies.some(company => company.company_id === item.company_id) ? 'active' : ''}`, href: "#/action-${index}", children: item.company_name }, index)))) || _jsx(Dropdown.Item, { children: t('noComp') }) })] }) }), _jsx(Col, { xs: 12, lg: 5, children: _jsxs("div", { style: { marginLeft: "20%" }, children: [_jsx("div", { className: "second-heading", children: t('selectedCompList') }), _jsx(ListGroup, { children: (favoCompanies.length > 0) ? favoCompanies.map((item, index) => (_jsx(ListGroup.Item, { className: 'list-item', children: item.company_name }, index))) : _jsx(ListGroup.Item, { children: t('noFavoComp') }) }), _jsx(Button, { style: { marginTop: "6px" }, className: 'addCompany-button', onClick: () => saveSelection(), children: t('saveSelection') })] }) })] }), _jsx("div", { children: t('enterNewComp') }), _jsxs(Row, { className: 'dropdown-row', children: [_jsx(Col, { xs: 12, lg: 7, children: _jsx(Form, { children: _jsx(Form.Control, { type: "text", placeholder: "Enter company name", style: { width: "300px" }, onChange: (e) => handleChange(e.target.value), value: newCompany }) }) }), _jsx(Col, { xs: 12, lg: 5, children: _jsx(Button, { style: { marginLeft: "20%" }, type: 'button', className: 'addCompany-button', onClick: handleSubmit, children: t('saveInput') }) })] })] }) }));
+    return (_jsx(Container, { style: { paddingLeft: "0px", marginTop: "2%" }, children: _jsxs(Col, { children: [_jsx("div", { children: t('selectComp') }), _jsxs(Row, { className: 'dropdown-row', children: [_jsx(Col, { xs: 12, lg: 7, children: _jsxs(Dropdown, { children: [_jsx(Dropdown.Toggle, { id: "dropdown-basic", className: 'dropdown-toggle', children: t('select') }), _jsx(Dropdown.Menu, { children: (data === null || data === void 0 ? void 0 : data.map((item, index) => (_jsx(Dropdown.Item, { onClick: () => addToList(item), className: `dropdown-item ${favoCompanies.some(company => company.company_id === item.company_id) ? 'active' : ''}`, href: "#/action-${index}", children: item.company_name }, index)))) || _jsx(Dropdown.Item, { children: t('noComp') }) })] }) }), _jsx(Col, { xs: 12, lg: 5, children: _jsxs("div", { style: { marginLeft: "20%" }, children: [_jsx("div", { className: "second-heading", children: t('selectedCompList') }), _jsx(ListGroup, { children: (favoCompanies.length > 0) ? favoCompanies.map((item, index) => (_jsx(ListGroup.Item, { className: 'list-item', children: item.company_name }, index))) : _jsx(ListGroup.Item, { children: t('noFavoComp') }) })] }) })] }), _jsx("div", { children: t('enterNewComp') }), _jsx(Row, { className: 'dropdown-row', children: _jsxs(Col, { xs: 12, lg: 7, children: [_jsx(Form, { children: _jsx(Form.Control, { type: "text", placeholder: "Enter company name", style: { width: "300px" }, onChange: (e) => handleChange(e.target.value), value: newCompany }) }), _jsx(Button, { style: { marginTop: '10px' }, type: 'button', className: 'addCompany-button', onClick: handleSubmit, children: t('saveInput') })] }) })] }) }));
 };
 export default FavoCompDropdown;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../../interface/formData';
@@ -279,6 +280,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                             />
                         </Form.Group>
                     }
+                    <div>{t('dropdownSelectCompany')}</div>
+                    <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic" className='dropdown-toggle'>
+                                {t('select')}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {companies?.map((item: any, index) => (
+                                    <Dropdown.Item
+                                        key={index}
+                                        onClick={() => setCompanyName(item.company_name)}
+                                        className={`dropdown-item-${index}`}
+                                        href={"#/action-${index}"}
+                                    >
+                                        {item.company_name}
+                                    </Dropdown.Item>
+                                )) || <Dropdown.Item>{t('noComp')}</Dropdown.Item>}
+                            </Dropdown.Menu>
+                        </Dropdown>
                     {user === "student" &&
                         <Form.Group controlId="companyName" className="form-item">
                             <Form.Label>{t('companyName')} *</Form.Label>
