@@ -6,7 +6,7 @@
   "createProj": "Luo uusi projekti",
   "deleteProj": "Poista projekti",
   "deleteProjConfirm": "Haluatko varmasti poistaa projektin?",
-  "projInstruction": "Lue huolella projekteihin liittyvä ohjeistus ennen kuin aloitat",
+  "projInstruction": "Lue huolella projekteihin liittyvä ohjeistus ennen kuin aloitat. Ohjeet löytyvät Yritys- tai hankelähtöisten projektien Moodle-kurssin sivuilta.",
   "projName": "Projektin nimi",
   "projDesc": "Projektin kuvaus",
   "projDescPlaceholder": "Kirjoita tähän lyhyt kuvaus projektistasi",
@@ -118,5 +118,6 @@
   "resourcesToggle": "Opettaja  -  Kokonaisresurssi/käytetty resurssi",
   "newSupervisingTeacher": "Uusi ohjaava opettaja",
   "notSelected": "ei valittu",
-  "addTeacher": "Lisää opettaja"
+  "addTeacher": "Lisää opettaja",
+  "dropdownSelectCompany": "Valitse yritys pudotusvalikosta. Jos yritystä ei ole listalla, kirjoita yrityksen nimi alla olevaan kenttään."
 }

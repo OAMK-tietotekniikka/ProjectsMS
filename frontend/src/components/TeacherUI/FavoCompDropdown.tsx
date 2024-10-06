@@ -27,30 +27,25 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
     }, [teacherFavoCompanies]);
 
     const addToList = (item: Company) => {
-        if (favoCompanies.some(company => company.company_id === item.company_id)) {
-            setFavoCompanies(favoCompanies.filter(company => company.company_id !== item.company_id));
-        } else {
-            setFavoCompanies([...favoCompanies, item]);
-        }
-    };
-
-    const saveSelection = async () => {
         const teacherId = signedInTeacher?.teacher_id;
-        if (favoCompanies.length === 0) return;
-        setTeacherFavoCompanies(favoCompanies);
-        addFavoCompany(favoCompanies, teacherId);
+        let updatedFavoCompanies: Company[];
+        if (favoCompanies.some(company => company.company_id === item.company_id)) {
+            updatedFavoCompanies = favoCompanies.filter(company => company.company_id !== item.company_id);
+        } else {
+            updatedFavoCompanies = [...favoCompanies, item];
+        }
+        setFavoCompanies(updatedFavoCompanies);
+        setTeacherFavoCompanies(updatedFavoCompanies);
+        addFavoCompany(updatedFavoCompanies, teacherId);
     };
 
     const handleChange = (value: string) => {
-        if (value !== '') {
-            setNewCompany(value);
-        }
+        setNewCompany(value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // teacher_id below will be replaced with the actual value when the teacher login is implemented
-        const teacherId = 1;
+        const teacherId = signedInTeacher?.teacher_id;
         try {
             const companyId = await addCompany(newCompany)
 
@@ -101,13 +96,7 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
                                 )) : <ListGroup.Item>{t('noFavoComp')}</ListGroup.Item>}
 
                             </ListGroup>
-                            <Button
-                                style={{ marginTop: "6px" }}
-                                className='addCompany-button'
-                                onClick={() => saveSelection()}
-                            >
-                                {t('saveSelection')}
-                            </Button>
+
                         </div>
                     </Col>
                 </Row>
@@ -123,10 +112,8 @@ const FavoCompDropdown: React.FC<DropdownProps> = ({ data }) => {
                                 value={newCompany}
                             />
                         </Form>
-                    </Col>
-                    <Col xs={12} lg={5}>
                         <Button
-                            style={{ marginLeft: "20%" }}
+                            style={{ marginTop: '10px'}}
                             type='button'
                             className='addCompany-button'
                             onClick={handleSubmit}

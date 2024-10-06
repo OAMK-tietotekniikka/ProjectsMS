@@ -6,7 +6,7 @@
     "createProj": "Create new project",
     "deleteProj": "Delete project",
     "deleteProjConfirm": "Are you sure you want to delete the project?",
-    "projInstruction": "Before you start, please make sure to review the project guidelines",
+    "projInstruction": "Before you start, please make sure to review the project guidelines. You can find the guidelines from the Company-Oriented projects Moodle pages.",
     "projName": "Project name",
     "projDesc": "Project description",
     "projDescPlaceholder": "Enter a brief description of the project",
@@ -118,5 +118,6 @@
     "resourcesToggle": "Teacher  -  Total tesources/Used resources",
     "newSupervisingTeacher": "New supervising teacher",
     "notSelected": "Not selected",
-    "addTeacher": "Add teacher"
+    "addTeacher": "Add teacher",
+    "dropdownSelectCompany": "Select company from the dropdown list. If company is not on the list, write company name in the input field below."
 }
