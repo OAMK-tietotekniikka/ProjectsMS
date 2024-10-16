@@ -11,6 +11,7 @@ import resourcesRouter from "./routes/resources.routes";
 import emailRouter from "./routes/email.routes";
 import createTables from "./createTables";
 import passport from './passportMiddleware';
+import{authenticate} from './controllers/auth.controller';
 
 
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
@@ -40,12 +41,12 @@ export class App {
     }
 
     private routes(): void {
-        this.app.use('/students', studentsRouter); // This is a students route.
-        this.app.use('/projects', projectsRouter); // This is a projects route.
-        this.app.use('/companies', companiesRouter);
-        this.app.use('/teachers', teachersRouter);
-        this.app.use('/resources', resourcesRouter);
-        this.app.use('/email', emailRouter);
+        this.app.use('/students', authenticate, studentsRouter); // This is a students route.
+        this.app.use('/projects',authenticate, projectsRouter); // This is a projects route.
+        this.app.use('/companies',authenticate, companiesRouter);
+        this.app.use('/teachers', authenticate,teachersRouter);
+        this.app.use('/resources', authenticate,resourcesRouter);
+        this.app.use('/email',authenticate, emailRouter);
         this.app.get('/', (req: Request, res: Response) => res.status(Code.OK).send(new HttpResponse(Code.OK, Status.OK, 'Hello World, I am using OpenShift!!!')));
         this.app.all('*', (req: Request, res: Response) => res.status(Code.NOT_FOUND).send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, this.ROUTE_NOT_FOUND)));
     }
