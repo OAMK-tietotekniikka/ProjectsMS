@@ -5,6 +5,7 @@ export const msalConfig: Configuration = {
         clientId: process.env.CLIENT_ID || "",
         authority: `https://login.microsoftonline.com/${process.env.TENANT_ID}`,
         clientSecret: process.env.CLIENT_SECRET,
+        redirectUri: "http://localhost:3000/redirect",
     },
     system: {
         loggerOptions: {
