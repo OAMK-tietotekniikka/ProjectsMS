@@ -41,7 +41,9 @@ const StudentProjectDetails = () => {
     const handleDeleteProject = () => {
         const isConfirmed = window.confirm("Are you sure you want to delete this project?");
         if (isConfirmed) {
-            deleteProject(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+            const authHeader = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
+            deleteProject(projectId, authHeader); // Functionality to delete project will be added here});
+            setProjects(projects.filter(project => project.project_id !== projectId));
             navigate('/teacher');
         }
     };
