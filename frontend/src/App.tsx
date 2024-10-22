@@ -12,11 +12,17 @@ import StudentProjectDetails from './views/StudentProjectDetails';
 import { useUserContext } from './contexts/userContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
+import { msalConfig } from './auth/msalConfig';
+import Dashboard from './views/Dashboard';
 
 function App() {
   const { user } = useUserContext();
+  const msalInstance = new PublicClientApplication(msalConfig);
 
   return (
+    <MsalProvider instance={msalInstance}>
     <div>
         <NavbarComponent />
         <div style={{ display: 'flex', flexDirection: "column" }}> {/* Use a flex container to layout sidebar and main content */}
@@ -24,7 +30,7 @@ function App() {
           <hr style={{margin: "0px"}}/>
           <div>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<Dashboard />} />
               {user === "teacher" && <Route path="/teacher" element={<TeacherDashboard />} />}
               {user === "teacher" && <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />}
               <Route path="/form" element={<AddNewProject />} />
@@ -35,6 +41,7 @@ function App() {
           </div>
         </div>
     </div>
+    </MsalProvider>
   );
 };
 export default App;
