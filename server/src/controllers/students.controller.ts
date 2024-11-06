@@ -32,11 +32,13 @@ export const getStudents = async (req: Request, res: Response): Promise<Response
 
 export const getStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    console.log(req.params.email);
     let connection: any;
     try {
         connection = await pool.getConnection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT, [req.params.student_id]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_STUDENT_BY_EMAIL, [req.params.email]);
         if ((result[0] as Array<ResultSet>).length > 0) {
+            console.log(result[0]);
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Student fetched successfully', result[0]));
         } else {
@@ -54,7 +56,7 @@ export const getStudent = async (req: Request, res: Response): Promise<Response<
 
 export const createStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
-    let student: Student = { ...req.body };
+    let student = { ...req.body };
     let connection: any;
     try {
         connection = await pool.getConnection();

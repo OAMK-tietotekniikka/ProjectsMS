@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource, createResource } from "./apiRequests/teachersApiRequests";
+import { getTeachers, createTeacher, getResources, updateResource, createResource, getTeacher } from "./apiRequests/teachersApiRequests";
 import { useUserContext } from "./userContext";
 const TeachersContext = React.createContext({});
 const TeachersContextProvider = (props) => {
@@ -19,7 +19,7 @@ const TeachersContextProvider = (props) => {
         const savedTeacher = localStorage.getItem('signedInTeacher');
         return savedTeacher ? JSON.parse(savedTeacher) : null;
     });
-    const { teacherId, token } = useUserContext();
+    const { teacherId, token, setToken } = useUserContext();
     let authHeader = {};
     if (token) {
         authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -75,10 +75,39 @@ const TeachersContextProvider = (props) => {
             localStorage.removeItem('signedInTeacher');
         }
     };
+    const getTeacherByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield getTeacher(email, authHeader);
+            if (response.statusCode === 200) {
+                setSignedInTeacher(response.data[0]);
+                localStorage.setItem('signedInTeacher', JSON.stringify(response.data[0]));
+                localStorage.setItem('teacherId', response.data[0].teacher_id);
+                return response.data[0];
+            }
+            else {
+                return null;
+            }
+        }
+        catch (error) {
+            console.error("Failed to fetch data:", error);
+        }
+    });
+    const addNewTeacher = (teacher) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield createTeacher(teacher, authHeader);
+            setTeachers(prevTeachers => [...prevTeachers, response.data]);
+            setSignedInTeacher(response.data);
+            localStorage.setItem('signedInTeacher', JSON.stringify(response.data));
+            localStorage.setItem('teacherId', response.data.teacher_id);
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to add teacher:", error);
+        }
+    });
     const updateTeacherResource = (id, resource) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateResource(id, resource, authHeader);
-            console.log(response.data);
             const updatedResource = Object.assign(Object.assign({}, response.data), { resource_id: id, created_at: new Date() });
             setResources(prevResources => prevResources.filter(r => r.resource_id !== id).concat(updatedResource));
             return response.data;
@@ -104,7 +133,9 @@ const TeachersContextProvider = (props) => {
         resources,
         setResources,
         updateTeacherResource,
-        addTeacherResource
+        addTeacherResource,
+        getTeacherByEmail,
+        addNewTeacher
     };
     return (_jsx(TeachersContext.Provider, { value: value, children: props.children }));
 };

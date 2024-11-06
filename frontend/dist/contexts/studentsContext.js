@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { getStudents, updateStudent } from "./apiRequests/studentsApiRequests";
+import { getStudents, updateStudent, getStudent, createStudent } from "./apiRequests/studentsApiRequests";
 import { useUserContext } from "./userContext";
 ;
 const StudentsContext = React.createContext({});
@@ -40,7 +40,7 @@ const StudentsContextProvider = (props) => {
         else {
             setStudents([]);
         }
-    }, [token]);
+    }, [token, setStudents, signedInStudent]);
     useEffect(() => {
         if ((students === null || students === void 0 ? void 0 : students.length) === 0 || studentId === 0)
             return;
@@ -58,6 +58,36 @@ const StudentsContextProvider = (props) => {
             localStorage.removeItem('signedInStudent');
         }
     };
+    const getStudentByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield getStudent(email, authHeader);
+            if (response.statusCode === 200) {
+                setSignedInStudent(response.data[0]);
+                localStorage.setItem('signedInStudent', JSON.stringify(response.data[0]));
+                localStorage.setItem('studentId', JSON.stringify(response.data[0].student_id));
+                return response.data[0];
+            }
+            else {
+                return null;
+            }
+        }
+        catch (error) {
+            console.error("Failed to get student by email:", error);
+        }
+    });
+    const addNewStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield createStudent(student, authHeader);
+            setStudents(prevStudents => [...prevStudents, response.data]);
+            setSignedInStudent(response.data);
+            localStorage.setItem('signedInStudent', JSON.stringify(response.data));
+            localStorage.setItem('studentId', JSON.stringify(response.data.student_id));
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to add new student:", error);
+        }
+    });
     const modifyStudent = (student, studentId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield updateStudent(student, studentId, authHeader);
@@ -73,7 +103,9 @@ const StudentsContextProvider = (props) => {
         students,
         signedInStudent,
         setSignedInStudent,
-        modifyStudent
+        modifyStudent,
+        getStudentByEmail,
+        addNewStudent
     };
     return (_jsx(StudentsContext.Provider, { value: value, children: props.children }));
 };

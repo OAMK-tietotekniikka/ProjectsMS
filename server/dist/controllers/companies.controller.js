@@ -65,7 +65,7 @@ const getFavoCompanies = (req, res) => __awaiter(void 0, void 0, void 0, functio
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const result = yield mysql_config_1.default.query(companies_query_1.QUERY.SELECT_FAVO_COMPANIES, [[req.params.teacher_id]]);
+        const result = yield mysql_config_1.default.query(companies_query_1.QUERY.SELECT_FAVO_COMPANIES, [req.params.teacher_id]);
         if (result[0].length > 0) {
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Favourite companies fetched successfully', result[0]));

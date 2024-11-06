@@ -22,11 +22,9 @@ const PastProjectsList = ({ teacherId }) => {
     });
     // Add projectNo and student name to items in projectsWithCompanyNames array using student_id and studentProjects array
     const projectsWithStudents = projectsWithCompanyNames.map((project) => {
-        var _a, _b;
         const studentProject = studentProjects === null || studentProjects === void 0 ? void 0 : studentProjects.find((studentProject) => studentProject.project_id === project.project_id);
         const student = students === null || students === void 0 ? void 0 : students.find((student) => student.student_id === (studentProject === null || studentProject === void 0 ? void 0 : studentProject.student_id));
-        const studentName = student ? `${(_a = student.first_name) !== null && _a !== void 0 ? _a : ''} ${(_b = student.last_name) !== null && _b !== void 0 ? _b : ''}`.trim() : 'Unknown';
-        return Object.assign(Object.assign({}, project), { project_number: (studentProject === null || studentProject === void 0 ? void 0 : studentProject.project_number) || 'Unknown Project Number', name: studentName, student_email: (student === null || student === void 0 ? void 0 : student.email) || 'Unknown Email', class_code: (student === null || student === void 0 ? void 0 : student.class_code) || 'Unknown Class Code' });
+        return Object.assign(Object.assign({}, project), { project_number: (studentProject === null || studentProject === void 0 ? void 0 : studentProject.project_number) || 'Unknown Project Number', name: student.student_name || 'Unknown Student Name', student_email: (student === null || student === void 0 ? void 0 : student.email) || 'Unknown Email', class_code: (student === null || student === void 0 ? void 0 : student.class_code) || 'Unknown Class Code' });
     });
     const projectsWithStudyYears = projectsWithStudents.map((project) => {
         const date = new Date(project.end_date);

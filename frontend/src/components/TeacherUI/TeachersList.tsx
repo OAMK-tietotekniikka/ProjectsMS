@@ -28,18 +28,18 @@ const TeachersList: React.FC = () => {
     const teachersWithResources = teachers?.map(teacher => {
         const teacherResources = resourcesByTeacherId?.[teacher.teacher_id] || [];
         const currentYearResource = teacherResources?.find(resource => resource.study_year === currStudyYear) || {};
-        const teacherName = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
+        //const teacherName = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
 
         if (currentYearResource.teacher_id) {
             return {
                 ...currentYearResource,
-                name: teacherName,
+                name: teacher.teacher_name,
                 email: teacher.email || 'Unknown Email'
             };
         } else {
             return {
                 teacher_id: teacher.teacher_id,
-                name: teacherName,
+                name: teacher.teacher_name,
                 email: teacher.email || 'Unknown Email',
                 total_resources: 0,
                 used_resources: 0,

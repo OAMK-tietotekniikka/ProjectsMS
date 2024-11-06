@@ -39,7 +39,7 @@ export const noResourcesEmailToTeachers = (teacherEmails, name, classCode, start
         class ${classCode.toUpperCase()} 
         has created a new project starting at ${startDate}, 
         
-        but there are no supervisor resources available for the projects.`;
+        but there are no supervising resources available for the projects.`;
     try {
         const emailResults = yield Promise.allSettled(teacherEmails.map((email) => sendEmailNotification(email, subject, body)));
         const successes = emailResults.filter(result => result.status === 'fulfilled');

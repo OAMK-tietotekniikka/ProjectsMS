@@ -45,7 +45,7 @@ const getTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHER, [req.params.teacher_id]);
+        const result = yield mysql_config_1.default.query(teachers_query_1.QUERY.SELECT_TEACHER_BY_EMAIL, [req.params.email]);
         if (result[0].length > 0) {
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Teacher fetched successfully', result[0]));
@@ -59,6 +59,10 @@ const getTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
             .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching teachers'));
+    }
+    finally {
+        if (connection)
+            connection.release();
     }
 });
 exports.getTeacher = getTeacher;

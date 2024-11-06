@@ -51,7 +51,7 @@ const DocumentsListing: React.FC<DocumentsListingProps> = ({ projectId }) => {
 
         // For now, add the new note with the hard-coded document path
         const getStudent = JSON.parse(localStorage.getItem('signedInStudent') || '{}');
-        const studentName = getStudent?.first_name + " " + getStudent?.last_name || "";
+        const studentName = getStudent?.student_name || "";
         const newNote = {
             note: note,
             document_path: "http://note1.hardCode.com",

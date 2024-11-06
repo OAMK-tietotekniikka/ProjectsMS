@@ -29,7 +29,7 @@ const AddNewProject = () => {
         formData.company_id = companyId;
         formData.teacher_id = teacherId;
         const formattedStartDate = new Date(formData.start_date).toISOString().split('T')[0];
-        const student = signedInStudent ? signedInStudent.first_name + ' ' + signedInStudent.last_name : 'Student';
+        const student = signedInStudent ? signedInStudent.student_name : 'Student';
         try {
             if (!signedInStudent) {
                 alert(t('studentNotLoggedIn'));

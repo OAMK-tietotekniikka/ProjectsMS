@@ -9,6 +9,7 @@ import StudentDashboard from './views/StudentDashboard';
 import Teachers from './views/Teachers';
 import ModifyTeacher from './views/ModifyTeacher';
 import StudentProjectDetails from './views/StudentProjectDetails';
+import SignInPageWithEntra from './views/SignInPageWithEntra';
 import { useUserContext } from './contexts/userContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -24,7 +25,7 @@ function App() {
           <hr style={{margin: "0px"}}/>
           <div>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<SignInPageWithEntra />} />
               {user === "teacher" && <Route path="/teacher" element={<TeacherDashboard />} />}
               {user === "teacher" && <Route path="/modifyTeacher/:id" element={<ModifyTeacher />} />}
               <Route path="/form" element={<AddNewProject />} />

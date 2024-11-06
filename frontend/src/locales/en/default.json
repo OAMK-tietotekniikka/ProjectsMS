@@ -20,7 +20,7 @@
   "noResources": "Cannot create new project. There are no teacher resources available for the study year",
   "emailSent": "An email was sent to the supervising teacher with the project details",
   "emailNotSent": "Error in automatic emailing, email was not sent to the supervising teacher.",
-  "welcome": "Welcome to the Company Oriented Development Projects management system.",
+  "welcome": "Welcome to the Company-Oriented Product Development Projects management application.",
   "welcomeText": "Please select below either teacher or student to login:",
   "studentLogin": "Student",
   "teacherLogin": "Teacher",
@@ -119,5 +119,7 @@
   "newSupervisingTeacher": "New supervising teacher",
   "notSelected": "Not selected",
   "addTeacher": "Add teacher",
-  "dropdownSelectCompany": "Select company from the dropdown list. If company is not on the list, write company name in the input field below."
+  "dropdownSelectCompany": "Select company from the dropdown list. If company is not on the list, write company name in the input field below.",
+  "enter": "Enter the app here",
+  "furtherNote": "You will be redirected to the dasboard view after successful login."
 }

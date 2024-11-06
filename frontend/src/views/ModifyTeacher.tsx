@@ -32,7 +32,7 @@ const ModifyTeacher: React.FC = () => {
                 <Col xs={12} md={12} lg={11}>
                     {teacherDetails ?
                         <div>
-                            <h4>{teacherDetails.first_name} {teacherDetails.last_name}</h4>
+                            <h4>{teacherDetails.teacher_name}</h4>
                             <div style={{ fontSize: "small" }}>{teacherDetails.email}</div>
                         </div>
                         : "No teacher data"}

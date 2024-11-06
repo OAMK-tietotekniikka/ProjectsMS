@@ -23,17 +23,16 @@ const TeachersList = () => {
     }, {});
     // Build the teachersWithResources array
     const teachersWithResources = teachers === null || teachers === void 0 ? void 0 : teachers.map(teacher => {
-        var _a, _b;
         const teacherResources = (resourcesByTeacherId === null || resourcesByTeacherId === void 0 ? void 0 : resourcesByTeacherId[teacher.teacher_id]) || [];
         const currentYearResource = (teacherResources === null || teacherResources === void 0 ? void 0 : teacherResources.find(resource => resource.study_year === currStudyYear)) || {};
-        const teacherName = `${(_a = teacher.first_name) !== null && _a !== void 0 ? _a : ''} ${(_b = teacher.last_name) !== null && _b !== void 0 ? _b : ''}`.trim();
+        //const teacherName = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
         if (currentYearResource.teacher_id) {
-            return Object.assign(Object.assign({}, currentYearResource), { name: teacherName, email: teacher.email || 'Unknown Email' });
+            return Object.assign(Object.assign({}, currentYearResource), { name: teacher.teacher_name, email: teacher.email || 'Unknown Email' });
         }
         else {
             return {
                 teacher_id: teacher.teacher_id,
-                name: teacherName,
+                name: teacher.teacher_name,
                 email: teacher.email || 'Unknown Email',
                 total_resources: 0,
                 used_resources: 0,

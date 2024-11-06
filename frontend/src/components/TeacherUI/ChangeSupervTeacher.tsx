@@ -64,7 +64,7 @@ const ChangeSupervTeacher: React.FC<ChangeSupervTeacherProps> = ({setSelectedTea
                                     href={"#/action-${index}"}
                                 >
                                     <div className='dropdown-item-row'>
-                                        <Col xs="6">{teacher.first_name} {teacher.last_name}</Col>
+                                        <Col xs="6">{teacher.teacher_name}</Col>
                                         <Col xs="6">{teacher.total_resources} / {teacher.used_resources}</Col>
                                     </div>
                                 </Dropdown.Item>
@@ -76,7 +76,7 @@ const ChangeSupervTeacher: React.FC<ChangeSupervTeacherProps> = ({setSelectedTea
                     <div>
                         <div>{t('newSupervisingTeacher')}:</div>
                         {selectedTeacher ? (
-                            <div style={{ fontSize: "small", fontWeight: "bold", paddingBottom: "10px"}}>{selectedTeacher.first_name} {selectedTeacher.last_name}</div>
+                            <div style={{ fontSize: "small", fontWeight: "bold", paddingBottom: "10px"}}>{selectedTeacher.teacher_name}</div>
                         ) : (
                             <div>{t('notSelected')}</div>
                         )}

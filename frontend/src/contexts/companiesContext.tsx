@@ -40,7 +40,8 @@ const CompaniesContextProvider = (props: any) => {
     useEffect(() => {
         const fetchFavoCompanies = async () => {
             try {
-                const companies = await getFavoCompanies(teacherId, authHeader);
+                const id = Number(localStorage.getItem('teacherId'));
+                const companies = await getFavoCompanies(id, authHeader);
                 setTeacherFavoCompanies(companies.data);
             } catch (error) {
                 console.error("Failed to fetch data:", error)
@@ -48,7 +49,7 @@ const CompaniesContextProvider = (props: any) => {
         };
         fetchFavoCompanies();
 
-    }, [token]);
+    }, [token, teacherId]);
     
     const addCompany = async (companyName: string): Promise<number> => {
         try {

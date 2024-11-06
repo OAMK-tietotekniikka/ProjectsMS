@@ -34,12 +34,11 @@ const PastProjectsList: React.FC<PastProjectsListProps> = ({ teacherId }) => {
     const projectsWithStudents = projectsWithCompanyNames.map((project) => {
         const studentProject = studentProjects?.find((studentProject) => studentProject.project_id === project.project_id);
         const student = students?.find((student) => student.student_id === studentProject?.student_id);
-        const studentName = student ? `${student.first_name ?? ''} ${student.last_name ?? ''}`.trim() : 'Unknown';
-
+        
         return {
             ...project,
             project_number: studentProject?.project_number || 'Unknown Project Number',
-            name: studentName,
+            name: student.student_name || 'Unknown Student Name',
             student_email: student?.email || 'Unknown Email',
             class_code: student?.class_code || 'Unknown Class Code',
         };

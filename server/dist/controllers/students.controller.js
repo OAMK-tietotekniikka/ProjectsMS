@@ -42,11 +42,13 @@ const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getStudents = getStudents;
 const getStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
+    console.log(req.params.email);
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const result = yield mysql_config_1.default.query(students_query_1.QUERY.SELECT_STUDENT, [req.params.student_id]);
+        const result = yield mysql_config_1.default.query(students_query_1.QUERY.SELECT_STUDENT_BY_EMAIL, [req.params.email]);
         if (result[0].length > 0) {
+            console.log(result[0]);
             return res.status(code_enum_1.Code.OK)
                 .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student fetched successfully', result[0]));
         }

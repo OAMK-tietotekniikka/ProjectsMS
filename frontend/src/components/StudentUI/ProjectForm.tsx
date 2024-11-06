@@ -32,11 +32,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const { proj } = location.state || {};
     const currStudyYear = getStudyYear(new Date());
 
-    const [companyName, setCompanyName] = useState<string>(proj?.company_name || '');
+    const [localProj, setLocalProj] = useState<any>(proj) || null;
+    const [companyName, setCompanyName] = useState<string>(localProj?.company_name || '');
     const [classCode, setClassCode] = useState<string>(proj?.class_code || '');
     const [selectedTeacher, setSelectedTeacher] = useState<any>({});
     const [validated, setValidated] = useState(false);
     const [showTeacherChange, setShowTeacherChange] = useState(false);
+    
     const [formData, setFormData] = useState<ProjectFormData>({
         project_name: proj?.project_name || '',
         project_desc: proj?.project_desc || '',
@@ -47,6 +49,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
         start_date: proj?.start_date ? new Date(proj.start_date) : null,
         end_date: proj?.end_date ? new Date(proj.end_date) : null,
     });
+    // proj is stored in localProj to avoid losing the data when the page is refreshed
+    useEffect(() => {
+        if (proj) {
+            setLocalProj(proj);
+            setCompanyName(proj.company_name || '');
+        }
+    }, [proj]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -78,8 +87,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (selectedTeacher !== null && selectedTeacher.teacher_id && proj) {
-            const student = students?.find((student) => student.email === proj.student_email) || null;
+        if (selectedTeacher !== null && selectedTeacher.teacher_id && localProj) {
+            const student = students?.find((student) => student.email === localProj.student_email) || null;
             const selectedTeacherResource = resources.find(res => res.teacher_id === selectedTeacher.teacher_id && res.study_year === currStudyYear);
             const resourceAdded = {
                 teacher_id: selectedTeacher.teacher_id,
@@ -89,9 +98,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
             };
             updateTeacherResource(selectedTeacherResource.resource_id, resourceAdded);
 
-            const currentTeacherResource = resources.find(res => res.teacher_id === proj.teacher_id && res.study_year === currStudyYear);
+            const currentTeacherResource = resources.find(res => res.teacher_id === localProj.teacher_id && res.study_year === currStudyYear);
             const resourceRemoved = {
-                teacher_id: proj.teacher_id,
+                teacher_id: localProj.teacher_id,
                 total_resources: currentTeacherResource.total_resources,
                 used_resources: currentTeacherResource.used_resources - 1,
                 study_year: currStudyYear,
@@ -99,12 +108,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
             updateTeacherResource(currentTeacherResource.resource_id, resourceRemoved);
 
             try {
-                const studentName = `${student.first_name} ${student.last_name}`
                 const emailResponse = await sendEmail(
                     selectedTeacher.email,
-                    studentName,
+                    student.student_name,
                     formData.project_name,
-                    proj.company_name,
+                    localProj.company_name,
                     formData.start_date.toISOString().split('T')[0],
                 );
                 if (emailResponse) {
@@ -117,13 +125,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
             }
         }
 
-        if (selectedTeacher === null && proj) {
-            console.log(proj)
-            console.log(selectedTeacher)
-            const currentTeacherResource = resources.find(res => res.teacher_id === proj.teacher_id && res.study_year === currStudyYear);
-            console.log(currentTeacherResource)
+        if (selectedTeacher === null && localProj) {
+            const currentTeacherResource = resources.find(res => res.teacher_id === localProj.teacher_id && res.study_year === currStudyYear);
             const resourceRemoved = {
-                teacher_id: proj.teacher_id,
+                teacher_id: localProj.teacher_id,
                 total_resources: currentTeacherResource.total_resources,
                 used_resources: currentTeacherResource.used_resources - 1,
                 study_year: currentTeacherResource.study_year,
@@ -133,15 +138,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
 
         }
 
-        if (proj && classCode !== proj.class_code && user === "teacher") {
-            const student = students?.find((student) => student.email === proj.student_email) || null;
+        if (localProj && classCode !== localProj.class_code && user === "teacher") {
+            const student = students?.find((student) => student.email === localProj.student_email) || null;
             try {
                 const modifiedStudent = {
-                    first_name: student.first_name,
-                    last_name: student.last_name,
+                    student_name: student.student_name,
                     email: student.email,
                     class_code: classCode,
-                    password: student.password,
                 };
                 modifyStudent(modifiedStudent, student.student_id);
             }
@@ -161,7 +164,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                 try {
                     const emailResponse = await noResourcesEmailToTeachers(
                         teacherEmails,
-                        `${signedInStudent?.first_name} ${signedInStudent?.last_name}`,
+                        signedInStudent?.student_name,
                         signedInStudent.class_code,
                         formData.start_date.toISOString().split('T')[0],
                     );
@@ -175,36 +178,35 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     console.error("Failed to send email:", error);
                 }
             }
-
-            if (user === "student" && proj) {
+            if (user === "student" && localProj) {
                 const modifiedFormData = {
                     project_name: formData.project_name,
                     project_desc: formData.project_desc,
-                    teacher_id: proj.teacher_id,
+                    teacher_id: localProj.teacher_id,
                     company_id: companyId,
-                    project_status: proj.project_status,
-                    project_url: proj.project_url,
+                    project_status: localProj.project_status,
+                    project_url: localProj.project_url,
                     start_date: formData.start_date,
                     end_date: formData.end_date,
                 };
-                modifyProject(modifiedFormData, proj.project_id);
-                navigate('/student')
+                await modifyProject(modifiedFormData, localProj.project_id);
+                navigate('/student', { replace: true })
 
-            } else if (user === "teacher" && proj) {
+            } else if (user === "teacher" && localProj) {
                 const teacherId = selectedTeacher === null ? null : (selectedTeacher.teacher_id ? selectedTeacher.teacher_id : formData.teacher_id);
                 console.log(`Teacher_id from project form after teacher modification: ${teacherId}`)
                 const modifiedFormData = {
                     project_name: formData.project_name,
                     project_desc: formData.project_desc,
                     teacher_id: teacherId,
-                    company_id: proj.company_id,
-                    project_status: proj.project_status,
-                    project_url: proj.project_url,
+                    company_id: localProj.company_id,
+                    project_status: localProj.project_status,
+                    project_url: localProj.project_url,
                     start_date: formData.start_date,
                     end_date: formData.end_date,
                 };
-                modifyProject(modifiedFormData, proj.project_id);
-                navigate('/teacher')
+                modifyProject(modifiedFormData, localProj.project_id);
+                navigate('/teacher', { replace: true })
             } else {
                 if (resource !== null) {
                     updateTeacherResource(resource.resource_id, { ...resource, used_resources: resource.used_resources + 1 });
@@ -218,26 +220,26 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
 
     return (
         <>
-            <h4 className='main-heading'>{proj ? t('modifyData') : t('createProj')}</h4>
+            <h4 className='main-heading'>{localProj ? t('modifyData') : t('createProj')}</h4>
             <div className='instruction '>
-                <p>{proj ? "" : t('projInstruction')}</p>
+                <p>{localProj ? "" : t('projInstruction')}</p>
             </div>
             <Container>
                 {user === "teacher" &&
                     <>
                         <h5 style={{ marginBottom: "20px" }}>{formData.project_name}</h5>
                         <div>
-                            <h6>{proj.name}</h6>
-                            <div style={{ fontSize: "small", marginBottom: "20px" }}>{proj.student_email}</div>
+                            <h6>{localProj.name}</h6>
+                            <div style={{ fontSize: "small", marginBottom: "20px" }}>{localProj.student_email}</div>
                         </div>
                         <div>
                             <h6>{t('projDesc')}:</h6>
-                            <div style={{ fontSize: "small", marginBottom: "20px" }}>{proj.project_desc}</div>
+                            <div style={{ fontSize: "small", marginBottom: "20px" }}>{localProj.project_desc}</div>
                         </div>
                         <div className='modify-project-row'>
                             <Row >
                                 <Col xs="5" style={{ fontWeight: "bold" }}><h6>{t('supervisor')}</h6></Col>
-                                <Col xs="5" style={{ padding: "0%" }}>{proj.teacher_name}</Col>
+                                <Col xs="5" style={{ padding: "0%" }}>{localProj.teacher_name}</Col>
                                 <Col xs="2" style={{ padding: "0%" }}>
                                     <Button className='modify-project-button'
                                         onClick={() => setShowTeacherChange(true)}
@@ -282,22 +284,22 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     }
                     <div>{t('dropdownSelectCompany')}</div>
                     <Dropdown>
-                            <Dropdown.Toggle id="dropdown-basic" className='dropdown-toggle'>
-                                {t('select')}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                {companies?.map((item: any, index) => (
-                                    <Dropdown.Item
-                                        key={index}
-                                        onClick={() => setCompanyName(item.company_name)}
-                                        className={`dropdown-item-${index}`}
-                                        href={"#/action-${index}"}
-                                    >
-                                        {item.company_name}
-                                    </Dropdown.Item>
-                                )) || <Dropdown.Item>{t('noComp')}</Dropdown.Item>}
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic" className='dropdown-toggle'>
+                            {t('select')}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {companies?.map((item: any, index) => (
+                                <Dropdown.Item
+                                    key={index}
+                                    onClick={() => setCompanyName(item.company_name)}
+                                    className={`dropdown-item-${index}`}
+                                    href={"#/action-${index}"}
+                                >
+                                    {item.company_name}
+                                </Dropdown.Item>
+                            )) || <Dropdown.Item>{t('noComp')}</Dropdown.Item>}
+                        </Dropdown.Menu>
+                    </Dropdown>
                     {user === "student" &&
                         <Form.Group controlId="companyName" className="form-item">
                             <Form.Label>{t('companyName')} *</Form.Label>
@@ -356,7 +358,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                     </div>
 
                     <Button variant="primary" type="submit" className="submit-button" disabled={!validated}>
-                        {proj ? t('saveModify') : t('createPrjButton')}
+                        {localProj ? t('saveModify') : t('createPrjButton')}
                     </Button>
                 </Form>
             </Container>

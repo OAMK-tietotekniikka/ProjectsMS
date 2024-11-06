@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Resource, NewResource } from '../../interface/resource';
+import { newTeacher } from '../../interface/teacher';
 
 
 const baseUrl = import.meta.env.VITE_API_URL
@@ -23,6 +24,38 @@ export const getTeachers = async (authHeader: any) => {
 export const getTeachersByCompany = async (company_name: string, authHeader: any) => {
     try {
         const response = await axios.get(`${baseUrl}/teachers/company/${company_name}`, authHeader);
+        if (response.data.statusCode === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
+export const createTeacher = async (teacher: newTeacher, authHeader: any) => {
+    try {
+        const response = await axios.post(`${baseUrl}/teachers`, teacher, authHeader);
+        if (response.data.statusCode === 201) {
+            return response.data;
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', error.response?.data);
+            return error.response?.data;
+        } else {
+            console.error('An unexpected error:', error);
+        }
+    }
+};
+
+export const getTeacher = async (email: string, authHeader: any) => {
+    try {
+        const response = await axios.get(`${baseUrl}/teachers/${email}`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

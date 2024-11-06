@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getStudents, updateStudent } from "./apiRequests/studentsApiRequests";
-import { Student, UpdatedStudent } from "../interface/student";
+import { getStudents, updateStudent, getStudent, createStudent } from "./apiRequests/studentsApiRequests";
+import { Student, UpdatedStudent, newStudent } from "../interface/student";
 import { useUserContext } from "./userContext";
 
 
@@ -9,6 +9,8 @@ interface StudentsContextType {
     signedInStudent: Student;
     setSignedInStudent: (student: Student | null) => void;
     modifyStudent: (student: UpdatedStudent, studentId: number) => void;
+    getStudentByEmail: (email: string) => Promise<Student>;
+    addNewStudent: (student: newStudent) => Promise<Student>;
 };
 
 const StudentsContext = React.createContext<StudentsContextType>({} as StudentsContextType);
@@ -40,7 +42,7 @@ const StudentsContextProvider = (props: any) => {
         } else {
             setStudents([]);
         }
-    }, [token]);
+    }, [token, setStudents, signedInStudent]);
 
 
     useEffect(() => {
@@ -48,7 +50,7 @@ const StudentsContextProvider = (props: any) => {
         const student = students?.find(s => s.student_id === studentId);
         if (student) {
             setSignedInStudent(student);
-        } 
+        }
     }, [students, studentId, token]);
 
     const setSignedInStudent = (student: Student | null) => {
@@ -57,6 +59,37 @@ const StudentsContextProvider = (props: any) => {
             localStorage.setItem('signedInStudent', JSON.stringify(student));
         } else {
             localStorage.removeItem('signedInStudent');
+        }
+    };
+
+    const getStudentByEmail = async (email: string) => {
+        try {
+            const response = await getStudent(email, authHeader);
+            if (response.statusCode === 200) {
+                setSignedInStudent(response.data[0]);
+                localStorage.setItem('signedInStudent', JSON.stringify(response.data[0]));
+                localStorage.setItem('studentId', JSON.stringify(response.data[0].student_id));
+                return response.data[0];
+            } else {
+                return null;
+            }
+        }
+        catch (error) {
+            console.error("Failed to get student by email:", error);
+        }
+    };
+
+    const addNewStudent = async (student: newStudent) => {
+        try {
+            const response = await createStudent(student, authHeader);
+            setStudents(prevStudents => [...prevStudents, response.data]);
+            setSignedInStudent(response.data);
+            localStorage.setItem('signedInStudent', JSON.stringify(response.data));
+            localStorage.setItem('studentId', JSON.stringify(response.data.student_id));
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to add new student:", error);
         }
     };
 
@@ -73,11 +106,13 @@ const StudentsContextProvider = (props: any) => {
         }
     };
 
-    let value = { 
+    let value = {
         students,
         signedInStudent,
         setSignedInStudent,
-        modifyStudent
+        modifyStudent,
+        getStudentByEmail,
+        addNewStudent
     };
 
     return (

@@ -33,15 +33,6 @@ const StudentProjectDetails = () => {
         // Functionality to add student to project will be added here
     };
 
-    // const handleDeleteProject = async () => {
-    //     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
-    //     if (isConfirmed) {
-    //         await deleteProjectById(projectId, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
-    //         setProjects(projects.filter(project => project.project_id !== projectId));
-    //         navigate('/student');
-    //     }
-    // };
-
     const handleDeleteProject = () => {
         const isConfirmed = window.confirm("Are you sure you want to delete this project?");
         if (isConfirmed) {
@@ -51,7 +42,6 @@ const StudentProjectDetails = () => {
             navigate('/teacher');
         }
     }
-
 
     return (
         <Container className="student-main-container">
@@ -81,7 +71,7 @@ const StudentProjectDetails = () => {
                     </Row>
                     <Row>
                         <Col className="grey-text">{t('url')}</Col>
-                        <Col>{proj.project_url ? proj.project_url : t('noUrl') }</Col>
+                        <Col>{proj.project_url ? proj.project_url : t('noUrl')}</Col>
                     </Row>
                     <Row>
                         <Col className="grey-text">{t('supervisor')}</Col>
@@ -141,7 +131,7 @@ const StudentProjectDetails = () => {
                             </Col>
                             <Col >
                                 <Form>
-                                <Form.Label style={{ fontWeight: "bold" }}>{t('addNewStudent')}</Form.Label>
+                                    <Form.Label style={{ fontWeight: "bold" }}>{t('addNewStudent')}</Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder={t('enterName')}
@@ -157,8 +147,6 @@ const StudentProjectDetails = () => {
                                 >
                                     {t('addStudent')}
                                 </Button>
-
-
                             </Col>
                         </Row>
                     </>
