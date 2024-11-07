@@ -4,10 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import ProjectForm from '../components/StudentUI/ProjectForm';
 import { useTranslation } from 'react-i18next';
 import { ProjectFormData } from '../interface/formData';
-import { sendEmailNotification } from '../contexts/apiRequests/userApiRequests';
 import { useTeachersContext } from '../contexts/teachersContext';
 import { useProjectsContext } from '../contexts/projectsContext';
-import StudentsContextProvider, { useStudentsContext } from '../contexts/studentsContext';
+import { useStudentsContext } from '../contexts/studentsContext';
 import { sendEmail } from '../components/SendEmail';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css'
@@ -25,7 +24,7 @@ const AddNewProject: React.FC = () => {
         formData.company_id = companyId;
         formData.teacher_id = teacherId;
         const formattedStartDate = new Date(formData.start_date).toISOString().split('T')[0];
-        const student = signedInStudent ? signedInStudent.first_name + ' ' + signedInStudent.last_name : 'Student';
+        const student = signedInStudent ? signedInStudent.student_name : 'Student';
 
         try {
             if (!signedInStudent) {

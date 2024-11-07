@@ -30,7 +30,9 @@ export const getTeachersByCompany = (company_name, authHeader) => __awaiter(void
     var _c, _d;
     try {
         const response = yield axios.get(`${baseUrl}/teachers/company/${company_name}`, authHeader);
-        return response.data;
+        if (response.data.statusCode === 200) {
+            return response.data;
+        }
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
@@ -42,12 +44,13 @@ export const getTeachersByCompany = (company_name, authHeader) => __awaiter(void
         }
     }
 });
-// Resources API requests
-export const getResources = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+export const createTeacher = (teacher, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     try {
-        const response = yield axios.get(`${baseUrl}/resources`, authHeader);
-        return response.data;
+        const response = yield axios.post(`${baseUrl}/teachers`, teacher, authHeader);
+        if (response.data.statusCode === 201) {
+            return response.data;
+        }
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
@@ -59,10 +62,10 @@ export const getResources = (authHeader) => __awaiter(void 0, void 0, void 0, fu
         }
     }
 });
-export const updateResource = (resource_id, resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+export const getTeacher = (email, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     try {
-        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource, authHeader);
+        const response = yield axios.get(`${baseUrl}/teachers/${email}`, authHeader);
         return response.data;
     }
     catch (error) {
@@ -75,8 +78,41 @@ export const updateResource = (resource_id, resource, authHeader) => __awaiter(v
         }
     }
 });
-export const createResource = (resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+// Resources API requests
+export const getResources = (authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
+    try {
+        const response = yield axios.get(`${baseUrl}/resources`, authHeader);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_j = error.response) === null || _j === void 0 ? void 0 : _j.data);
+            return (_k = error.response) === null || _k === void 0 ? void 0 : _k.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const updateResource = (resource_id, resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _l, _m;
+    try {
+        const response = yield axios.put(`${baseUrl}/resources/${resource_id}`, resource, authHeader);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_l = error.response) === null || _l === void 0 ? void 0 : _l.data);
+            return (_m = error.response) === null || _m === void 0 ? void 0 : _m.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const createResource = (resource, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _o, _p;
     try {
         const response = yield axios.post(`${baseUrl}/resources`, resource, authHeader);
         if (response.data.statusCode === 201) {
@@ -86,8 +122,8 @@ export const createResource = (resource, authHeader) => __awaiter(void 0, void 0
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Failed to write data:', (_j = error.response) === null || _j === void 0 ? void 0 : _j.data);
-            return (_k = error.response) === null || _k === void 0 ? void 0 : _k.data;
+            console.error('Failed to write data:', (_o = error.response) === null || _o === void 0 ? void 0 : _o.data);
+            return (_p = error.response) === null || _p === void 0 ? void 0 : _p.data;
         }
         else {
             console.error('An unexpected error:', error);

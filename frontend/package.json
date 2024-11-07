@@ -11,6 +11,8 @@
     "start": "serve -s dist -l 8080"
   },
   "dependencies": {
+    "@azure/msal-browser": "^3.26.1",
+    "@azure/msal-react": "^2.1.1",
     "@types/node": "^20.12.12",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",

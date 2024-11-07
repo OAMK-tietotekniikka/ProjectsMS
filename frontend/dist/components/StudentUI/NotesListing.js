@@ -39,7 +39,7 @@ const NotesListing = ({ projectId }) => {
         const getUser = user === "student" ?
             JSON.parse(localStorage.getItem('signedInStudent') || '{}')
             : JSON.parse(localStorage.getItem('signedInTeacher') || '{}');
-        const userName = `${getUser.first_name} ${getUser.last_name}`;
+        const userName = user === "student" ? getUser.student_name : getUser.teacher_name;
         const newNote = {
             note: note,
             document_path: "", // For now, add new note without the document path. When the actual document path is added, it will be added here.

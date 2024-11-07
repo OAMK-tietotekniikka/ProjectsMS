@@ -26,16 +26,50 @@ export const getStudents = (authHeader) => __awaiter(void 0, void 0, void 0, fun
         }
     }
 });
-export const updateStudent = (student, studentId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+export const getStudent = (email, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _c, _d;
     try {
-        const response = yield axios.put(`${baseUrl}/students/${studentId}`, student, authHeader);
+        const response = yield axios.get(`${baseUrl}/students/${email}`, authHeader);
         return response.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
             console.error('Failed to write data:', (_c = error.response) === null || _c === void 0 ? void 0 : _c.data);
             return (_d = error.response) === null || _d === void 0 ? void 0 : _d.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const createStudent = (student, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e, _f;
+    try {
+        const response = yield axios.post(`${baseUrl}/students`, student, authHeader);
+        if (response.data.statusCode === 201) {
+            return response.data;
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_e = error.response) === null || _e === void 0 ? void 0 : _e.data);
+            return (_f = error.response) === null || _f === void 0 ? void 0 : _f.data;
+        }
+        else {
+            console.error('An unexpected error:', error);
+        }
+    }
+});
+export const updateStudent = (student, studentId, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
+    var _g, _h;
+    try {
+        const response = yield axios.put(`${baseUrl}/students/${studentId}`, student, authHeader);
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Failed to write data:', (_g = error.response) === null || _g === void 0 ? void 0 : _g.data);
+            return (_h = error.response) === null || _h === void 0 ? void 0 : _h.data;
         }
         else {
             console.error('An unexpected error:', error);

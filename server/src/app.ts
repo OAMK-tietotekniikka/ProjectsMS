@@ -10,7 +10,7 @@ import teachersRouter from "./routes/teachers.routes";
 import resourcesRouter from "./routes/resources.routes";
 import emailRouter from "./routes/email.routes";
 import createTables from "./createTables";
-import passport from './passportMiddleware';
+
 
 
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
@@ -36,7 +36,6 @@ export class App {
     private middlewares(): void {
         this.app.use(cors({ origin: '*' }));
         this.app.use(express.json());
-        this.app.use(passport.initialize());
     }
 
     private routes(): void {

@@ -36,7 +36,8 @@ const CompaniesContextProvider = (props) => {
     useEffect(() => {
         const fetchFavoCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const companies = yield getFavoCompanies(teacherId, authHeader);
+                const id = Number(localStorage.getItem('teacherId'));
+                const companies = yield getFavoCompanies(id, authHeader);
                 setTeacherFavoCompanies(companies.data);
             }
             catch (error) {
@@ -44,7 +45,7 @@ const CompaniesContextProvider = (props) => {
             }
         });
         fetchFavoCompanies();
-    }, [token]);
+    }, [token, teacherId]);
     const addCompany = (companyName) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield addNewCompany(companyName, authHeader);

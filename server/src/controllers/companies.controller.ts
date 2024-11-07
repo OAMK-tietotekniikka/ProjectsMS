@@ -53,7 +53,7 @@ export const getFavoCompanies = async (req: Request, res: Response): Promise<Res
     let connection: any;
     try {
         connection = await pool.getConnection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_FAVO_COMPANIES, [[req.params.teacher_id]]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_FAVO_COMPANIES, [req.params.teacher_id]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Favourite companies fetched successfully', result[0]));

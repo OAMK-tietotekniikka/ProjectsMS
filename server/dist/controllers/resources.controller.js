@@ -23,7 +23,7 @@ const getResources = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const result = yield mysql_config_1.default.query(resources_query_1.QUERY.SELECT_RESOURCES);
+        const result = yield mysql_config_1.default.query(resources_query_1.R_QUERY.SELECT_RESOURCES);
         return res.status(code_enum_1.Code.OK)
             .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Resources fetched successfully', result[0]));
     }
@@ -44,7 +44,7 @@ const createResource = (req, res) => __awaiter(void 0, void 0, void 0, function*
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const result = yield mysql_config_1.default.query(resources_query_1.QUERY.CREATE_RESOURCE, Object.values(resource));
+        const result = yield mysql_config_1.default.query(resources_query_1.R_QUERY.CREATE_RESOURCE, Object.values(resource));
         resource = Object.assign({ resource_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
             .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Company created successfully', resource));
@@ -66,13 +66,13 @@ const updateResource = (req, res) => __awaiter(void 0, void 0, void 0, function*
     let connection;
     try {
         connection = yield mysql_config_1.default.getConnection();
-        const findResource = yield mysql_config_1.default.query(resources_query_1.QUERY.SELECT_RESOURCE, [req.params.resource_id]);
+        const findResource = yield mysql_config_1.default.query(resources_query_1.R_QUERY.SELECT_RESOURCE, [req.params.resource_id]);
         if (findResource[0].length === 0) {
             return res.status(code_enum_1.Code.NOT_FOUND)
                 .send(new response_1.HttpResponse(code_enum_1.Code.NOT_FOUND, status_enum_1.Status.NOT_FOUND, 'Resource not found for the provided id'));
         }
         else {
-            const result = yield mysql_config_1.default.query(resources_query_1.QUERY.UPDATE_RESOURCE, [
+            const result = yield mysql_config_1.default.query(resources_query_1.R_QUERY.UPDATE_RESOURCE, [
                 resource.teacher_id,
                 resource.total_resources,
                 resource.used_resources,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getTeachers, getResources, updateResource, createResource } from "./apiRequests/teachersApiRequests";
-import { Teacher } from "../interface/teacher";
+import { getTeachers, createTeacher, getResources, updateResource, createResource, getTeacher } from "./apiRequests/teachersApiRequests";
+import { Teacher, newTeacher } from "../interface/teacher";
 import { Resource, NewResource } from "../interface/resource";
 import { useUserContext } from "./userContext";
 
@@ -13,7 +13,8 @@ interface TeachersContextType {
     setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
     updateTeacherResource: (id: number, resource: NewResource) => Promise<Resource>;
     addTeacherResource: (resource: NewResource) => Promise<Resource>;
-
+    getTeacherByEmail: (email: string) => Promise<Teacher | null>;
+    addNewTeacher: (teacher: newTeacher) => Promise<Teacher>;
 }
 
 const TeachersContext = React.createContext<TeachersContextType>({} as TeachersContextType);
@@ -25,7 +26,7 @@ const TeachersContextProvider = (props: any) => {
         const savedTeacher = localStorage.getItem('signedInTeacher');
         return savedTeacher ? JSON.parse(savedTeacher) : null;
     });
-    const { teacherId, token } = useUserContext();
+    const { teacherId, token, setToken } = useUserContext();
 
     let authHeader: any = {};
     if (token) {
@@ -81,11 +82,40 @@ const TeachersContextProvider = (props: any) => {
         }
     };
 
+    const getTeacherByEmail = async (email: string) => {
+        try {
+            const response = await getTeacher(email, authHeader);
+            if (response.statusCode === 200) {
+                setSignedInTeacher(response.data[0]);
+                localStorage.setItem('signedInTeacher', JSON.stringify(response.data[0]));
+                localStorage.setItem('teacherId', response.data[0].teacher_id);
+                return response.data[0];
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Failed to fetch data:", error);
+        }
+    };
+
+    const addNewTeacher = async (teacher: newTeacher) => {
+        try {
+            const response = await createTeacher(teacher, authHeader);
+            setTeachers(prevTeachers => [...prevTeachers, response.data]);
+            setSignedInTeacher(response.data);
+            localStorage.setItem('signedInTeacher', JSON.stringify(response.data));
+            localStorage.setItem('teacherId', response.data.teacher_id);
+            return response.data;
+        }
+        catch (error) {
+            console.error("Failed to add teacher:", error);
+        }
+    };
+
     const updateTeacherResource = async (id: number, resource: NewResource) => {
         try {
             const response = await updateResource(id, resource, authHeader);
-            console.log(response.data);
-            const updatedResource = {...response.data, resource_id: id, created_at: new Date()};
+            const updatedResource = { ...response.data, resource_id: id, created_at: new Date() };
             setResources(prevResources => prevResources.filter(r => r.resource_id !== id).concat(updatedResource));
             return response.data;
         } catch (error) {
@@ -110,7 +140,9 @@ const TeachersContextProvider = (props: any) => {
         resources,
         setResources,
         updateTeacherResource,
-        addTeacherResource
+        addTeacherResource,
+        getTeacherByEmail,
+        addNewTeacher
     };
 
     return (

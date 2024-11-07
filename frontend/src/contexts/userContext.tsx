@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserLogin } from "../interface/userLogin";
 import { studentLogin, teacherLogin } from "./apiRequests/userApiRequests";
+import { useMsal } from "@azure/msal-react";
 
 interface UserContextType {
     user: string;
@@ -19,34 +20,36 @@ const UserContext = React.createContext<UserContextType>({} as UserContextType);
 const UserContextProvider = (props: any) => {
     const [user, setUser] = useState(localStorage.getItem("user") || "");
     const [token, setToken] = useState(localStorage.getItem("token") || "");
-    const [studentId, setStudentId] = useState(parseInt(localStorage.getItem("stidentId") || "0"));
+    const [studentId, setStudentId] = useState(parseInt(localStorage.getItem("studentId") || "0"));
     const [teacherId, setTeacherId] = useState(parseInt(localStorage.getItem("teacherId") || "0"));
     const navigate = useNavigate();
+    const { instance } = useMsal();
 
     useEffect(() => {
         if (user) {
             localStorage.setItem("user", user);
-        } 
+        }
     }, [user]);
 
     useEffect(() => {
         if (token) {
             localStorage.setItem("token", token);
-        } 
-    }, [token]);
+        }
+    }, [token, setToken]);
 
     useEffect(() => {
         if (studentId) {
             localStorage.setItem("studentId", studentId.toString());
-        } 
+        }
     }, [studentId]);
 
     useEffect(() => {
         if (teacherId) {
             localStorage.setItem("teacherId", teacherId.toString());
-        } 
+        }
     }, [teacherId]);
 
+    // Remove the following login code when the Entra ID login function is implemented
     const login = async (loginData: UserLogin): Promise<string | null> => {
         if (user === 'teacher') {
             try {
@@ -93,7 +96,11 @@ const UserContextProvider = (props: any) => {
         localStorage.removeItem("teacherId");
         localStorage.removeItem("signedInStudent");
         localStorage.removeItem("signedInTeacher");
-        navigate("/");
+        localStorage.removeItem("teacherCurrentResource");
+        localStorage.removeItem("teacherUsedResource");
+        instance.logoutRedirect({
+            postLogoutRedirectUri: "/",
+        });
     };
 
     let value = {

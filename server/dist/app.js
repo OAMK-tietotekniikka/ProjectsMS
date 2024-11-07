@@ -15,7 +15,6 @@ const companies_routes_1 = __importDefault(require("./routes/companies.routes"))
 const teachers_routes_1 = __importDefault(require("./routes/teachers.routes"));
 const resources_routes_1 = __importDefault(require("./routes/resources.routes"));
 const email_routes_1 = __importDefault(require("./routes/email.routes"));
-const passportMiddleware_1 = __importDefault(require("./passportMiddleware"));
 //This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
 //Comment out when working with development/feature branch
 //createTables();
@@ -36,7 +35,6 @@ class App {
     middlewares() {
         this.app.use((0, cors_1.default)({ origin: '*' }));
         this.app.use(express_1.default.json());
-        this.app.use(passportMiddleware_1.default.initialize());
     }
     routes() {
         this.app.use('/students', students_routes_1.default); // This is a students route.

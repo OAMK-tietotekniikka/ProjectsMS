@@ -36,7 +36,7 @@ export const getTeacher = async (req: Request, res: Response): Promise<Response<
     let connection: any;
     try {
         connection = await pool.getConnection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_TEACHER, [req.params.teacher_id]);
+        const result: ResultSet = await pool.query(QUERY.SELECT_TEACHER_BY_EMAIL, [req.params.email]);
         if ((result[0] as Array<ResultSet>).length > 0) {
             return res.status(Code.OK)
                 .send(new HttpResponse(Code.OK, Status.OK, 'Teacher fetched successfully', result[0]));
@@ -48,6 +48,8 @@ export const getTeacher = async (req: Request, res: Response): Promise<Response<
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching teachers'));
+    } finally {
+        if (connection) connection.release();
     }
 };
 

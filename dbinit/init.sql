@@ -16,13 +16,10 @@ DROP TABLE IF EXISTS companies;
 -- -----------------------------------------------------
 
 CREATE TABLE students
-(
-student_id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-first_name  VARCHAR(255) DEFAULT NULL,
-last_name   VARCHAR(255) DEFAULT NULL,
+(student_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+student_name  VARCHAR(255) DEFAULT NULL,
 email       VARCHAR(255) DEFAULT NULL,
 class_code  VARCHAR(255) DEFAULT NULL,
-password    VARCHAR(32) DEFAULT NULL,
 created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (student_id),
 CONSTRAINT UQ_Students_Email UNIQUE (email)
@@ -33,11 +30,9 @@ CONSTRAINT UQ_Students_Email UNIQUE (email)
 -- -----------------------------------------------------
 
 CREATE TABLE teachers
-(teacher_id  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-first_name   VARCHAR(255) DEFAULT NULL,
-last_name    VARCHAR(255) DEFAULT NULL,
+(teacher_id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+teacher_name VARCHAR(255) DEFAULT NULL,
 email        VARCHAR(255) DEFAULT NULL,
-password     VARCHAR (32) DEFAULT NULL,
 created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (teacher_id),
 CONSTRAINT UQ_Teachers_Email UNIQUE (email)
@@ -48,7 +43,7 @@ CONSTRAINT UQ_Teachers_Email UNIQUE (email)
 -- -----------------------------------------------------
 
 CREATE TABLE companies
-(company_id  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+(company_id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
 company_name VARCHAR(255) DEFAULT NULL,
 created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (company_id)
@@ -58,8 +53,8 @@ PRIMARY KEY (company_id)
 -- Table ´resources´
 -- -----------------------------------------------------
 CREATE TABLE resources
-(resource_id  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-teacher_id   BIGINT UNSIGNED DEFAULT NULL,
+(resource_id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+teacher_id   INT UNSIGNED DEFAULT NULL,
 total_resources INT DEFAULT 0,
 used_resources INT DEFAULT 0,
 study_year   VARCHAR(25) DEFAULT NULL,
@@ -74,9 +69,9 @@ CONSTRAINT teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) 
 -- Table `student_project`
 -- -----------------------------------------------------
 CREATE TABLE student_project (
-    student_id BIGINT UNSIGNED NOT NULL,
-    project_id BIGINT UNSIGNED NOT NULL,
-    project_number INT DEFAULT 0,
+    student_id INT UNSIGNED NOT NULL,
+    project_id INT UNSIGNED NOT NULL,
+    project_number TINYINT DEFAULT 0,
     PRIMARY KEY (student_id, project_id)
 );
 
@@ -84,8 +79,8 @@ CREATE TABLE student_project (
 -- -- Table `company_teacher`
 -- -- -----------------------------------------------------
 CREATE TABLE company_teacher (
-    company_id BIGINT UNSIGNED NOT NULL,
-    teacher_id BIGINT UNSIGNED NOT NULL,
+    company_id INT UNSIGNED NOT NULL,
+    teacher_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (company_id, teacher_id)
 );
 -------------------------------------------------------
@@ -94,11 +89,11 @@ CREATE TABLE company_teacher (
 
 CREATE TABLE  projects
 (
-project_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+project_id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
 project_name    VARCHAR(255) DEFAULT NULL,
 project_desc    TEXT DEFAULT NULL,
-teacher_id      BIGINT UNSIGNED DEFAULT NULL,
-company_id      BIGINT UNSIGNED DEFAULT NULL,
+teacher_id      INT UNSIGNED DEFAULT NULL,
+company_id      INT UNSIGNED DEFAULT NULL,
 project_status  VARCHAR(255) DEFAULT NULL,
 project_url     VARCHAR(255) DEFAULT NULL,
 start_date     DATE DEFAULT NULL,
@@ -113,8 +108,8 @@ CONSTRAINT name_company_id FOREIGN KEY (company_id) REFERENCES companies (compan
 -- Table `project_note`
 -- -----------------------------------------------------
 CREATE TABLE project_note (
-    note_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    project_id    BIGINT UNSIGNED DEFAULT NULL,
+    note_id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    project_id    INT UNSIGNED DEFAULT NULL,
     note          VARCHAR(300) DEFAULT NULL,
     document_path VARCHAR(255) DEFAULT NULL,
     created_by    VARCHAR(255) DEFAULT NULL,
@@ -124,11 +119,11 @@ CREATE TABLE project_note (
 ) AUTO_INCREMENT = 1;
 
 -- Insert student data
-INSERT INTO students (first_name, last_name, email, class_code, password)
-VALUES ('John', 'Doe', 'johndoe@email.com', 'din21sp', '1234');
+INSERT INTO students (student_name, email, class_code)
+VALUES ('John Doe', 'johndoe@email.com', 'din21sp');
 
-INSERT INTO students (first_name, last_name, email, class_code, password)
-VALUES ('Jane', 'Doe', 'janedoe@email.com', 'din20sp', '1235');
+INSERT INTO students (student_name, email, class_code)
+VALUES ('Jane Doe', 'janedoe@email.com', 'din20sp');
 
 
 
@@ -143,14 +138,14 @@ INSERT INTO companies (company_name)
 VALUES ('Google');
 
 -- Insert teacher data
-INSERT INTO teachers (first_name, last_name, email,password)
-VALUES ('Teacher', 'One', 'teacher1@mail.com', '1234');
+INSERT INTO teachers (teacher_name, email)
+VALUES ('Teacher One', 'teacher1@mail.com');
 
-INSERT INTO teachers (first_name, last_name, email,password)
-VALUES ('Teacher', 'Two', 'teacher2@mail.com','1236');
+INSERT INTO teachers (teacher_name, email)
+VALUES ('Teacher Two', 'teacher2@mail.com');
 
-INSERT INTO teachers (first_name, last_name, email,password)
-VALUES ('Teacher', 'Three', 'teacher3@mail.com','1235');
+INSERT INTO teachers (teacher_name, email)
+VALUES ('Teacher Three', 'teacher3@mail.com');
 
 -- Insert company_teacher data
 
@@ -194,7 +189,7 @@ INSERT INTO student_project (student_id, project_id, project_number)
 VALUES (1, 2, 2);
 
 INSERT INTO student_project (student_id, project_id, project_number)
-VALUES (2, 3, 3);
+VALUES (3, 6, 3);
 
 
 -- Insert project data

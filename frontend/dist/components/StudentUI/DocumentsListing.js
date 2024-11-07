@@ -49,7 +49,7 @@ const DocumentsListing = ({ projectId }) => {
         // Add here the logic to save the selected file in desired location and get the path of the document
         // For now, add the new note with the hard-coded document path
         const getStudent = JSON.parse(localStorage.getItem('signedInStudent') || '{}');
-        const studentName = (getStudent === null || getStudent === void 0 ? void 0 : getStudent.first_name) + " " + (getStudent === null || getStudent === void 0 ? void 0 : getStudent.last_name) || "";
+        const studentName = (getStudent === null || getStudent === void 0 ? void 0 : getStudent.student_name) || "";
         const newNote = {
             note: note,
             document_path: "http://note1.hardCode.com",

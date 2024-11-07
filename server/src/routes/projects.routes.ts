@@ -10,31 +10,30 @@ import {
   getProjectNotes,
   deleteProjectNote
 } from "../controllers/projects.controller";
-import { authenticated, authorizeRoles } from '../passportMiddleware';
 
 
 const projectsRouter = Router();
 
 projectsRouter.route('/')
-  .get(authenticated, authorizeRoles('teacher', 'student'), getProjects)
-  .post(authenticated, authorizeRoles('student'), createProject);
+  .get(getProjects)
+  .post(createProject);
 
 projectsRouter.route('/:project_id')
-  .put(authenticated, authorizeRoles('teacher', 'student'), updateProject)
-  .delete(authenticated, authorizeRoles('teacher', 'student'), deleteProject);
+  .put(updateProject)
+  .delete(deleteProject);
 
 projectsRouter.route('/:project_id/addNote')
-  .post(authenticated, authorizeRoles('teacher', 'student'), addProjectNote);
+  .post(addProjectNote);
 
 projectsRouter.route('/student')
-  .get(authenticated, authorizeRoles('teacher', 'student'), getStudentProjects)
-  .post(authenticated, authorizeRoles('teacher', 'student'), createStudentProject);
+  .get(getStudentProjects)
+  .post(createStudentProject);
 
 projectsRouter.route('/:project_id/notes')
-  .get(authenticated, authorizeRoles('teacher', 'student'), getProjectNotes)
+  .get(getProjectNotes)
   //.delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
 projectsRouter.route('/:project_id/notes/:note_id')
-  .delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
+  .delete(deleteProjectNote);
 
 export default projectsRouter;
 

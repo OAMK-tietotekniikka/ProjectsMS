@@ -20,7 +20,6 @@ const TeacherDashboard: React.FC = () => {
     const studyYear = getStudyYear(currentDate);
     const [showPastResources, setShowPastResources] = useState(false);
 
-    // teacher_id will be replaced with the actual values when the teacher login is implemented
     const teacherId = signedInTeacher?.teacher_id || null;
     const teacherCurrentResource = resources?.find((resource) => resource.study_year === studyYear && resource.teacher_id === teacherId) || null;
     const teacherDetails = teachers?.find((teacher) => teacher.teacher_id === teacherId) || null;
@@ -31,7 +30,7 @@ const TeacherDashboard: React.FC = () => {
                 <Col xs={12} md={12} lg={11}>
                     {teacherDetails ?
                         <div>
-                            <h4>{teacherDetails.first_name} {teacherDetails.last_name}</h4>
+                            <h4>{teacherDetails.teacher_name}</h4>
                             <div style={{ fontSize: "small" }}>{teacherDetails.email}</div>
                         </div>
                         : "No teacher data"}

@@ -21,10 +21,10 @@ const StudentDashboard: React.FC = () => {
     useEffect(() => {
         fetchProjects();
     }, [fetchProjects]);
-
-    const studentId = signedInStudent?.student_id || null;
+    
+    const studentId = signedInStudent?.student_id || 0;
+    
     const studentProjectsList = studentProjects?.filter(project => project.student_id === studentId) || [];
-
     const studentProjectsWithData = studentProjectsList?.map(project => {
         const projectData = projects?.find(proj => proj.project_id === project.project_id);
         const foundTeacher = teachers?.find(teacher => teacher.teacher_id === projectData?.teacher_id);
@@ -33,14 +33,14 @@ const StudentDashboard: React.FC = () => {
             project_name: projectData?.project_name || "No project name",
             project_desc: projectData?.project_desc || "No project description",
             project_status: projectData?.project_status || "No project status",
-            teacher_name: foundTeacher ? `${foundTeacher.first_name} ${foundTeacher.last_name}` : "no teacher",
+            teacher_name: foundTeacher ? `${foundTeacher.teacher_name}` : "no teacher",
             teacher_id: projectData?.teacher_id || "No teacher id",
             company_id: projectData?.company_id || "No company id",
             company_name: companies?.find(company => company.company_id === projectData?.company_id)?.company_name || "No company name",
             start_date: projectData?.start_date || "No start date",
             end_date: projectData?.end_date || "No end date",
             project_url: projectData?.project_url || "No project url",
-            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.first_name + ' ' + students.find(stud => stud.student_id === student.student_id)?.last_name) || "No students involved"
+            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.student_name) || "No students involved"
         }
     });
 
@@ -50,9 +50,9 @@ const StudentDashboard: React.FC = () => {
                 <Row >
                     {signedInStudent ?
                         <div>
-                            <h4>{signedInStudent.first_name} {signedInStudent.last_name}</h4>
+                            <h4>{signedInStudent.student_name}</h4>
                             <div style={{ fontSize: "small" }}>{signedInStudent.email}</div>
-                            <div style={{ fontSize: "small" }}>{signedInStudent.class_code.toUpperCase()}</div>
+                            <div style={{ fontSize: "small" }}>{signedInStudent.class_code ? signedInStudent.class_code.toUpperCase() : "no code"}</div>
                         </div>
                         : "No student data"}
 

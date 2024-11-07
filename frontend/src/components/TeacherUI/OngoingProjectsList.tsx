@@ -46,15 +46,14 @@ const OngoingProjectsList: React.FC<OngoingProjectsListProps> = ({ teacherId }) 
     const projectsWithStudents = projectsWithCompanyNames.map((project) => {
         const studentProject = studentProjects?.find((studentProject) => studentProject.project_id === project.project_id);
         const student = students?.find((student) => student.student_id === studentProject?.student_id);
-        const studentName = student ? `${student.first_name ?? ''} ${student.last_name ?? ''}`.trim() : 'Unknown';
         return {
             ...project,
             project_number: studentProject?.project_number || 'Unknown Project Number',
-            name: studentName,
+            name: student?.student_name || 'Unknown Name',
             student_email: student?.email || 'Unknown Email',
             class_code: student?.class_code || 'Unknown Class Code',
-            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.first_name + ' ' + students.find(stud => stud.student_id === student.student_id)?.last_name) || "No students involved",
-            teacher_name: teachers?.find(teacher => teacher.teacher_id === project.teacher_id)?.first_name + ' ' + teachers.find(teacher => teacher.teacher_id === project.teacher_id)?.last_name || "No teacher name",
+            studentsInvolved: studentProjects?.filter(proj => proj.project_id === project.project_id).map(student => students.find(stud => stud.student_id === student.student_id)?.student_name) || "No students involved",
+            teacher_name: teachers?.find(teacher => teacher.teacher_id === project.teacher_id)?.teacher_name || "No teacher name",
         };
     });
     const dataToDisplay = selectedData?.length > 0 ? selectedData : projectsWithStudents || [];

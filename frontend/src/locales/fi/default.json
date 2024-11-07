@@ -119,5 +119,7 @@
   "newSupervisingTeacher": "Uusi ohjaava opettaja",
   "notSelected": "ei valittu",
   "addTeacher": "Lisää opettaja",
-  "dropdownSelectCompany": "Valitse yritys pudotusvalikosta. Jos yritystä ei ole listalla, kirjoita yrityksen nimi alla olevaan kenttään."
+  "dropdownSelectCompany": "Valitse yritys pudotusvalikosta. Jos yritystä ei ole listalla, kirjoita yrityksen nimi alla olevaan kenttään.",
+  "enter": "Pääset sovellukseen tästä ",
+  "furtherNote": "Sinut ohjataan sovelluksen etusivulle onnistuneen kirjautumisen jälkeen."
 }
