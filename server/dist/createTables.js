@@ -39,12 +39,11 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         )`);
         yield connection.execute(`CREATE TABLE IF NOT EXISTS teachers (
             teacher_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            first_name VARCHAR(255) DEFAULT NULL,
-            last_name VARCHAR(255) DEFAULT NULL,
+            teacher_name VARCHAR(255) DEFAULT NULL,
             email VARCHAR(255) DEFAULT NULL,
-            password VARCHAR(45) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (teacher_id)
+            PRIMARY KEY (teacher_id),
+            UNIQUE (email)
         )`);
         yield connection.execute(`CREATE TABLE IF NOT EXISTS projects (
             project_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -63,11 +62,9 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         )`);
         yield connection.execute(`CREATE TABLE IF NOT EXISTS students (
             student_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            first_name VARCHAR(255) DEFAULT NULL,
-            last_name VARCHAR(255) DEFAULT NULL,
+            student_name VARCHAR(255) DEFAULT NULL,
             email VARCHAR(255) DEFAULT NULL,
-            class_code VARCHAR(45) DEFAULT NULL,
-            password VARCHAR(255) DEFAULT NULL,
+            class_code VARCHAR(25) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (student_id),
             UNIQUE (email)
@@ -77,7 +74,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
             teacher_id INT UNSIGNED DEFAULT NULL,
             total_resources INT DEFAULT NULL,
             used_resources INT DEFAULT NULL,
-            study_year VARCHAR(255) DEFAULT NULL,
+            study_year VARCHAR(25) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (resource_id),
             Foreign Key (teacher_id) REFERENCES teachers(teacher_id)
@@ -95,7 +92,7 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         yield connection.execute(`CREATE TABLE IF NOT EXISTS student_project (
             student_id INT UNSIGNED NOT NULL,
             project_id INT UNSIGNED NOT NULL,
-            project_number INT DEFAULT NULL,
+            project_number TINYINT DEFAULT NULL,
             PRIMARY KEY (student_id, project_id)
         )`);
         yield connection.execute(`CREATE TABLE IF NOT EXISTS company_teacher (
@@ -107,23 +104,22 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
         yield connection.execute(`INSERT INTO companies (company_name) VALUES ('Google')`);
         yield connection.execute(`INSERT INTO companies (company_name) VALUES ('Nokia')`);
         yield connection.execute(`INSERT INTO companies (company_name) VALUES ('Microsoft')`);
-        yield connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'One', 'teacher1@mail.com', 'pw1')`);
-        yield connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'Two', 'teacher2@mail.com', 'pw2')`);
-        yield connection.execute(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ('Teacher', 'Three', 'teacher3@mail.com', 'pw3')`);
-        yield connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Liisa', 'Törmäkangas', 'liisa@mail.com', 'din22sp', 'pw1')`);
-        yield connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('John', 'Doe', 'john@mail.com', 'din23sp', 'pw2')`);
-        yield connection.execute(`INSERT INTO students (first_name, last_name, email, class_code, password) VALUES ('Jane', 'Doe', 'jane@mail.com', 'din21sp', 'pw3')`);
+        yield connection.execute(`INSERT INTO teachers (teacher_name, email) VALUES ('Teacher One', 'teacher1@mail.com')`);
+        yield connection.execute(`INSERT INTO teachers (teacher_name, email) VALUES ('Teacher Two', 'teacher2@mail.com')`);
+        yield connection.execute(`INSERT INTO students (student_name, email, class_code) VALUES ('John Doe', 'john@mail.com', 'din23sp')`);
+        yield connection.execute(`INSERT INTO students (student_name, email, class_code) VALUES ('Jane Doe', 'jane@mail.com', 'din21sp')`);
         yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 10, 7, '2021-2022')`);
         yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 7, '2022-2023')`);
         yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 1, '2023-2024')`);
         yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 5, '2023-2024')`);
         yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 3, '2024-2025')`);
-        yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 8, 5, '2022-2023')`);
-        yield connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (3, 6, 4, '2023-2024')`);
         yield connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (1, 1)`);
         yield connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 2)`);
-        yield connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (3, 3)`);
         yield connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 1)`);
+        yield connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project One', 'Project One Description', 1, 1, 'ongoing', 'http://projectone.com', '2024-09-08', '2024-12-30')`);
+        yield connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project Two', 'Project Two Description', 2, 2, 'completed', 'http://projecttwo.com', '2024-08-08', '2024-10-30')`);
+        yield connection.execute(`INSERT INTO STUDENT_PROJECT (student_id, project_id, project_number) VALUES (1, 1, 1)`);
+        yield connection.execute(`INSERT INTO STUDENT_PROJECT (student_id, project_id, project_number) VALUES (2, 2, 1)`);
         console.log('Tables created successfully');
     }
     catch (error) {

@@ -16,7 +16,7 @@ import '../App.css'
 const SignInPageWithEntra: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { setUser, setToken } = useUserContext();
+    const { user, setUser, setToken } = useUserContext();
     const { getTeacherByEmail, addNewTeacher } = useTeachersContext();
     const { getStudentByEmail, addNewStudent } = useStudentsContext();
     const { instance, accounts } = useMsal();
@@ -54,13 +54,24 @@ const SignInPageWithEntra: React.FC = () => {
                 const payload = JSON.parse(atob(accessToken.split('.')[1]));
                 console.log("Decoded access token payload:", payload);
 
+                try {
+                    // Get user groups from token
+                    const userGroups = payload?.groups;
+                    console.log("User groups:", userGroups);
+                    if (userGroups.include("48301d15-0922-4172-9f80-e71e55fa6472") ) {
+                        setUser("teacher");
+                        localStorage.setItem('user', "teacher");
+                    } else if (userGroups.include("559e9aa0-84e4-49ac-b339-b41ae22740fa")) {
+                        setUser("student");
+                        localStorage.setItem('user', "student");
+                    }
+                } catch (error) {
+                    console.log("Failed to get user groups:", error);
+                }
+
                 // if teacher or student is already in the database, get their data
                 // if not, add new student/teacher to the database
-                const userRole = idToken?.roles[0];
-                setUser(userRole);
-                localStorage.setItem('user', userRole);
-
-                if (idToken && userRole === "teacher") {
+                if (idToken && user === "teacher") {
                     const teacher = await getTeacherByEmail((idToken.email.toString()));
                     if (teacher !== null) {
                         navigate("/teacher", { replace: true });
@@ -77,7 +88,7 @@ const SignInPageWithEntra: React.FC = () => {
                             alert("Failed to add new teacher, please try again.");
                         }
                     }
-                } else if (idToken && userRole === "student") {
+                } else if (idToken && user === "student") {
                     const student = await getStudentByEmail((idToken.email).toString());
 
                     if (student !== null) {

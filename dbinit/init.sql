@@ -71,7 +71,7 @@ CONSTRAINT teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (teacher_id) 
 CREATE TABLE student_project (
     student_id INT UNSIGNED NOT NULL,
     project_id INT UNSIGNED NOT NULL,
-    project_number INT DEFAULT 0,
+    project_number TINYINT DEFAULT 0,
     PRIMARY KEY (student_id, project_id)
 );
 
