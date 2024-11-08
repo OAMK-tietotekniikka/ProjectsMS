@@ -19,9 +19,6 @@ const NavbarComponent = () => {
                 <Navbar.Brand className='nav-brand'>{t('appName')}</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                    <div className='nav-home'>
-                        <Nav.Link onClick={() => localStorage.setItem('user', "")} href="/">{t('home')}</Nav.Link>
-                    </div>
                     <div className="nav-language">
                         <Nav.Link onClick={() => changeLanguage("fi")}>FI</Nav.Link>
                         <Nav.Item>|</Nav.Item>

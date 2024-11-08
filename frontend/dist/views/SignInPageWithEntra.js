@@ -50,15 +50,14 @@ const SignInPageWithEntra = () => {
                 console.log("Decoded access token header:", header);
                 const payload = JSON.parse(atob(accessToken.split('.')[1]));
                 console.log("Decoded access token payload:", payload);
+                // Get user role from token
                 try {
-                    // Get user groups from token
-                    const userGroups = payload === null || payload === void 0 ? void 0 : payload.groups;
-                    console.log("User groups:", userGroups);
-                    if (userGroups.include("48301d15-0922-4172-9f80-e71e55fa6472")) {
+                    const userRole = idToken === null || idToken === void 0 ? void 0 : idToken.groups[0];
+                    if (userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
                         setUser("teacher");
                         localStorage.setItem('user', "teacher");
                     }
-                    else if (userGroups.include("559e9aa0-84e4-49ac-b339-b41ae22740fa")) {
+                    else if (userRole === "559e9aa0-84e4-49ac-b339-b41ae22740fa") {
                         setUser("student");
                         localStorage.setItem('user', "student");
                     }
