@@ -1,9 +1,7 @@
-import React, { useState, useEffect} from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AddNewProject from './views/AddNewProject';
 import NavbarComponent from './components/Navbar';
-import SidebarComponent from './components/Sidebar'; // Step 1: Import SidebarComponent
-import LandingPage from './views/LandingPage';
+import SidebarComponent from './components/Sidebar';
 import TeacherDashboard from './views/TeacherDashboard';
 import StudentDashboard from './views/StudentDashboard';
 import Teachers from './views/Teachers';
@@ -20,8 +18,8 @@ function App() {
   return (
     <div>
         <NavbarComponent />
-        <div style={{ display: 'flex', flexDirection: "column" }}> {/* Use a flex container to layout sidebar and main content */}
-          {(user !== "") ? <SidebarComponent /> : null} {/* Step 2: Include SidebarComponent */}
+        <div style={{ display: 'flex', flexDirection: "column" }}>
+          {(user !== "") ? <SidebarComponent /> : null}
           <hr style={{margin: "0px"}}/>
           <div>
             <Routes>

@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserLogin } from "../interface/userLogin";
-import { studentLogin, teacherLogin } from "./apiRequests/userApiRequests";
+import React, { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 
 interface UserContextType {
@@ -9,7 +6,6 @@ interface UserContextType {
     setUser: React.Dispatch<React.SetStateAction<string>>;
     token: string;
     setToken: React.Dispatch<React.SetStateAction<string>>;
-    login: (loginData: UserLogin) => Promise<string | null>;
     logout: () => void;
     studentId: number;
     teacherId: number;
@@ -22,7 +18,6 @@ const UserContextProvider = (props: any) => {
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [studentId, setStudentId] = useState(parseInt(localStorage.getItem("studentId") || "0"));
     const [teacherId, setTeacherId] = useState(parseInt(localStorage.getItem("teacherId") || "0"));
-    const navigate = useNavigate();
     const { instance } = useMsal();
 
     useEffect(() => {
@@ -49,42 +44,6 @@ const UserContextProvider = (props: any) => {
         }
     }, [teacherId]);
 
-    // Remove the following login code when the Entra ID login function is implemented
-    const login = async (loginData: UserLogin): Promise<string | null> => {
-        if (user === 'teacher') {
-            try {
-                const response = await teacherLogin(loginData);
-                if (!response.data) {
-                    alert(`Login failed: ${response.message}`);
-                    console.error("Failed to login:", response);
-                    return null;
-                }
-                setToken(response.data.token);
-                setTeacherId(response.data.teacherId);
-                localStorage.setItem("token", response.data.token);
-                return "ok"
-            } catch (error) {
-                console.error("Failed to login:", error);
-            }
-        }
-        if (user === 'student') {
-            try {
-                const response = await studentLogin(loginData);
-                if (!response.data) {
-                    alert(`Login failed: ${response.message}`);
-                    console.error("Failed to login:", response);
-                    return null;
-                }
-                setToken(response.data.token);
-                setStudentId(response.data.studentId);
-                localStorage.setItem("token", response.data.token);
-                return "ok"
-            } catch (error) {
-                console.error("Failed to login:", error);
-            }
-        }
-    };
-
     const logout = () => {
         setUser("");
         setToken("");
@@ -96,8 +55,6 @@ const UserContextProvider = (props: any) => {
         localStorage.removeItem("teacherId");
         localStorage.removeItem("signedInStudent");
         localStorage.removeItem("signedInTeacher");
-        localStorage.removeItem("teacherCurrentResource");
-        localStorage.removeItem("teacherUsedResource");
         instance.logoutRedirect({
             postLogoutRedirectUri: "/",
         });
@@ -108,7 +65,6 @@ const UserContextProvider = (props: any) => {
         setUser,
         token,
         setToken,
-        login,
         logout,
         studentId,
         teacherId
