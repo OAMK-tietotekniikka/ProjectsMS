@@ -125,8 +125,8 @@ const createTables = async () => {
         await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project One', 'Project One Description', 1, 1, 'ongoing', 'http://projectone.com', '2024-09-08', '2024-12-30')`);
         await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project Two', 'Project Two Description', 2, 2, 'completed', 'http://projecttwo.com', '2024-08-08', '2024-10-30')`);
 
-        await connection.execute(`INSERT INTO STUDENT_PROJECT (student_id, project_id, project_number) VALUES (1, 1, 1)`);
-        await connection.execute(`INSERT INTO STUDENT_PROJECT (student_id, project_id, project_number) VALUES (2, 2, 1)`);
+        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (1, 1, 1)`);
+        await connection.execute(`INSERT INTO student_project (student_id, project_id, project_number) VALUES (2, 2, 1)`);
         
         console.log('Tables created successfully');
     } catch (error) {

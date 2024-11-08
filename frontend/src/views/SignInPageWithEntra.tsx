@@ -57,6 +57,7 @@ const SignInPageWithEntra: React.FC = () => {
                 // Get user role from token
                 try {
                     const userRole = idToken?.groups[0];
+                    console.log("User role:", userRole);
                     if (userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
                         setUser("teacher");
                         localStorage.setItem('user', "teacher");
@@ -89,6 +90,7 @@ const SignInPageWithEntra: React.FC = () => {
                     }
                 } else if (idToken && user === "student") {
                     const student = await getStudentByEmail((idToken.email).toString());
+                    console.log("Student:", student);
 
                     if (student !== null) {
                         navigate("/student", { replace: true });
