@@ -54,31 +54,24 @@ const SignInPageWithEntra: React.FC = () => {
                 const payload = JSON.parse(atob(accessToken.split('.')[1]));
                 console.log("Decoded access token payload:", payload);
 
-                // Get user role from token
-                try {
-                    const userRole = idToken?.groups[0];
-                    console.log("User role:", userRole);
-                    if (userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
-                        setUser("teacher");
-                        localStorage.setItem('user', "teacher");
-                    } else if (userRole === "559e9aa0-84e4-49ac-b339-b41ae22740fa") {
-                        setUser("student");
-                        localStorage.setItem('user', "student");
-                    }
-                } catch (error) {
-                    console.log("Failed to get user groups:", error);
-                }
+                // Get user role from token              
+                const userRole = idToken?.groups[0];
+                const userEmail = idToken?.email?.toString();
 
                 // if teacher or student is already in the database, get their data
                 // if not, add new student/teacher to the database
-                if (idToken && user === "teacher") {
-                    const teacher = await getTeacherByEmail((idToken.email.toString()));
+                if (idToken && userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
+                    setUser("teacher");
+                    localStorage.setItem('user', "teacher");
+
+                    const teacher = await getTeacherByEmail(userEmail);
+                    
                     if (teacher !== null) {
                         navigate("/teacher", { replace: true });
                     } else {
                         const Teacher: newTeacher = {
                             teacher_name: idToken.name,
-                            email: (idToken.email).toString(),
+                            email: userEmail,
                         }
                         const response = await addNewTeacher(Teacher);
                         if (response.teacher_id) {
@@ -88,8 +81,11 @@ const SignInPageWithEntra: React.FC = () => {
                             alert("Failed to add new teacher, please try again.");
                         }
                     }
-                } else if (idToken && user === "student") {
-                    const student = await getStudentByEmail((idToken.email).toString());
+                } else if (idToken && userRole === "559e9aa0-84e4-49ac-b339-b41ae22740fa") {
+                    setUser("student");
+                    localStorage.setItem('user', "student");
+
+                    const student = await getStudentByEmail(userEmail);
                     console.log("Student:", student);
 
                     if (student !== null) {
@@ -97,7 +93,7 @@ const SignInPageWithEntra: React.FC = () => {
                     } else {
                         const Student: newStudent = {
                             student_name: idToken.name,
-                            email: (idToken.email).toString(),
+                            email: userEmail,
                             class_code: null,
                         }
                         const response = await addNewStudent(Student);
@@ -108,6 +104,9 @@ const SignInPageWithEntra: React.FC = () => {
                             alert("Failed to add new student, please try again.");
                         }
                     }
+                } else {
+                    console.log("User role not recognized");
+                    alert("User role not recognized, please try again.");
                 }
             } catch (error) {
                 console.log("Failed to acquire access token:", error);

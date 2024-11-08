@@ -34,6 +34,7 @@ const SignInPageWithEntra = () => {
         });
     };
     const fetchAccessToken = () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         if (accounts.length > 0) {
             try {
                 const response = yield instance.acquireTokenSilent(Object.assign(Object.assign({}, loginRequest), { account: accounts[0] }));
@@ -50,33 +51,22 @@ const SignInPageWithEntra = () => {
                 console.log("Decoded access token header:", header);
                 const payload = JSON.parse(atob(accessToken.split('.')[1]));
                 console.log("Decoded access token payload:", payload);
-                // Get user role from token
-                try {
-                    const userRole = idToken === null || idToken === void 0 ? void 0 : idToken.groups[0];
-                    console.log("User role:", userRole);
-                    if (userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
-                        setUser("teacher");
-                        localStorage.setItem('user', "teacher");
-                    }
-                    else if (userRole === "559e9aa0-84e4-49ac-b339-b41ae22740fa") {
-                        setUser("student");
-                        localStorage.setItem('user', "student");
-                    }
-                }
-                catch (error) {
-                    console.log("Failed to get user groups:", error);
-                }
+                // Get user role from token              
+                const userRole = idToken === null || idToken === void 0 ? void 0 : idToken.groups[0];
+                const userEmail = (_a = idToken === null || idToken === void 0 ? void 0 : idToken.email) === null || _a === void 0 ? void 0 : _a.toString();
                 // if teacher or student is already in the database, get their data
                 // if not, add new student/teacher to the database
-                if (idToken && user === "teacher") {
-                    const teacher = yield getTeacherByEmail((idToken.email.toString()));
+                if (idToken && userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
+                    setUser("teacher");
+                    localStorage.setItem('user', "teacher");
+                    const teacher = yield getTeacherByEmail(userEmail);
                     if (teacher !== null) {
                         navigate("/teacher", { replace: true });
                     }
                     else {
                         const Teacher = {
                             teacher_name: idToken.name,
-                            email: (idToken.email).toString(),
+                            email: userEmail,
                         };
                         const response = yield addNewTeacher(Teacher);
                         if (response.teacher_id) {
@@ -88,8 +78,10 @@ const SignInPageWithEntra = () => {
                         }
                     }
                 }
-                else if (idToken && user === "student") {
-                    const student = yield getStudentByEmail((idToken.email).toString());
+                else if (idToken && userRole === "559e9aa0-84e4-49ac-b339-b41ae22740fa") {
+                    setUser("student");
+                    localStorage.setItem('user', "student");
+                    const student = yield getStudentByEmail(userEmail);
                     console.log("Student:", student);
                     if (student !== null) {
                         navigate("/student", { replace: true });
@@ -97,7 +89,7 @@ const SignInPageWithEntra = () => {
                     else {
                         const Student = {
                             student_name: idToken.name,
-                            email: (idToken.email).toString(),
+                            email: userEmail,
                             class_code: null,
                         };
                         const response = yield addNewStudent(Student);
@@ -109,6 +101,10 @@ const SignInPageWithEntra = () => {
                             alert("Failed to add new student, please try again.");
                         }
                     }
+                }
+                else {
+                    console.log("User role not recognized");
+                    alert("User role not recognized, please try again.");
                 }
             }
             catch (error) {
