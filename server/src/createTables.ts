@@ -116,11 +116,12 @@ const createTables = async () => {
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 7, '2022-2023')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 7, 1, '2023-2024')`);
         await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 5, '2023-2024')`);
-        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 3, '2024-2025')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (2, 5, 2, '2024-2025')`);
+        await connection.execute(`INSERT INTO resources (teacher_id, total_resources, used_resources, study_year) VALUES (1, 5, 2, '2024-2025')`);
         
         await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (1, 1)`);
         await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 2)`);
-        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (2, 1)`);
+        await connection.execute(`INSERT INTO company_teacher (company_id, teacher_id) VALUES (3, 1)`);
 
         await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project One', 'Project One Description', 1, 1, 'ongoing', 'http://projectone.com', '2024-09-08', '2024-12-30')`);
         await connection.execute(`INSERT INTO projects (project_name, project_desc, teacher_id, company_id, project_status, project_url, start_date, end_date) VALUES ('Project Two', 'Project Two Description', 2, 2, 'completed', 'http://projecttwo.com', '2024-08-08', '2024-10-30')`);
