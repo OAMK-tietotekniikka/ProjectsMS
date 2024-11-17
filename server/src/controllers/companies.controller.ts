@@ -95,7 +95,7 @@ export const deleteFavoCompany = async (req: Request, res: Response): Promise<Re
         connection = await pool.getConnection();
         const result: ResultSet = await pool.query(QUERY.DELETE_FAVO_COMPANY, [req.params.teacher_id]);
         return res.status(Code.OK)
-            .send(new HttpResponse(Code.OK, Status.OK, 'Favourite companies deleted successfully', req.params.company_id));
+            .send(new HttpResponse(Code.OK, Status.OK, 'Favourite companies deleted successfully'));
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)

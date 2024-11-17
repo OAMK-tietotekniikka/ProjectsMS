@@ -37,11 +37,11 @@ export const createResource = async (req: Request, res: Response): Promise<Respo
         const result: ResultSet = await pool.query(R_QUERY.CREATE_RESOURCE, Object.values(resource));
         resource = { resource_id: (result[0] as ResultSetHeader).insertId, ...req.body };
         return res.status(Code.CREATED)
-            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Company created successfully', resource));
+            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Resource created successfully', resource));
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating company'));
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating resource'));
     } finally {
         if (connection) connection.release();
     }

@@ -63,11 +63,11 @@ export const createStudent = async (req: Request, res: Response): Promise<Respon
         const result: ResultSet = await pool.query(QUERY.CREATE_STUDENT, Object.values(student));
         student = { student_id: (result[0] as ResultSetHeader).insertId, ...req.body };
         return res.status(Code.CREATED)
-            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Students created successfully', student));
+            .send(new HttpResponse(Code.CREATED, Status.CREATED, 'Student created successfully', student));
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating new student'));
 
     }
 };
@@ -90,11 +90,12 @@ export const updateStudent = async (req: Request, res: Response): Promise<Respon
     } catch (error: unknown) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while updating student'));
 
     }
 };
 
+//Function not in use yet
 export const deleteStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let connection: any;
@@ -117,43 +118,3 @@ export const deleteStudent = async (req: Request, res: Response): Promise<Respon
     }
 };
 
-
-export const authenticateStudent = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
-    dotenv.config();
-    const { email, password } = req.body;
-    let connection: any;
-    try {
-        connection = await pool.getConnection();
-        const [rows]: [RowDataPacket[], any] = await pool.query(QUERY.SELECT_STUDENT_BY_EMAIL, [email]);
-        if (rows.length > 0) {
-            const student = rows[0];
-            // Directly comparing the plaintext passwords
-            if (password === student.password) {
-                // Generate JWT token
-                const token = jwt.sign(
-                    {
-                        student_id: student.student_id,
-                        email: student.email,
-                        role: 'student'
-                    },
-                    process.env.JWT_SECRET ?? 'default-secret',
-                    { expiresIn: '1h' }
-                );
-                return res.status(Code.OK)
-                    .send(new HttpResponse(Code.OK, Status.OK, 'Student authenticated', { token, studentId: student.student_id }));
-            } else {
-                return res.status(Code.UNAUTHORIZED)
-                    .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid password'));
-            }
-        } else {
-            return res.status(Code.UNAUTHORIZED)
-                .send(new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, 'Invalid user email'));
-        }
-    } catch (error: unknown) {
-        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
-        return res.status(Code.INTERNAL_SERVER_ERROR)
-            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while authenticating student'));
-    } finally {
-        if (connection) connection.release();
-    }
-};

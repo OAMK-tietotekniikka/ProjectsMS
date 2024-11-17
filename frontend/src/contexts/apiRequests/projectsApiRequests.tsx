@@ -112,7 +112,7 @@ export const getNotes = async (projectId: number, authHeader: any) => {
 
 export const createNote = async (projectId: number, note: NewNote, authHeader: any) => {
     try {
-        const response = await axios.post(`${baseUrl}/projects/${projectId}/addNote`, note, authHeader);
+        const response = await axios.post(`${baseUrl}/projects/${projectId}/notes`, note, authHeader);
         if (response.data.statusCode === 201) {
             alert('New note created successfully.');
             return response.data;
