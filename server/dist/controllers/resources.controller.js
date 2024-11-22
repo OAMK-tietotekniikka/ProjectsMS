@@ -47,12 +47,12 @@ const createResource = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const result = yield mysql_config_1.default.query(resources_query_1.R_QUERY.CREATE_RESOURCE, Object.values(resource));
         resource = Object.assign({ resource_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
-            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Company created successfully', resource));
+            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Resource created successfully', resource));
     }
     catch (error) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
-            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating company'));
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating resource'));
     }
     finally {
         if (connection)

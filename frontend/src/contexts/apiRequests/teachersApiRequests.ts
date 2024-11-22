@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Resource, NewResource } from '../../interface/resource';
+import { NewResource } from '../../interface/resource';
 import { newTeacher } from '../../interface/teacher';
 
 
@@ -94,7 +94,6 @@ export const updateResource = async (resource_id: number, resource: NewResource,
             console.error('An unexpected error:', error);
         }
     }
-
 };
 
 export const createResource = async (resource: NewResource, authHeader: any) => {

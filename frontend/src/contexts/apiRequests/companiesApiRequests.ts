@@ -74,7 +74,7 @@ export const addNewFavoCompany = async (companyFavourity: FavoCompany, authHeade
 
 export const deleteFavoCompanies = async (teacher_id: number, authHeader: any) => {
     try {
-        const response = await axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`, authHeader);
+        const response = await axios.delete(`${baseUrl}/companies/favo/${teacher_id}`, authHeader);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

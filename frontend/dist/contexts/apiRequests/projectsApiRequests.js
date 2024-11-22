@@ -127,7 +127,7 @@ export const getNotes = (projectId, authHeader) => __awaiter(void 0, void 0, voi
 export const createNote = (projectId, note, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _q, _r;
     try {
-        const response = yield axios.post(`${baseUrl}/projects/${projectId}/addNote`, note, authHeader);
+        const response = yield axios.post(`${baseUrl}/projects/${projectId}/notes`, note, authHeader);
         if (response.data.statusCode === 201) {
             alert('New note created successfully.');
             return response.data;

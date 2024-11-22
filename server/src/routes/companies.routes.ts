@@ -12,9 +12,7 @@ companiesRouter.route('/favo')
   .post(addFavoCompany)
 
 companiesRouter.route('/favo/:teacher_id')
-  .get(getFavoCompanies);
-
-companiesRouter.route('/deleteFavo/:teacher_id')
+  .get(getFavoCompanies)
   .delete(deleteFavoCompany)
 
 export default companiesRouter;

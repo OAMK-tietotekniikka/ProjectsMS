@@ -22,16 +22,14 @@ projectsRouter.route('/:project_id')
   .put(updateProject)
   .delete(deleteProject);
 
-projectsRouter.route('/:project_id/addNote')
-  .post(addProjectNote);
-
 projectsRouter.route('/student')
   .get(getStudentProjects)
   .post(createStudentProject);
 
 projectsRouter.route('/:project_id/notes')
   .get(getProjectNotes)
-  //.delete(authenticated, authorizeRoles('teacher', 'student'), deleteProjectNote);
+  .post(addProjectNote);
+
 projectsRouter.route('/:project_id/notes/:note_id')
   .delete(deleteProjectNote);
 

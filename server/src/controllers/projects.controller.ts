@@ -206,20 +206,3 @@ export const deleteProjectNote = async (req: Request, res: Response): Promise<Re
         if (connection) connection.release();
     }
 }
-
-// export const deleteProjectNote = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
-//     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[1]}`);
-//     let connection: any;
-//     try {
-//         connection = await pool.getConnection();
-//         const result: ResultSet = await pool.query(QUERY.DELETE_PROJECT_NOTE, [req.params.note_id]);
-//         return res.status(Code.OK)
-//             .send(new HttpResponse(Code.OK, Status.OK, 'Note deleted successfully'));
-//     } catch (error: unknown) {
-//         console.error(`[${new Date().toLocaleString()}] ${error}`);
-//         return res.status(Code.INTERNAL_SERVER_ERROR)
-//             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred while deleting note'));
-//     } finally {
-//         if (connection) connection.release();
-//     }
-// }

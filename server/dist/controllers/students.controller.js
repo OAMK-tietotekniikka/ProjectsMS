@@ -12,14 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticateStudent = exports.deleteStudent = exports.updateStudent = exports.createStudent = exports.getStudent = exports.getStudents = void 0;
+exports.deleteStudent = exports.updateStudent = exports.createStudent = exports.getStudent = exports.getStudents = void 0;
 const mysql_config_1 = __importDefault(require("../config/mysql.config"));
 const code_enum_1 = require("../enum/code.enum");
 const status_enum_1 = require("../enum/status.enum");
 const response_1 = require("../domain/response");
 const students_query_1 = require("../query/students.query");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let connection;
@@ -73,12 +71,12 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const result = yield mysql_config_1.default.query(students_query_1.QUERY.CREATE_STUDENT, Object.values(student));
         student = Object.assign({ student_id: result[0].insertId }, req.body);
         return res.status(code_enum_1.Code.CREATED)
-            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Students created successfully', student));
+            .send(new response_1.HttpResponse(code_enum_1.Code.CREATED, status_enum_1.Status.CREATED, 'Student created successfully', student));
     }
     catch (error) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
-            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while creating new student'));
     }
 });
 exports.createStudent = createStudent;
@@ -102,10 +100,11 @@ const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (error) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
         return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
-            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while fetching students'));
+            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while updating student'));
     }
 });
 exports.updateStudent = updateStudent;
+//Function not in use yet
 const deleteStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.info(`[${new Date().toLocaleDateString()}] Incoming ${req.method}${req.originalUrl} request from ${req.rawHeaders[0]} ${req.rawHeaders[1]}`);
     let connection;
@@ -129,45 +128,3 @@ const deleteStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteStudent = deleteStudent;
-const authenticateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    dotenv_1.default.config();
-    const { email, password } = req.body;
-    let connection;
-    try {
-        connection = yield mysql_config_1.default.getConnection();
-        const [rows] = yield mysql_config_1.default.query(students_query_1.QUERY.SELECT_STUDENT_BY_EMAIL, [email]);
-        if (rows.length > 0) {
-            const student = rows[0];
-            // Directly comparing the plaintext passwords
-            if (password === student.password) {
-                // Generate JWT token
-                const token = jsonwebtoken_1.default.sign({
-                    student_id: student.student_id,
-                    email: student.email,
-                    role: 'student'
-                }, (_a = process.env.JWT_SECRET) !== null && _a !== void 0 ? _a : 'default-secret', { expiresIn: '1h' });
-                return res.status(code_enum_1.Code.OK)
-                    .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Student authenticated', { token, studentId: student.student_id }));
-            }
-            else {
-                return res.status(code_enum_1.Code.UNAUTHORIZED)
-                    .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid password'));
-            }
-        }
-        else {
-            return res.status(code_enum_1.Code.UNAUTHORIZED)
-                .send(new response_1.HttpResponse(code_enum_1.Code.UNAUTHORIZED, status_enum_1.Status.UNAUTHORIZED, 'Invalid user email'));
-        }
-    }
-    catch (error) {
-        console.error(`[${new Date().toLocaleDateString()}] ${error}`);
-        return res.status(code_enum_1.Code.INTERNAL_SERVER_ERROR)
-            .send(new response_1.HttpResponse(code_enum_1.Code.INTERNAL_SERVER_ERROR, status_enum_1.Status.INTERNAL_SERVER_ERROR, 'An error occurred while authenticating student'));
-    }
-    finally {
-        if (connection)
-            connection.release();
-    }
-});
-exports.authenticateStudent = authenticateStudent;

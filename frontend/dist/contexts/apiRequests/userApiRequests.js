@@ -26,34 +26,3 @@ export const sendEmailNotification = (to, subject, text) => __awaiter(void 0, vo
         }
     }
 });
-// Login API requests
-export const studentLogin = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const response = yield axios.post(`${baseUrl}/students/login`, loginData);
-        if (response.data.message === "Student authenticated") {
-            return response.data;
-        }
-        else {
-            console.error('Unexpected response:', response.data);
-            return null;
-        }
-    }
-    catch (error) {
-        return error.response.data;
-    }
-});
-export const teacherLogin = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const response = yield axios.post(`${baseUrl}/teachers/login`, loginData);
-        if (response.data.message === "Teacher authenticated") {
-            return response.data;
-        }
-        else {
-            console.error('Unexpected response:', response.data);
-            return null;
-        }
-    }
-    catch (error) {
-        return error.response.data;
-    }
-});

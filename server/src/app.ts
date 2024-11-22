@@ -12,9 +12,8 @@ import emailRouter from "./routes/email.routes";
 import createTables from "./createTables";
 
 
-
-//This is for the creation of tables in the CSC OpenShift Rahti2 MySql database
-//Comment out when working with development/feature branch
+//This is for the creation of tables in the OpenShift MySql database
+//Comment out when working with development/feature branch and local Docker container
 createTables();
 
 export class App {
@@ -39,8 +38,8 @@ export class App {
     }
 
     private routes(): void {
-        this.app.use('/students', studentsRouter); // This is a students route.
-        this.app.use('/projects', projectsRouter); // This is a projects route.
+        this.app.use('/students', studentsRouter);
+        this.app.use('/projects', projectsRouter);
         this.app.use('/companies', companiesRouter);
         this.app.use('/teachers', teachersRouter);
         this.app.use('/resources', resourcesRouter);
