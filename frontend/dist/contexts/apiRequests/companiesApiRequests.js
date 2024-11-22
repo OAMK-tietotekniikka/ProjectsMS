@@ -90,7 +90,7 @@ export const addNewFavoCompany = (companyFavourity, authHeader) => __awaiter(voi
 export const deleteFavoCompanies = (teacher_id, authHeader) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     try {
-        const response = yield axios.delete(`${baseUrl}/companies/deleteFavo/${teacher_id}`, authHeader);
+        const response = yield axios.delete(`${baseUrl}/companies/favo/${teacher_id}`, authHeader);
         return response.data;
     }
     catch (error) {

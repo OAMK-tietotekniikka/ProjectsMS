@@ -9,7 +9,6 @@ companiesRouter.route('/')
 companiesRouter.route('/favo')
     .post(companies_controller_1.addFavoCompany);
 companiesRouter.route('/favo/:teacher_id')
-    .get(companies_controller_1.getFavoCompanies);
-companiesRouter.route('/deleteFavo/:teacher_id')
+    .get(companies_controller_1.getFavoCompanies)
     .delete(companies_controller_1.deleteFavoCompany);
 exports.default = companiesRouter;

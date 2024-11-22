@@ -114,7 +114,7 @@ const deleteFavoCompany = (req, res) => __awaiter(void 0, void 0, void 0, functi
         connection = yield mysql_config_1.default.getConnection();
         const result = yield mysql_config_1.default.query(companies_query_1.QUERY.DELETE_FAVO_COMPANY, [req.params.teacher_id]);
         return res.status(code_enum_1.Code.OK)
-            .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Favourite companies deleted successfully', req.params.company_id));
+            .send(new response_1.HttpResponse(code_enum_1.Code.OK, status_enum_1.Status.OK, 'Favourite companies deleted successfully'));
     }
     catch (error) {
         console.error(`[${new Date().toLocaleDateString()}] ${error}`);
