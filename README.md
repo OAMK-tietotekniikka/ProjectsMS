@@ -6,6 +6,19 @@ This application is a project management tool that allows Information Technology
 - Liisa Törmäkangas
 - Bao Tran
 
+## Table of Contents
+- [Technologies Used](#technologies-used)
+  - [Frontend Client](#frontend-client)
+  - [Backend Server API](#backend-server-api)
+  - [Database](#database)
+  - [Development Environment](#development-environment)
+- [How to Run the Application](#how-to-run-the-application)
+  - [Prerequisites](#prerequisites)
+  - [Clone the Repository](#clone-the-repository)
+  - [Frontend Setup](#frontend-setup)
+  - [Backend Setup](#backend-setup)
+- [License](#license)
+
 ## Technologies used
 ### Frontend client
 - React as a frontend JavaScript library
