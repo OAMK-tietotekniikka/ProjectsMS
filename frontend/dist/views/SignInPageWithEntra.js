@@ -56,7 +56,7 @@ const SignInPageWithEntra = () => {
                 const userEmail = (_a = idToken === null || idToken === void 0 ? void 0 : idToken.email) === null || _a === void 0 ? void 0 : _a.toString();
                 // if teacher or student is already in the database, get their data
                 // if not, add new student/teacher to the database
-                if (idToken && userRole === "48301d15-0922-4172-9f80-e71e55fa6472") {
+                if (idToken && userRole === "10073ee5-6b85-4701-ada7-e6bad5c4718d") {
                     setUser("teacher");
                     localStorage.setItem('user', "teacher");
                     const teacher = yield getTeacherByEmail(userEmail);
