@@ -14,7 +14,7 @@ import createTables from "./createTables";
 
 //This is for the creation of tables in the OpenShift MySql database
 //Comment out when working with development/feature branch and local Docker container
-createTables();
+//createTables();
 
 export class App {
     private readonly app: Application;
