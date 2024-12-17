@@ -10,6 +10,10 @@ lerna-debug.log*
 node_modules
 dist/assets
 dist/vite.svg
+dist/components
+dist/context
+dist/interface
+dist/src
 dist-ssr
 *.local
 

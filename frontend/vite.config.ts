@@ -9,6 +9,10 @@ export default defineConfig({
   plugins: [react()],
 
   // define which port the preview server should run on
+  build: {
+    minify: false, // Disable minification
+    sourcemap: true, // Optional: Include source maps for better debugging
+  },
 
   preview: {
     host: true,
