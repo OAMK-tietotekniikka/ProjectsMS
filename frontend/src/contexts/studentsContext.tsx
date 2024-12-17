@@ -42,7 +42,7 @@ const StudentsContextProvider = (props: any) => {
         } else {
             setStudents([]);
         }
-    }, [token, setStudents, signedInStudent]);
+    }, [token, signedInStudent]);
 
 
     useEffect(() => {
