@@ -48,10 +48,10 @@ const StudentsContextProvider = (props: any) => {
     useEffect(() => {
         if (students?.length === 0 || studentId === 0) return;
         const student = students.find(s => s.student_id === studentId);
-        if (student && signedInStudent !== student) {
+        if (student) {
             setSignedInStudent(student);
         }
-    }, [students, studentId]);
+    }, [students, studentId, token]);
 
     const setSignedInStudent = (student: Student | null) => {
         setSignedInStudentState(student);
@@ -67,6 +67,7 @@ const StudentsContextProvider = (props: any) => {
             const response = await getStudent(email, authHeader);
             if (response.statusCode === 200) {
                 setSignedInStudent(response.data[0]);
+                console.log("From context: ", response.data[0]);
                 localStorage.setItem('signedInStudent', JSON.stringify(response.data[0]));
                 localStorage.setItem('studentId', JSON.stringify(response.data[0].student_id));
                 return response.data[0];

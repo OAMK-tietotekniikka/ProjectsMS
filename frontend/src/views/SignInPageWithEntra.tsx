@@ -56,7 +56,9 @@ const SignInPageWithEntra: React.FC = () => {
 
                 // Get user role from token              
                 const userRole = idToken?.groups[0];
+                console.log("User role:", userRole);
                 const userEmail = idToken?.email?.toString();
+                console.log("User email:", userEmail);
 
                 // if teacher or student is already in the database, get their data
                 // if not, add new student/teacher to the database
