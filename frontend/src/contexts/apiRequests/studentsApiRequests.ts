@@ -21,6 +21,7 @@ export const getStudents = async (authHeader: any) => {
 };
 
 export const getStudent = async (email: string, authHeader: any) => {
+    console.log("From requests: ", email);
     try {
         const response = await axios.get(`${baseUrl}/students/${email}`, authHeader);
         return response.data;
