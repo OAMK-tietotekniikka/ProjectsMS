@@ -37,6 +37,8 @@ This application is a project management tool that allows Information Technology
 - MSAL as a Microsoft Authentication Library
 - Nodemailer as an email sending library
 - jsonwebtoken as a JSON web token library
+- mysql2 as a relational database management system
+- dotenv as a zero-dependency module that loads environment variables from a .env file into process.env
 
 ### Database
 - MySQL as a relational database management system
@@ -86,6 +88,18 @@ Clone the repository to your local computer, and navigate to the relevant folder
 ```bash
   createTables();
 ```
+### Database setup
+- Create a .env file to *server* add the following content:
+```bash
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASSWORD=pwd@123
+  DB_NAME=studentsdb
+  DB_Port=3307
+  DB_CONNECTION_LIMIT=20
+  SERVER_PORT=8080
+```
+
 ### Start the application
 - To run the application locally, navigate to the ProjectMS root folder, and execute the following command:
 ```bash

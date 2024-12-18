@@ -42,16 +42,16 @@ const StudentsContextProvider = (props: any) => {
         } else {
             setStudents([]);
         }
-    }, [token, signedInStudent]);
+    }, [token]);
 
 
     useEffect(() => {
         if (students?.length === 0 || studentId === 0) return;
-        const student = students?.find(s => s.student_id === studentId);
-        if (student) {
+        const student = students.find(s => s.student_id === studentId);
+        if (student && signedInStudent !== student) {
             setSignedInStudent(student);
         }
-    }, [students, studentId, token]);
+    }, [students, studentId]);
 
     const setSignedInStudent = (student: Student | null) => {
         setSignedInStudentState(student);
